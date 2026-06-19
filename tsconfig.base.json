@@ -20,6 +20,8 @@
   },
   "include": [
     "vitest.config.ts",
-    "tests/**/*.ts"
+    "tests/**/*.ts",
+    "packages/**/*.ts",
+    "scripts/**/*.ts"
   ]
 }

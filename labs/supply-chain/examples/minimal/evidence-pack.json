@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "dreps.supplychain.v1",
+  "packId": "minimal-supplychain-demo",
+  "createdAt": "2026-06-19T22:31:35.895Z",
+  "mode": "simulated",
+  "nodes": [
+    {
+      "id": "repo-minimal",
+      "type": "repository",
+      "name": "minimal repository",
+      "criticality": "medium"
+    },
+    {
+      "id": "pipeline-minimal",
+      "type": "ci_pipeline",
+      "name": "minimal CI pipeline",
+      "criticality": "medium"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-repo-triggers-pipeline",
+      "type": "triggers",
+      "source": "repo-minimal",
+      "target": "pipeline-minimal"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-minimal-ci",
+      "type": "ci_workflow",
+      "source": ".github/workflows/ci.yml",
+      "createdAt": "2026-06-19T22:31:35.895Z"
+    }
+  ],
+  "findings": [],
+  "remediations": [],
+  "complianceImpacts": [],
+  "documentation": [],
+  "simulations": [],
+  "commandRefs": [],
+  "runbooks": [],
+  "workflows": [],
+  "graphMetrics": {},
+  "toolchain": {},
+  "provenance": {
+    "generatedBy": "phase-2-bootstrap"
+  }
+}

@@ -1,0 +1,253 @@
+{
+  "schemaVersion": "dreps.supplychain.v1",
+  "packId": "ecommerce-supplychain-demo",
+  "createdAt": "2026-06-19T22:31:35.895Z",
+  "mode": "simulated",
+  "nodes": [
+    {
+      "id": "repo-ecommerce",
+      "type": "repository",
+      "name": "ecommerce repository",
+      "criticality": "high"
+    },
+    {
+      "id": "pipeline-build",
+      "type": "ci_pipeline",
+      "name": "build and scan pipeline",
+      "criticality": "high"
+    },
+    {
+      "id": "image-auth-api",
+      "type": "container_image",
+      "name": "auth-api container image",
+      "criticality": "critical"
+    },
+    {
+      "id": "pod-auth-api",
+      "type": "k8s_pod",
+      "name": "auth-api pod",
+      "criticality": "critical"
+    },
+    {
+      "id": "db-orders",
+      "type": "database",
+      "name": "orders database",
+      "criticality": "critical"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-repo-triggers-build",
+      "type": "triggers",
+      "source": "repo-ecommerce",
+      "target": "pipeline-build"
+    },
+    {
+      "id": "edge-build-builds-image",
+      "type": "builds",
+      "source": "pipeline-build",
+      "target": "image-auth-api"
+    },
+    {
+      "id": "edge-image-deploys-pod",
+      "type": "deploys",
+      "source": "image-auth-api",
+      "target": "pod-auth-api"
+    },
+    {
+      "id": "edge-pod-connects-db",
+      "type": "connects_to",
+      "source": "pod-auth-api",
+      "target": "db-orders"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence-gitlab-ci",
+      "type": "ci_workflow",
+      "source": "labs/supply-chain/examples/ecommerce/.gitlab-ci.yml",
+      "createdAt": "2026-06-19T22:31:35.895Z"
+    },
+    {
+      "id": "evidence-trivy-auth-api",
+      "type": "scan_result",
+      "source": "trivy fixture for auth-api image",
+      "createdAt": "2026-06-19T22:31:35.895Z"
+    },
+    {
+      "id": "evidence-k8s-auth-api",
+      "type": "configuration",
+      "source": "kubernetes auth-api fixture",
+      "createdAt": "2026-06-19T22:31:35.895Z"
+    }
+  ],
+  "findings": [
+    {
+      "id": "finding-unsigned-image",
+      "title": "Container image is not signed",
+      "severity": "high",
+      "status": "open",
+      "affectedNodes": [
+        "image-auth-api"
+      ],
+      "evidenceRefs": [
+        "evidence-gitlab-ci"
+      ],
+      "description": "The container image does not have a verifiable signature."
+    },
+    {
+      "id": "finding-critical-pod-no-network-policy",
+      "title": "Critical pod has no NetworkPolicy",
+      "severity": "critical",
+      "status": "open",
+      "affectedNodes": [
+        "pod-auth-api"
+      ],
+      "evidenceRefs": [
+        "evidence-k8s-auth-api"
+      ],
+      "description": "The critical pod can potentially communicate laterally without an explicit NetworkPolicy."
+    }
+  ],
+  "remediations": [
+    {
+      "id": "remediate-network-policy",
+      "findingId": "finding-critical-pod-no-network-policy",
+      "affectedNodes": [
+        "pod-auth-api"
+      ],
+      "strategy": "Add a restrictive Kubernetes NetworkPolicy for the auth-api pod.",
+      "risk": "medium",
+      "approvalRequired": true,
+      "commands": [
+        {
+          "id": "cmd-apply-network-policy",
+          "description": "Apply the generated NetworkPolicy manifest.",
+          "command": "kubectl apply -f remediations/networkpolicy-auth-api.yaml",
+          "riskLevel": "remote_write",
+          "approvalRequired": true,
+          "rollbackRef": "cmd-rollback-network-policy"
+        }
+      ],
+      "verification": {
+        "expectedOutcome": "NetworkPolicy exists and limits ingress to approved callers.",
+        "commands": [
+          {
+            "id": "cmd-verify-network-policy",
+            "description": "Verify that the NetworkPolicy exists.",
+            "command": "kubectl get networkpolicy auth-api-restrictive -n ecommerce",
+            "riskLevel": "read_only",
+            "approvalRequired": false
+          }
+        ]
+      },
+      "rollback": {
+        "description": "Delete the NetworkPolicy if it blocks legitimate traffic.",
+        "commands": [
+          {
+            "id": "cmd-rollback-network-policy",
+            "description": "Remove the generated NetworkPolicy.",
+            "command": "kubectl delete -f remediations/networkpolicy-auth-api.yaml",
+            "riskLevel": "remote_write",
+            "approvalRequired": true
+          }
+        ]
+      }
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "id": "impact-slsa-unsigned-image",
+      "framework": "SLSA",
+      "control": "provenance-and-integrity",
+      "impact": "high",
+      "findingRefs": [
+        "finding-unsigned-image"
+      ],
+      "affectedNodes": [
+        "image-auth-api"
+      ],
+      "rationale": "Unsigned images reduce supply-chain provenance guarantees."
+    },
+    {
+      "id": "impact-dora-network-segmentation",
+      "framework": "DORA",
+      "control": "ict-risk-management",
+      "impact": "critical",
+      "findingRefs": [
+        "finding-critical-pod-no-network-policy"
+      ],
+      "affectedNodes": [
+        "pod-auth-api"
+      ],
+      "rationale": "Missing network segmentation increases operational resilience risk."
+    }
+  ],
+  "documentation": [
+    {
+      "id": "doc-architecture",
+      "title": "Architecture",
+      "kind": "architecture",
+      "path": "docs/01_ARCHITECTURE.md",
+      "relatedNodes": [
+        "repo-ecommerce",
+        "pipeline-build",
+        "image-auth-api",
+        "pod-auth-api"
+      ],
+      "relatedFindings": []
+    }
+  ],
+  "simulations": [
+    {
+      "id": "sim-lateral-movement",
+      "scenario": "no-network-policy-lateral-movement",
+      "startNode": "pod-auth-api",
+      "maxDepth": 4,
+      "expectedImpact": "Potential path from exposed workload to orders database."
+    }
+  ],
+  "commandRefs": [],
+  "runbooks": [
+    {
+      "id": "runbook-network-policy",
+      "title": "NetworkPolicy remediation runbook",
+      "path": "cookbook/runbooks/kubernetes-networkpolicy.md",
+      "findingRefs": [
+        "finding-critical-pod-no-network-policy"
+      ],
+      "commandRefs": [
+        "cmd-apply-network-policy",
+        "cmd-verify-network-policy",
+        "cmd-rollback-network-policy"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "workflow-remediate-network-policy",
+      "name": "Remediate missing NetworkPolicy",
+      "jobs": [
+        {
+          "id": "generate_patch",
+          "name": "Generate NetworkPolicy patch",
+          "dependsOn": []
+        },
+        {
+          "id": "verify_patch",
+          "name": "Verify patch",
+          "dependsOn": [
+            "generate_patch"
+          ]
+        }
+      ]
+    }
+  ],
+  "graphMetrics": {},
+  "toolchain": {
+    "schemaPackage": "@supply-chain-mode-lab/dreps-supplychain-schema"
+  },
+  "provenance": {
+    "generatedBy": "phase-2-bootstrap"
+  }
+}
