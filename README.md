@@ -1,0 +1,25 @@
+# Doctrine Supply Chain Mode Lab
+
+Clean-room DevSecOps supply chain evidence lab.
+
+## Objectif
+
+Construire progressivement un laboratoire open source capable de modeliser une supply chain logicielle sous forme de preuves, de graphe, de findings, de remediations et d'audit-pack verifiables.
+
+## Phase actuelle
+
+Phase 1 - Initialisation du monorepo.
+
+## Definition of Done
+
+- pnpm install passe.
+- pnpm typecheck passe.
+- pnpm test passe.
+- GitHub Actions passe.
+
+## Commandes
+
+- pnpm install
+- pnpm typecheck
+- pnpm test
+- pnpm supplychain:certify

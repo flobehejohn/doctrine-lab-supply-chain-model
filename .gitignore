@@ -1,0 +1,16 @@
+node_modules/
+dist/
+build/
+coverage/
+*.log
+.env
+.env.*
+!.env.example
+.doctrine/out/
+.doctrine/tmp/
+.doctrine/cache/
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.pnp.*

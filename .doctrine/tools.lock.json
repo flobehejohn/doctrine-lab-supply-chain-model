@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "doctrine.tools-lock.v1",
+  "generatedAt": "2026-06-19T01:16:40.283Z",
+  "tools": {
+    "node": {
+      "version": "v20.20.2",
+      "required": ">=20.0.0",
+      "source": "local-preflight"
+    },
+    "pnpm": {
+      "version": "10.24.0",
+      "required": ">=9.0.0",
+      "source": "corepack-or-local"
+    },
+    "git": {
+      "version": "git version 2.54.0.windows.1",
+      "source": "local-preflight"
+    },
+    "typescript": {
+      "version": "resolved-by-pnpm-lock",
+      "source": "devDependency"
+    },
+    "vitest": {
+      "version": "resolved-by-pnpm-lock",
+      "source": "devDependency"
+    }
+  }
+}

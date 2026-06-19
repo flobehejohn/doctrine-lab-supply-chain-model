@@ -1,0 +1,24 @@
+{
+  "name": "doctrine-lab-supply-chain-model",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.24.0",
+  "description": "Doctrine Supply Chain Mode Lab - clean-room DevSecOps supply chain evidence lab.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.base.json --noEmit",
+    "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
+    "supplychain:certify": "pnpm typecheck && pnpm test"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
+  }
+}

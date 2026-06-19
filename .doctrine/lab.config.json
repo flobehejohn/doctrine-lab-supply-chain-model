@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "doctrine.lab.v1",
+  "labId": "doctrine-lab-supply-chain-model",
+  "displayName": "Doctrine Supply Chain Mode Lab",
+  "phase": 1,
+  "mode": "clean-room",
+  "evidenceModel": "dreps-supplychain",
+  "certification": {
+    "localCommand": "pnpm supplychain:certify",
+    "ciWorkflow": ".github/workflows/ci.yml"
+  },
+  "qualityGates": {
+    "install": "pnpm install --frozen-lockfile",
+    "typecheck": "pnpm typecheck",
+    "test": "pnpm test",
+    "certify": "pnpm supplychain:certify"
+  }
+}
