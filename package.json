@@ -17,9 +17,12 @@
     "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
-    "web:build": "pnpm --filter @supply-chain-mode-lab/web build"
+    "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
+    "ux:audit": "tsx scripts/ui/capture-demo.ts",
+    "demo:capture": "pnpm ux:audit"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.0",
     "@types/node": "^25.9.3",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
