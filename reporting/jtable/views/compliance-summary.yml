@@ -1,0 +1,20 @@
+viewId: compliance-summary
+title: Compliance Impact Summary
+source: labs/supply-chain/examples/ecommerce/evidence-pack.json
+dataset: complianceImpacts
+filter: all
+columns:
+  - key: id
+    label: ID
+  - key: framework
+    label: Framework
+  - key: control
+    label: Control
+  - key: impact
+    label: Impact
+  - key: findingRefs
+    label: Finding Refs
+  - key: affectedNodes
+    label: Affected Nodes
+  - key: rationale
+    label: Rationale

@@ -1,0 +1,20 @@
+viewId: remediation-pr-table
+title: Remediation PR Table
+source: labs/supply-chain/examples/ecommerce/evidence-pack.json
+dataset: remediations
+filter: all
+columns:
+  - key: id
+    label: ID
+  - key: findingId
+    label: Finding
+  - key: risk
+    label: Risk
+  - key: approvalRequired
+    label: Approval
+  - key: strategy
+    label: Strategy
+  - key: commands
+    label: Commands
+  - key: rollback
+    label: Rollback

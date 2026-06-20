@@ -1,0 +1,14 @@
+viewId: drift-summary
+title: Drift Summary
+source: labs/supply-chain/examples/ecommerce/evidence-pack.json
+dataset: drift
+filter: all
+columns:
+  - key: id
+    label: ID
+  - key: kind
+    label: Kind
+  - key: severity
+    label: Severity
+  - key: message
+    label: Message

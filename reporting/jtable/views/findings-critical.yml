@@ -1,0 +1,18 @@
+viewId: findings-critical
+title: Critical Supply Chain Findings
+source: labs/supply-chain/examples/ecommerce/evidence-pack.json
+dataset: findings
+filter: critical
+columns:
+  - key: id
+    label: ID
+  - key: severity
+    label: Severity
+  - key: status
+    label: Status
+  - key: title
+    label: Title
+  - key: affectedNodes
+    label: Affected Nodes
+  - key: evidenceRefs
+    label: Evidence Refs

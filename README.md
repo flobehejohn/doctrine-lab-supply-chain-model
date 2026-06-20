@@ -41,3 +41,17 @@ pnpm ux:audit
 
 ![React Flow MVP](docs/assets/react-flow-mvp.png)
 
+
+## Reporting Layer
+
+Human-readable reporting views are available through the optional jtable-style layer.
+
+Commands:
+
+- pnpm run report:jtable:findings
+- pnpm run report:jtable:compliance
+- pnpm run report:jtable:all
+
+Outputs are written to .doctrine/out/reporting/jtable/.
+
+The lab does not require an external jtable binary. A native PowerShell fallback renderer is provided.

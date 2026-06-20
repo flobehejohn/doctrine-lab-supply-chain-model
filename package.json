@@ -19,7 +19,12 @@
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
     "ux:audit": "tsx scripts/ui/capture-demo.ts",
-    "demo:capture": "pnpm ux:audit"
+    "demo:capture": "pnpm ux:audit",
+    "report:jtable:findings": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/reporting/render-jtable.ps1 -View reporting/jtable/views/findings-all.yml",
+    "report:jtable:critical": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/reporting/render-jtable.ps1 -View reporting/jtable/views/findings-critical.yml",
+    "report:jtable:compliance": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/reporting/render-jtable.ps1 -View reporting/jtable/views/compliance-summary.yml",
+    "report:jtable:remediations": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/reporting/render-jtable.ps1 -View reporting/jtable/views/remediation-pr-table.yml",
+    "report:jtable:all": "pnpm run report:jtable:findings && pnpm run report:jtable:critical && pnpm run report:jtable:compliance && pnpm run report:jtable:remediations"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

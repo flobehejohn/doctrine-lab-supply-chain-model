@@ -1,0 +1,16 @@
+viewId: blast-radius-summary
+title: Blast Radius Summary
+source: labs/supply-chain/examples/ecommerce/evidence-pack.json
+dataset: simulations
+filter: all
+columns:
+  - key: id
+    label: ID
+  - key: scenario
+    label: Scenario
+  - key: startNode
+    label: Start Node
+  - key: maxDepth
+    label: Max Depth
+  - key: expectedImpact
+    label: Expected Impact
