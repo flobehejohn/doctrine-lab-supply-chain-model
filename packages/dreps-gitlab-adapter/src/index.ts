@@ -34,6 +34,52 @@ export const GitLabFindingIds = [
   "gitlab-ci-builds-unsigned-image"
 ] as const;
 
+type DrepsEdgeType =
+  | "contains"
+  | "triggers"
+  | "runs"
+  | "runs_on"
+  | "builds"
+  | "publishes"
+  | "deploys"
+  | "routes_to"
+  | "exposes"
+  | "connects_to"
+  | "reads_from"
+  | "writes_to"
+  | "depends_on"
+  | "documents"
+  | "affects"
+  | "mitigates"
+  | "owned_by"
+  | "stores"
+  | "verifies"
+  | "signs";
+
+type DrepsEvidenceType =
+  | "source_file"
+  | "ci_workflow"
+  | "scan_result"
+  | "sbom"
+  | "runtime_observation"
+  | "configuration"
+  | "certificate"
+  | "manual_attestation"
+  | "audit_log";
+
+type DrepsFindingStatus = "open" | "accepted" | "mitigated" | "resolved";
+
+type DrepsComplianceFramework =
+  | "SLSA"
+  | "DORA"
+  | "NIS2"
+  | "ISO27001"
+  | "CIS_KUBERNETES"
+  | "OWASP_ASVS"
+  | "OWASP_SAMM";
+
+type DrepsComplianceImpact = "none" | "low" | "medium" | "high" | "critical";
+
 function cloneRecord<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
 }
@@ -129,7 +175,7 @@ function makeEdge(
   id: string,
   source: string,
   target: string,
-  kind: string,
+  type: DrepsEdgeType,
   label: string
 ): JsonRecord {
   const edge = templateAt(templates, index);
@@ -137,7 +183,7 @@ function makeEdge(
   setFirstPresentOrDefault(edge, ["id"], id, "id");
   setFirstPresentOrDefault(edge, ["source", "from", "sourceNodeId", "sourceId"], source, "source");
   setFirstPresentOrDefault(edge, ["target", "to", "targetNodeId", "targetId"], target, "target");
-  setFirstPresentOrDefault(edge, ["kind", "type"], kind, "kind");
+  setFirstPresentOrDefault(edge, ["type", "kind"], type, "type");
   setFirstPresentOrDefault(edge, ["label", "title"], label, "label");
 
   return {
@@ -145,7 +191,8 @@ function makeEdge(
     id,
     source,
     target,
-    kind,
+    type,
+    kind: type,
     label
   };
 }
@@ -154,21 +201,22 @@ function makeEvidence(
   templates: JsonRecord[],
   index: number,
   id: string,
-  kind: string,
+  type: DrepsEvidenceType,
   title: string,
   path: string
 ): JsonRecord {
   const evidence = templateAt(templates, index);
 
   setFirstPresentOrDefault(evidence, ["id"], id, "id");
-  setFirstPresentOrDefault(evidence, ["kind", "type"], kind, "kind");
+  setFirstPresentOrDefault(evidence, ["type", "kind"], type, "type");
   setFirstPresentOrDefault(evidence, ["title", "label", "name"], title, "title");
   setFirstPresentOrDefault(evidence, ["path", "artifact", "uri"], path, "path");
 
   return {
     ...evidence,
     id,
-    kind,
+    type,
+    kind: type,
     title,
     path
   };
@@ -182,7 +230,7 @@ function makeFinding(
   title: string,
   affectedNodes: string[],
   evidenceRefs: string[],
-  status = "open"
+  status: DrepsFindingStatus
 ): JsonRecord {
   const finding = templateAt(templates, index);
 
@@ -229,9 +277,9 @@ function makeComplianceImpact(
   templates: JsonRecord[],
   index: number,
   id: string,
-  framework: string,
+  framework: DrepsComplianceFramework,
   control: string,
-  impact: string,
+  impact: DrepsComplianceImpact,
   findingRefs: string[]
 ): JsonRecord {
   const compliance = templateAt(templates, index);
@@ -239,7 +287,7 @@ function makeComplianceImpact(
   setFirstPresentOrDefault(compliance, ["id"], id, "id");
   setFirstPresentOrDefault(compliance, ["framework"], framework, "framework");
   setFirstPresentOrDefault(compliance, ["control"], control, "control");
-  setFirstPresentOrDefault(compliance, ["impact", "title", "description"], impact, "impact");
+  setFirstPresentOrDefault(compliance, ["impact"], impact, "impact");
   setFirstPresentOrDefault(compliance, ["findingRefs", "findings"], findingRefs, "findingRefs");
 
   return {
@@ -296,6 +344,13 @@ export function importGitLabToDrepsEvidencePack(
   const imageName = asText(fixture.image.name, "localhost:5050/root/sample-project");
   const imageTag = asText(fixture.image.tag, "$CI_COMMIT_SHORT_SHA");
 
+  const runnerPrivileged = asBool(fixture.runner.privileged);
+  const runnerDockerSockMounted = asBool(fixture.runner.dockerSockMounted);
+  const runnerUsesLatest = runnerImage.endsWith(":latest");
+  const tokenTooBroad = asText(fixture.tokenPolicy.scope, "").includes("api");
+  const registrySelfSigned = asText(fixture.certificatePolicy.mode, "").includes("self-signed");
+  const imageSigned = asBool(fixture.image.signed);
+
   const nodes = [
     makeNode(nodeTemplates, 0, "gitlab_instance", "gitlab_instance", "GitLab local instance", {
       url: fixture.instance.url
@@ -314,13 +369,13 @@ export function importGitLabToDrepsEvidencePack(
     }),
     makeNode(nodeTemplates, 5, "gitlab_runner", "gitlab_runner", "GitLab Docker runner", {
       image: runnerImage,
-      privileged: asBool(fixture.runner.privileged),
-      dockerSockMounted: asBool(fixture.runner.dockerSockMounted)
+      privileged: runnerPrivileged,
+      dockerSockMounted: runnerDockerSockMounted
     }),
     makeNode(nodeTemplates, 6, "container_image", "container_image", imageName + ":" + imageTag, {
       image: imageName,
       tag: imageTag,
-      signed: asBool(fixture.image.signed)
+      signed: imageSigned
     }),
     makeNode(nodeTemplates, 7, "registry", "registry", "GitLab local registry", {
       url: fixture.registry.url,
@@ -329,23 +384,65 @@ export function importGitLabToDrepsEvidencePack(
   ];
 
   const edges = [
-    makeEdge(edgeTemplates, 0, "edge_instance_project", "gitlab_instance", "gitlab_project", "hosts", "hosts project"),
+    makeEdge(edgeTemplates, 0, "edge_instance_project", "gitlab_instance", "gitlab_project", "contains", "contains project"),
     makeEdge(edgeTemplates, 1, "edge_project_repository", "gitlab_project", "repository", "contains", "contains repository"),
     makeEdge(edgeTemplates, 2, "edge_project_pipeline", "gitlab_project", "ci_pipeline", "triggers", "triggers pipeline"),
     makeEdge(edgeTemplates, 3, "edge_pipeline_runner", "ci_pipeline", "gitlab_runner", "runs_on", "runs on runner"),
     makeEdge(edgeTemplates, 4, "edge_pipeline_job", "ci_pipeline", "build_job", "contains", "contains build job"),
     makeEdge(edgeTemplates, 5, "edge_runner_image", "gitlab_runner", "container_image", "builds", "builds image"),
     makeEdge(edgeTemplates, 6, "edge_job_image", "build_job", "container_image", "publishes", "publishes image"),
-    makeEdge(edgeTemplates, 7, "edge_image_registry", "container_image", "registry", "pushed_to", "pushed to registry")
+    makeEdge(edgeTemplates, 7, "edge_image_registry", "container_image", "registry", "stores", "stored in registry")
   ];
 
   const evidence = [
-    makeEvidence(evidenceTemplates, 0, "evidence_gitlab_fixture", "gitlab_export", "GitLab fixture export", "labs/supply-chain/environments/gitlab-local/fixtures/gitlab-export.fixture.json"),
-    makeEvidence(evidenceTemplates, 1, "evidence_gitlab_ci", "gitlab_ci", "GitLab CI pipeline file", "labs/supply-chain/environments/gitlab-local/sample-project/.gitlab-ci.yml"),
-    makeEvidence(evidenceTemplates, 2, "evidence_runner_config", "runner_config", "GitLab runner compose configuration", "labs/supply-chain/environments/gitlab-local/docker-compose.template.yml"),
-    makeEvidence(evidenceTemplates, 3, "evidence_registry_config", "registry_config", "GitLab local registry configuration", "labs/supply-chain/environments/gitlab-local/docker-compose.template.yml"),
-    makeEvidence(evidenceTemplates, 4, "evidence_sample_dockerfile", "dockerfile", "Sample project Dockerfile", "labs/supply-chain/environments/gitlab-local/sample-project/Dockerfile"),
-    makeEvidence(evidenceTemplates, 5, "evidence_security_model", "security_model", "GitLab local security model", "labs/supply-chain/environments/gitlab-local/SECURITY_MODEL.md")
+    makeEvidence(
+      evidenceTemplates,
+      0,
+      "evidence_gitlab_fixture",
+      "audit_log",
+      "GitLab fixture export",
+      "labs/supply-chain/environments/gitlab-local/fixtures/gitlab-export.fixture.json"
+    ),
+    makeEvidence(
+      evidenceTemplates,
+      1,
+      "evidence_gitlab_ci",
+      "ci_workflow",
+      "GitLab CI pipeline file",
+      "labs/supply-chain/environments/gitlab-local/sample-project/.gitlab-ci.yml"
+    ),
+    makeEvidence(
+      evidenceTemplates,
+      2,
+      "evidence_runner_config",
+      "configuration",
+      "GitLab runner compose configuration",
+      "labs/supply-chain/environments/gitlab-local/docker-compose.template.yml"
+    ),
+    makeEvidence(
+      evidenceTemplates,
+      3,
+      "evidence_registry_config",
+      "configuration",
+      "GitLab local registry configuration",
+      "labs/supply-chain/environments/gitlab-local/docker-compose.template.yml"
+    ),
+    makeEvidence(
+      evidenceTemplates,
+      4,
+      "evidence_sample_dockerfile",
+      "source_file",
+      "Sample project Dockerfile",
+      "labs/supply-chain/environments/gitlab-local/sample-project/Dockerfile"
+    ),
+    makeEvidence(
+      evidenceTemplates,
+      5,
+      "evidence_security_model",
+      "manual_attestation",
+      "GitLab local security model",
+      "labs/supply-chain/environments/gitlab-local/SECURITY_MODEL.md"
+    )
   ];
 
   const findings = [
@@ -357,7 +454,7 @@ export function importGitLabToDrepsEvidencePack(
       "GitLab runner privileged mode must remain disabled unless explicitly justified",
       ["gitlab_runner"],
       ["evidence_runner_config"],
-      asBool(fixture.runner.privileged) ? "open" : "not_observed"
+      runnerPrivileged ? "open" : "mitigated"
     ),
     makeFinding(
       findingTemplates,
@@ -367,7 +464,7 @@ export function importGitLabToDrepsEvidencePack(
       "GitLab runner mounts the Docker socket in the local lab",
       ["gitlab_runner"],
       ["evidence_runner_config"],
-      asBool(fixture.runner.dockerSockMounted) ? "open" : "not_observed"
+      runnerDockerSockMounted ? "open" : "mitigated"
     ),
     makeFinding(
       findingTemplates,
@@ -377,7 +474,7 @@ export function importGitLabToDrepsEvidencePack(
       "GitLab runner image must not use latest",
       ["gitlab_runner"],
       ["evidence_runner_config"],
-      runnerImage.endsWith(":latest") ? "open" : "not_observed"
+      runnerUsesLatest ? "open" : "mitigated"
     ),
     makeFinding(
       findingTemplates,
@@ -387,7 +484,7 @@ export function importGitLabToDrepsEvidencePack(
       "GitLab token scope must be minimized",
       ["gitlab_project", "ci_pipeline"],
       ["evidence_gitlab_fixture"],
-      asText(fixture.tokenPolicy.scope, "").includes("api") ? "open" : "not_observed"
+      tokenTooBroad ? "open" : "mitigated"
     ),
     makeFinding(
       findingTemplates,
@@ -397,7 +494,7 @@ export function importGitLabToDrepsEvidencePack(
       "GitLab registry certificate mode requires explicit local trust documentation",
       ["registry"],
       ["evidence_registry_config", "evidence_security_model"],
-      asText(fixture.certificatePolicy.mode, "").includes("self-signed") ? "open" : "documented_local_lab"
+      registrySelfSigned ? "open" : "accepted"
     ),
     makeFinding(
       findingTemplates,
@@ -407,24 +504,53 @@ export function importGitLabToDrepsEvidencePack(
       "GitLab CI builds an unsigned container image",
       ["ci_pipeline", "build_job", "container_image"],
       ["evidence_gitlab_ci", "evidence_sample_dockerfile"],
-      asBool(fixture.image.signed) ? "not_observed" : "open"
+      imageSigned ? "mitigated" : "open"
     )
   ];
 
   const remediations = [
-    makeRemediation(remediationTemplates, 0, "remediate-gitlab-runner-docker-sock-mounted", "gitlab-runner-docker-sock-mounted", "Replace Docker socket mount with an isolated build strategy or explicitly document the local lab exception."),
-    makeRemediation(remediationTemplates, 1, "remediate-gitlab-token-too-broad", "gitlab-token-too-broad", "Reduce token scopes and prefer masked CI variables."),
-    makeRemediation(remediationTemplates, 2, "remediate-gitlab-ci-builds-unsigned-image", "gitlab-ci-builds-unsigned-image", "Add image signing and signature evidence to the publication workflow.")
+    makeRemediation(
+      remediationTemplates,
+      0,
+      "remediate-gitlab-runner-docker-sock-mounted",
+      "gitlab-runner-docker-sock-mounted",
+      "Replace Docker socket mount with an isolated build strategy or explicitly document the local lab exception."
+    ),
+    makeRemediation(
+      remediationTemplates,
+      1,
+      "remediate-gitlab-token-too-broad",
+      "gitlab-token-too-broad",
+      "Reduce token scopes and prefer masked CI variables."
+    ),
+    makeRemediation(
+      remediationTemplates,
+      2,
+      "remediate-gitlab-ci-builds-unsigned-image",
+      "gitlab-ci-builds-unsigned-image",
+      "Add image signing and signature evidence to the publication workflow."
+    )
   ];
 
   const complianceImpacts = [
-    makeComplianceImpact(complianceTemplates, 0, "gitlab-impact-ci-hardening", "DREPS", "CI_HARDENING", "GitLab CI pipeline and runner posture affect supply-chain integrity.", [
-      "gitlab-runner-docker-sock-mounted",
-      "gitlab-ci-builds-unsigned-image"
-    ]),
-    makeComplianceImpact(complianceTemplates, 1, "gitlab-impact-secret-governance", "DREPS", "SECRET_GOVERNANCE", "GitLab token scope and secret handling affect auditability.", [
-      "gitlab-token-too-broad"
-    ])
+    makeComplianceImpact(
+      complianceTemplates,
+      0,
+      "gitlab-impact-ci-hardening",
+      "SLSA",
+      "CI_HARDENING",
+      "high",
+      ["gitlab-runner-docker-sock-mounted", "gitlab-ci-builds-unsigned-image"]
+    ),
+    makeComplianceImpact(
+      complianceTemplates,
+      1,
+      "gitlab-impact-secret-governance",
+      "ISO27001",
+      "SECRET_GOVERNANCE",
+      "medium",
+      ["gitlab-token-too-broad"]
+    )
   ];
 
   return {
@@ -437,7 +563,7 @@ export function importGitLabToDrepsEvidencePack(
     remediations,
     complianceImpacts,
     metadata: {
-      ...(asRecord(base.metadata)),
+      ...asRecord(base.metadata),
       adapter: "dreps-gitlab-adapter",
       source: "gitlab-local-fixture",
       graph: "gitlab_project -> ci_pipeline -> gitlab_runner -> container_image -> registry"
@@ -448,12 +574,6 @@ export function importGitLabToDrepsEvidencePack(
 export function renderGitLabGraphMermaid(evidencePack: JsonRecord): string {
   const edges = asRecords(evidencePack.edges);
   const nodes = asRecords(evidencePack.nodes);
-  const labels = new Map<string, string>();
-
-  for (const node of nodes) {
-    labels.set(asText(node.id), asText(node.label, asText(node.id)));
-  }
-
   const lines = ["flowchart LR"];
 
   for (const node of nodes) {
