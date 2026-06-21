@@ -109,3 +109,17 @@ Generated outputs:
 - .doctrine/out/reports/audit-report.md
 - .doctrine/out/diagrams/supplychain.mmd
 - .doctrine/out/decks/executive-summary.marp.md
+
+## Artifact Pipeline
+
+Phase 11 adds an artifact pipeline for hashing, zipping and local publication.
+
+Command:
+
+- pnpm artifact:certify
+
+Generated outputs:
+
+- .doctrine/out/audit-pack.sha256.json
+- .doctrine/out/audit-pack.zip
+- .doctrine/out/artifact-vault/audit-pack.zip

@@ -1,0 +1,20 @@
+{
+  "pipelineId": "audit-pack-publish",
+  "actions": [
+    {
+      "type": "hash",
+      "input": ".doctrine/out/audit-pack",
+      "output": ".doctrine/out/audit-pack.sha256.json"
+    },
+    {
+      "type": "zip",
+      "input": ".doctrine/out/audit-pack",
+      "output": ".doctrine/out/audit-pack.zip"
+    },
+    {
+      "type": "upload",
+      "input": ".doctrine/out/audit-pack.zip",
+      "target": ".doctrine/out/artifact-vault"
+    }
+  ]
+}
