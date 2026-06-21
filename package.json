@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm artifact:certify && pnpm vault:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -34,9 +34,10 @@
     "report:marp:executive": "tsx scripts/reporting/render-marp-executive.ts",
     "report:readable:generate": "pnpm report:markdown:audit && pnpm report:mermaid:graph && pnpm report:marp:executive",
     "report:readable:certify": "pnpm report:readable:generate && tsx scripts/reporting/certify-readable-reports.ts",
-    "artifact:certify": "pnpm report:readable:certify && tsx scripts/artifacts/certify-artifact-pipeline.ts",
+    "artifact:certify": "pnpm report:readable:certify && pnpm workflow:certify && tsx scripts/artifacts/certify-artifact-pipeline.ts",
     "vault:publish": "pnpm artifact:certify && tsx scripts/supplychain/publish-audit-pack.ts",
-    "vault:certify": "pnpm vault:publish && tsx scripts/supplychain/certify-artifact-vault.ts"
+    "vault:certify": "pnpm vault:publish && tsx scripts/supplychain/certify-artifact-vault.ts",
+    "workflow:certify": "tsx scripts/workflows/certify-workflows.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

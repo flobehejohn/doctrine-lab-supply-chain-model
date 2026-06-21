@@ -2,12 +2,13 @@ import {
   copyFileSync,
   existsSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
   rmSync,
   statSync,
   writeFileSync
 } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import {
   ArtifactPipelinePlanSchema,
   runArtifactPipeline
@@ -17,6 +18,34 @@ const root = process.cwd();
 
 function ensureParent(path: string): void {
   mkdirSync(dirname(path), { recursive: true });
+}
+
+function normalize(path: string): string {
+  return path.split(sep).join("/");
+}
+
+function listFiles(dir: string): string[] {
+  if (!existsSync(dir)) {
+    return [];
+  }
+
+  const files: string[] = [];
+
+  function walk(current: string): void {
+    for (const entry of readdirSync(current)) {
+      const fullPath = join(current, entry);
+      const stats = statSync(fullPath);
+
+      if (stats.isDirectory()) {
+        walk(fullPath);
+      } else if (stats.isFile()) {
+        files.push(fullPath);
+      }
+    }
+  }
+
+  walk(dir);
+  return files.sort();
 }
 
 function copyIfExists(source: string, target: string): void {
@@ -29,6 +58,21 @@ function copyIfExists(source: string, target: string): void {
   const fullTarget = resolve(root, target);
   ensureParent(fullTarget);
   copyFileSync(fullSource, fullTarget);
+}
+
+function copyDirectoryIfExists(source: string, target: string): void {
+  const fullSource = resolve(root, source);
+
+  if (!existsSync(fullSource)) {
+    return;
+  }
+
+  for (const file of listFiles(fullSource)) {
+    const relativePath = relative(fullSource, file);
+    const fullTarget = resolve(root, target, relativePath);
+    ensureParent(fullTarget);
+    copyFileSync(file, fullTarget);
+  }
 }
 
 const auditPackDir = resolve(root, ".doctrine/out/audit-pack");
@@ -56,18 +100,22 @@ copyIfExists(
   ".doctrine/out/audit-pack/decks/executive-summary.marp.md"
 );
 
+copyDirectoryIfExists(
+  ".doctrine/out/workflows",
+  ".doctrine/out/audit-pack/workflows"
+);
+
+const contents = listFiles(auditPackDir).map((file) =>
+  normalize(relative(auditPackDir, file))
+);
+
 writeFileSync(
   resolve(root, ".doctrine/out/audit-pack/MANIFEST.json"),
   JSON.stringify(
     {
       schemaVersion: "audit-pack.manifest.v1",
       generatedAt: new Date().toISOString(),
-      contents: [
-        "evidence-pack.json",
-        "reports/audit-report.md",
-        "diagrams/supplychain.mmd",
-        "decks/executive-summary.marp.md"
-      ]
+      contents
     },
     null,
     2
@@ -111,6 +159,10 @@ if (!hashManifest.files?.some((file) => file.path === "evidence-pack.json")) {
   throw new Error("Hash manifest must contain evidence-pack.json.");
 }
 
+if (!hashManifest.files?.some((file) => file.path.startsWith("workflows/"))) {
+  throw new Error("Hash manifest must contain workflow artifacts.");
+}
+
 if (!hashManifest.aggregateSha256) {
   throw new Error("Hash manifest must contain aggregateSha256.");
 }
@@ -142,3 +194,4 @@ for (const event of result.events) {
 console.log("hash: .doctrine/out/audit-pack.sha256.json");
 console.log("zip: .doctrine/out/audit-pack.zip");
 console.log("vault: .doctrine/out/artifact-vault/audit-pack.zip");
+console.log("workflow artifacts included: yes");

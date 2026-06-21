@@ -1,0 +1,20 @@
+workflow:
+  id: audit-pack-publication
+  title: Audit pack publication workflow
+  kind: audit_pack_publication
+  description: Generate readable outputs, package the audit pack and publish it to the local vault.
+  jobs:
+    - id: generate_reports
+      title: Generate Markdown Mermaid and Marp outputs
+    - id: build_audit_pack
+      title: Build audit-pack directory
+      dependsOn: generate_reports
+    - id: hash_pack
+      title: Hash audit-pack
+      dependsOn: build_audit_pack
+    - id: zip_pack
+      title: Zip audit-pack
+      dependsOn: hash_pack
+    - id: publish_vault
+      title: Publish to local artifact vault
+      dependsOn: zip_pack

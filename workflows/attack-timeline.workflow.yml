@@ -1,0 +1,17 @@
+workflow:
+  id: attack-timeline-unsigned-image
+  title: Unsigned image attack timeline
+  kind: attack_timeline
+  description: Model a plausible attacker path from unsigned image to lateral movement.
+  jobs:
+    - id: pull_unsigned_image
+      title: Pull unsigned container image
+    - id: execute_payload
+      title: Execute malicious payload
+      dependsOn: pull_unsigned_image
+    - id: exfiltrate_token
+      title: Exfiltrate service account token
+      dependsOn: execute_payload
+    - id: lateral_movement
+      title: Attempt lateral movement
+      dependsOn: exfiltrate_token

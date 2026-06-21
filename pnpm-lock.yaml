@@ -119,6 +119,12 @@ importers:
 
   packages/dreps-template-engine: {}
 
+  packages/dreps-workflow-dag:
+    dependencies:
+      zod:
+        specifier: ^4.1.13
+        version: 4.4.3
+
 packages:
 
   '@emnapi/core@1.10.0':

@@ -136,3 +136,18 @@ Commands:
 Generated index:
 
 - .doctrine/out/local-artifact-vault/index.json
+
+## Workflow DAG Engine
+
+Phase 13 adds a YAML workflow DAG engine for remediation, attack timeline, publication and training workflows.
+
+Commands:
+
+- pnpm workflow:certify
+- pnpm artifact:certify
+
+Generated workflow outputs:
+
+- .doctrine/out/workflows/index.json
+- .doctrine/out/workflows/*.validated.json
+- .doctrine/out/workflows/*.mmd

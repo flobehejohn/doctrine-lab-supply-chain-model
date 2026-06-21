@@ -1,0 +1,20 @@
+workflow:
+  id: training-supply-chain-lab
+  title: Supply chain lab training workflow
+  kind: training_workflow
+  description: Guide a learner from evidence review to remediation and certification.
+  jobs:
+    - id: inspect_evidence
+      title: Inspect evidence pack
+    - id: read_findings
+      title: Read findings and compliance impacts
+      dependsOn: inspect_evidence
+    - id: execute_safe_commands
+      title: Execute read-only cookbook commands
+      dependsOn: read_findings
+    - id: propose_remediation
+      title: Propose remediation plan
+      dependsOn: execute_safe_commands
+    - id: certify_lab
+      title: Run full certification
+      dependsOn: propose_remediation

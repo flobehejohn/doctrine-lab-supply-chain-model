@@ -1,0 +1,18 @@
+workflow:
+  id: remediate-network-policy
+  title: Remediate missing Kubernetes NetworkPolicy
+  kind: remediation_workflow
+  description: Generate, dry-run and submit a remediation PR for a missing NetworkPolicy.
+  jobs:
+    - id: generate_patch
+      title: Generate NetworkPolicy patch
+      outputs: [networkpolicy.yaml]
+    - id: dry_run
+      title: Run kubectl server-side dry-run
+      dependsOn: generate_patch
+    - id: validate_policy
+      title: Validate policy shape
+      dependsOn: dry_run
+    - id: create_pr
+      title: Create remediation PR
+      dependsOn: validate_policy
