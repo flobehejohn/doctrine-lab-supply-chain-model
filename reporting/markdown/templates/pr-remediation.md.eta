@@ -1,0 +1,35 @@
+# Remediation PR
+
+## Finding
+
+<%= remediationFindingId %>
+
+## Remediation
+
+<%= remediationId %>
+
+<%= remediationStrategy %>
+
+## Risk
+
+<%= remediationRisk %>
+
+## Approval required
+
+<%= remediationApprovalRequired %>
+
+## Commands
+
+<%= remediationCommands %>
+
+## Verification
+
+<%= remediationVerification %>
+
+## Rollback
+
+<%= remediationRollback %>
+
+## Evidence pack
+
+<%= packId %>

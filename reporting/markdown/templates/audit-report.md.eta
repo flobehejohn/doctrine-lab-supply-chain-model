@@ -1,0 +1,28 @@
+# Supply Chain Audit Report
+
+Pack: <%= packId %>
+
+Generated at: <%= generatedAt %>
+
+## Metrics
+
+| Metric | Value |
+| --- | ---: |
+| Nodes | <%= nodeCount %> |
+| Edges | <%= edgeCount %> |
+| Evidence | <%= evidenceCount %> |
+| Findings | <%= findingCount %> |
+| Remediations | <%= remediationCount %> |
+| Compliance impacts | <%= complianceImpactCount %> |
+
+## Findings
+
+<%= findingsTable %>
+
+## Compliance impacts
+
+<%= complianceTable %>
+
+## Remediations
+
+<%= remediationsTable %>

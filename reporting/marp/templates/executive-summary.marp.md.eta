@@ -1,0 +1,29 @@
+---
+marp: true
+title: Supply Chain Executive Summary
+---
+
+# Supply Chain Executive Summary
+
+Pack: <%= packId %>
+
+---
+
+# Risk snapshot
+
+- Findings: <%= findingCount %>
+- Critical findings: <%= criticalFindingCount %>
+- Compliance impacts: <%= complianceImpactCount %>
+- Remediations: <%= remediationCount %>
+
+---
+
+# Critical findings
+
+<%= criticalFindingsList %>
+
+---
+
+# Next actions
+
+<%= executiveNextActions %>

@@ -81,3 +81,14 @@ Rules:
 - destructive requires approvalRequired and rollback.
 - credential_sensitive masks tokens and passwords.
 - production_risk requires explicit context.
+
+## Template Engine
+
+Phase 9 adds a small template engine for Markdown reports, PR remediation bodies, Mermaid graphs and Marp summaries.
+
+Commands:
+
+- pnpm template:generate
+- pnpm template:certify
+
+Generated outputs are written to .doctrine/out/templates/.
