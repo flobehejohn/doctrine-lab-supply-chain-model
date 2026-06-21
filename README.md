@@ -123,3 +123,16 @@ Generated outputs:
 - .doctrine/out/audit-pack.sha256.json
 - .doctrine/out/audit-pack.zip
 - .doctrine/out/artifact-vault/audit-pack.zip
+
+## Local Artifact Vault
+
+Phase 12 adds a local artifact vault for published audit-packs.
+
+Commands:
+
+- pnpm vault:publish
+- pnpm vault:certify
+
+Generated index:
+
+- .doctrine/out/local-artifact-vault/index.json
