@@ -85,6 +85,8 @@ importers:
         specifier: ^4.1.13
         version: 4.4.3
 
+  packages/dreps-gitlab-adapter: {}
+
   packages/dreps-graph-engine:
     dependencies:
       '@supply-chain-mode-lab/dreps-supplychain-schema':

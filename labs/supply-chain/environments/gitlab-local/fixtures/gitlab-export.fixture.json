@@ -1,0 +1,74 @@
+{
+  "packId": "gitlab-local-dreps-evidence-pack",
+  "instance": {
+    "id": "gitlab-local",
+    "url": "http://localhost:8080",
+    "version": "17.11.2-ce.0"
+  },
+  "project": {
+    "id": "sample-project",
+    "path": "root/sample-project",
+    "visibility": "private"
+  },
+  "repository": {
+    "defaultBranch": "main",
+    "hasGitlabCi": true,
+    "path": "sample-project"
+  },
+  "pipeline": {
+    "id": "pipeline-main",
+    "ref": "main",
+    "status": "modeled",
+    "stages": [
+      "lint",
+      "build",
+      "publish"
+    ]
+  },
+  "jobs": [
+    {
+      "id": "lint_metadata",
+      "stage": "lint",
+      "image": "alpine:3.20.3"
+    },
+    {
+      "id": "build_image",
+      "stage": "build",
+      "image": "docker:27.5.1-cli",
+      "service": "docker:27.5.1-dind"
+    },
+    {
+      "id": "publish_image",
+      "stage": "publish",
+      "image": "docker:27.5.1-cli",
+      "service": "docker:27.5.1-dind"
+    }
+  ],
+  "runner": {
+    "id": "docker-runner-local",
+    "executor": "docker",
+    "image": "gitlab/gitlab-runner:v17.11.0",
+    "privileged": false,
+    "dockerSockMounted": true
+  },
+  "registry": {
+    "id": "gitlab-local-registry",
+    "url": "http://localhost:5050",
+    "type": "gitlab_registry"
+  },
+  "image": {
+    "name": "localhost:5050/root/sample-project",
+    "tag": "$CI_COMMIT_SHORT_SHA",
+    "signed": false
+  },
+  "tokenPolicy": {
+    "scope": "api",
+    "masked": true,
+    "source": "environment_or_ci_variable"
+  },
+  "certificatePolicy": {
+    "mode": "local-http-lab",
+    "selfSigned": false,
+    "documented": true
+  }
+}

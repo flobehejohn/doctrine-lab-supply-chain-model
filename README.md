@@ -163,3 +163,17 @@ Command:
 Lab path:
 
 - labs/supply-chain/environments/gitlab-local/
+
+## GitLab Adapter
+
+Phase 15 imports a GitLab local fixture into a valid DREPS evidence-pack.
+
+Commands:
+
+- pnpm gitlab:import
+- pnpm gitlab:adapter:certify
+
+Generated output:
+
+- .doctrine/out/gitlab-adapter/evidence-pack.gitlab-local.json
+- .doctrine/out/gitlab-adapter/gitlab-dreps-graph.mmd

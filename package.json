@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -38,7 +38,12 @@
     "vault:publish": "pnpm artifact:certify && tsx scripts/supplychain/publish-audit-pack.ts",
     "vault:certify": "pnpm vault:publish && tsx scripts/supplychain/certify-artifact-vault.ts",
     "workflow:certify": "tsx scripts/workflows/certify-workflows.ts",
-    "gitlab:lab:certify": "tsx scripts/supplychain/certify-gitlab-local-lab.ts"
+    "gitlab:lab:certify": "tsx scripts/supplychain/certify-gitlab-local-lab.ts",
+    "gitlab:import:ci": "tsx scripts/gitlab/import-gitlab-ci.ts",
+    "gitlab:import:runner": "tsx scripts/gitlab/import-gitlab-runner.ts",
+    "gitlab:import:registry": "tsx scripts/gitlab/import-gitlab-registry.ts",
+    "gitlab:import": "pnpm gitlab:import:ci && pnpm gitlab:import:runner && pnpm gitlab:import:registry && tsx scripts/gitlab/import-gitlab.ts",
+    "gitlab:adapter:certify": "pnpm gitlab:import && tsx scripts/gitlab/certify-gitlab-adapter.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",
