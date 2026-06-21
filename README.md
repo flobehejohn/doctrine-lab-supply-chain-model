@@ -92,3 +92,20 @@ Commands:
 - pnpm template:certify
 
 Generated outputs are written to .doctrine/out/templates/.
+
+## Markdown / Mermaid / Marp Reporting
+
+Phase 10 adds UI-free reporting outputs for audit review, graph visualization and executive presentation.
+
+Commands:
+
+- pnpm report:markdown:audit
+- pnpm report:mermaid:graph
+- pnpm report:marp:executive
+- pnpm report:readable:certify
+
+Generated outputs:
+
+- .doctrine/out/reports/audit-report.md
+- .doctrine/out/diagrams/supplychain.mmd
+- .doctrine/out/decks/executive-summary.marp.md

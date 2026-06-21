@@ -80,6 +80,12 @@ importers:
         specifier: workspace:*
         version: link:../dreps-supplychain-schema
 
+  packages/dreps-markdown-renderer: {}
+
+  packages/dreps-marp-exporter: {}
+
+  packages/dreps-mermaid-exporter: {}
+
   packages/dreps-runbook-engine:
     dependencies:
       '@supply-chain-mode-lab/dreps-command-catalog':
