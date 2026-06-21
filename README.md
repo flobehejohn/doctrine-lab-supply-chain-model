@@ -151,3 +151,15 @@ Generated workflow outputs:
 - .doctrine/out/workflows/index.json
 - .doctrine/out/workflows/*.validated.json
 - .doctrine/out/workflows/*.mmd
+
+## GitLab Local Lab
+
+Phase 14 adds a local GitLab supply-chain lab with a sample project, GitLab CI model, Docker runner model, security documentation and evidence-pack.
+
+Command:
+
+- pnpm gitlab:lab:certify
+
+Lab path:
+
+- labs/supply-chain/environments/gitlab-local/

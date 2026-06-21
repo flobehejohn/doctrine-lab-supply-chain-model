@@ -1,0 +1,45 @@
+stages:
+  - lint
+  - build
+  - publish
+
+variables:
+  IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
+  DOCKER_BUILDKIT: "1"
+
+lint:metadata:
+  stage: lint
+  image: alpine:3.20.3
+  script:
+    - test -f Dockerfile
+    - test -f README.md
+    - grep -q "alpine:3.20.3" Dockerfile
+
+build:image:
+  stage: build
+  image: docker:27.5.1-cli
+  services:
+    - name: docker:27.5.1-dind
+      command: ["--tls=false"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  script:
+    - docker version
+    - docker build --pull=false -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" .
+  rules:
+    - if: '$CI_COMMIT_BRANCH'
+
+publish:image:
+  stage: publish
+  image: docker:27.5.1-cli
+  services:
+    - name: docker:27.5.1-dind
+      command: ["--tls=false"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login "$CI_REGISTRY" -u "$CI_REGISTRY_USER" --password-stdin
+    - docker build --pull=false -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" .
+    - docker push "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

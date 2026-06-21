@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "gitlab-local-lab.evidence.v1",
+  "packId": "gitlab-local-supplychain-demo",
+  "scenario": "GitLab local -> demo project -> GitLab CI -> Docker runner -> build image -> push registry",
+  "status": "modelable",
+  "nodes": [
+    {
+      "id": "gitlab_local",
+      "kind": "scm",
+      "label": "GitLab local",
+      "url": "http://localhost:8080"
+    },
+    {
+      "id": "gitlab_registry",
+      "kind": "registry",
+      "label": "GitLab local registry",
+      "url": "http://localhost:5050"
+    },
+    {
+      "id": "gitlab_runner_docker",
+      "kind": "runner",
+      "label": "GitLab Runner Docker",
+      "privilegedDefault": false
+    },
+    {
+      "id": "sample_project",
+      "kind": "repository",
+      "label": "sample-project"
+    },
+    {
+      "id": "sample_image",
+      "kind": "container_image",
+      "label": "sample image"
+    }
+  ],
+  "pipeline": [
+    {
+      "id": "lint_metadata",
+      "stage": "lint",
+      "description": "Validate project metadata and pinned base image."
+    },
+    {
+      "id": "build_image",
+      "stage": "build",
+      "description": "Build deterministic image tag from commit SHA."
+    },
+    {
+      "id": "push_registry",
+      "stage": "publish",
+      "description": "Push image to local GitLab registry using CI-provided credentials."
+    }
+  ],
+  "controls": [
+    {
+      "id": "no_plaintext_token",
+      "description": "Scripts must not echo registration or registry tokens."
+    },
+    {
+      "id": "no_silent_validate_certs_false",
+      "description": "No silent validate_certs false pattern is allowed."
+    },
+    {
+      "id": "no_undocumented_latest",
+      "description": "No undocumented latest tag is allowed."
+    },
+    {
+      "id": "runner_not_privileged_by_default",
+      "description": "Runner privileged mode is disabled by default."
+    }
+  ],
+  "findings": [
+    {
+      "id": "finding-dind-service-requires-explicit-risk-review",
+      "severity": "medium",
+      "description": "The sample CI models Docker-in-Docker as a local lab concern. Production use requires explicit risk review."
+    }
+  ]
+}
