@@ -1,7 +1,8 @@
 import {
   publishAuditPack,
   renderVaultIndexJson,
-  verifyVaultArtifact
+  verifyVaultArtifact,
+  type PublishAuditPackOptions
 } from "../../apps/artifact-vault/src/index.js";
 
 function getArg(name: string): string | undefined {
@@ -14,18 +15,14 @@ function getArg(name: string): string | undefined {
   return process.argv[index + 1];
 }
 
-const sourceZipPath =
-  getArg("--input") ?? ".doctrine/out/audit-pack.zip";
+const sourceZipPath = getArg("--input") ?? ".doctrine/out/audit-pack.zip";
 const sourceChecksumPath =
   getArg("--checksum") ?? ".doctrine/out/audit-pack.sha256.json";
-const vaultRoot =
-  getArg("--vault") ?? ".doctrine/out/local-artifact-vault";
+const vaultRoot = getArg("--vault") ?? ".doctrine/out/local-artifact-vault";
 const artifactId = getArg("--artifact-id");
 const packId = getArg("--pack-id");
 
-const result = publishAuditPack({
-  artifactId,
-  packId,
+const publishOptions: PublishAuditPackOptions = {
   sourceZipPath,
   sourceChecksumPath,
   vaultRoot,
@@ -33,7 +30,17 @@ const result = publishAuditPack({
     producer: "doctrine-lab-supply-chain-model",
     phase: "12-local-artifact-vault"
   }
-});
+};
+
+if (artifactId) {
+  publishOptions.artifactId = artifactId;
+}
+
+if (packId) {
+  publishOptions.packId = packId;
+}
+
+const result = publishAuditPack(publishOptions);
 
 if (!result.checksumVerified) {
   throw new Error("Published audit-pack checksum verification failed.");
