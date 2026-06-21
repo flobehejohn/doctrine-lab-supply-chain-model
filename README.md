@@ -65,3 +65,19 @@ Command:
 - pnpm operator:certify
 
 Each demo finding now points to commands, runbooks, verification commands and rollback commands.
+
+## Safe Logger and Command Runner
+
+Phase 8 adds a safe logger and a no-eval command runner.
+
+Command:
+
+- pnpm security:certify
+
+Rules:
+
+- read_only commands can be rendered directly.
+- remote_write requires approvalRequired.
+- destructive requires approvalRequired and rollback.
+- credential_sensitive masks tokens and passwords.
+- production_risk requires explicit context.
