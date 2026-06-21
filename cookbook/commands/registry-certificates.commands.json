@@ -1,0 +1,34 @@
+{
+  "catalogId": "registry-certificates",
+  "title": "Registry certificate and signature commands",
+  "commands": [
+    {
+      "id": "registry-certificates.inspect-image-signature",
+      "title": "Inspect image signature state",
+      "description": "Check whether a container image has signature or provenance metadata.",
+      "command": "cosign verify <registry>/<image>:<tag>",
+      "shell": "registry",
+      "riskLevel": "safe",
+      "tags": ["registry", "cosign", "signature"],
+      "runbookRefs": ["unsigned-container-image", "registry-certificate-trust"],
+      "verification": {
+        "command": "cosign version",
+        "expected": "cosign is available before signature verification."
+      }
+    },
+    {
+      "id": "registry-certificates.verify-signature-policy",
+      "title": "Verify signature enforcement policy",
+      "description": "Check that the delivery policy rejects unsigned images.",
+      "command": "Review admission policy or CI gate enforcing image signatures.",
+      "shell": "text",
+      "riskLevel": "safe",
+      "tags": ["registry", "policy", "signature"],
+      "runbookRefs": ["unsigned-container-image"],
+      "verification": {
+        "command": "pnpm run report:jtable:findings",
+        "expected": "Unsigned image findings are visible in the operator report."
+      }
+    }
+  ]
+}

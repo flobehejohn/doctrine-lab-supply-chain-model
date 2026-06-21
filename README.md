@@ -55,3 +55,13 @@ Commands:
 Outputs are written to .doctrine/out/reporting/jtable/.
 
 The lab does not require an external jtable binary. A native PowerShell fallback renderer is provided.
+
+## Operator Cookbook
+
+Phase 7 adds command catalogs and runbooks that connect findings to operator actions.
+
+Command:
+
+- pnpm operator:certify
+
+Each demo finding now points to commands, runbooks, verification commands and rollback commands.

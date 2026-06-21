@@ -1,0 +1,34 @@
+{
+  "catalogId": "gitlab-runner",
+  "title": "GitLab Runner hardening commands",
+  "commands": [
+    {
+      "id": "gitlab-runner.audit-config",
+      "title": "Inspect GitLab Runner configuration",
+      "description": "Review runner executor, tags and privileged mode.",
+      "command": "sudo gitlab-runner verify && sudo cat /etc/gitlab-runner/config.toml",
+      "shell": "gitlab-runner",
+      "riskLevel": "safe",
+      "tags": ["runner", "hardening"],
+      "runbookRefs": ["gitlab-runner-hardening"],
+      "verification": {
+        "command": "gitlab-runner --version",
+        "expected": "Runner binary is available."
+      }
+    },
+    {
+      "id": "gitlab-runner.lock-protected",
+      "title": "Require protected runner usage",
+      "description": "Document the expected hardening state for protected pipelines.",
+      "command": "Ensure the runner is locked to protected branches and trusted tags in GitLab settings.",
+      "shell": "text",
+      "riskLevel": "medium",
+      "tags": ["runner", "protected-branches"],
+      "runbookRefs": ["gitlab-runner-hardening"],
+      "verification": {
+        "command": "Review GitLab runner settings in the project or group UI.",
+        "expected": "Runner is locked, tagged and restricted to protected refs."
+      }
+    }
+  ]
+}

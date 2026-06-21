@@ -1,0 +1,38 @@
+{
+  "catalogId": "remediation",
+  "title": "Remediation workflow commands",
+  "commands": [
+    {
+      "id": "remediation.create-pr",
+      "title": "Create remediation pull request",
+      "description": "Open a remediation PR after evidence and rollback are documented.",
+      "command": "gh pr create --title \"Remediate supply chain finding\" --body-file docs/remediation-pr.md",
+      "shell": "git",
+      "riskLevel": "low",
+      "tags": ["remediation", "pull-request"],
+      "runbookRefs": ["audit-pack-exploration"],
+      "verification": {
+        "command": "gh auth status",
+        "expected": "GitHub CLI is authenticated."
+      }
+    },
+    {
+      "id": "remediation.revert-image-policy",
+      "title": "Rollback image signature policy",
+      "description": "Temporarily revert image signature enforcement if a false-positive blocks delivery.",
+      "command": "Revert the policy commit or disable the gate only through approved change control.",
+      "shell": "text",
+      "riskLevel": "high",
+      "tags": ["remediation", "rollback", "policy"],
+      "runbookRefs": ["unsigned-container-image"],
+      "verification": {
+        "command": "pnpm run report:jtable:findings",
+        "expected": "The finding remains visible until a durable fix is merged."
+      },
+      "rollback": {
+        "command": "Re-enable signature enforcement after the exception window.",
+        "description": "Rollback the temporary exception and restore the secure default."
+      }
+    }
+  ]
+}

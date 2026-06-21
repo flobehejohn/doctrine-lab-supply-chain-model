@@ -93,7 +93,25 @@
       "evidenceRefs": [
         "evidence-gitlab-ci"
       ],
-      "description": "The container image does not have a verifiable signature."
+      "description": "The container image does not have a verifiable signature.",
+      "metadata": {
+        "operator": {
+          "commandIds": [
+            "registry-certificates.inspect-image-signature",
+            "gitlab.ci.verify-provenance"
+          ],
+          "runbookIds": [
+            "unsigned-container-image",
+            "gitlab-registry-trust"
+          ],
+          "verificationCommandIds": [
+            "registry-certificates.verify-signature-policy"
+          ],
+          "rollbackCommandIds": [
+            "remediation.revert-image-policy"
+          ]
+        }
+      }
     },
     {
       "id": "finding-critical-pod-no-network-policy",
@@ -106,7 +124,25 @@
       "evidenceRefs": [
         "evidence-k8s-auth-api"
       ],
-      "description": "The critical pod can potentially communicate laterally without an explicit NetworkPolicy."
+      "description": "The critical pod can potentially communicate laterally without an explicit NetworkPolicy.",
+      "metadata": {
+        "operator": {
+          "commandIds": [
+            "kubernetes.inspect-networkpolicy",
+            "kubernetes.apply-networkpolicy"
+          ],
+          "runbookIds": [
+            "kubernetes-networkpolicy",
+            "gitlab-runner-hardening"
+          ],
+          "verificationCommandIds": [
+            "kubernetes.verify-networkpolicy"
+          ],
+          "rollbackCommandIds": [
+            "kubernetes.rollback-networkpolicy"
+          ]
+        }
+      }
     }
   ],
   "remediations": [

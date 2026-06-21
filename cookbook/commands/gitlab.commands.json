@@ -1,0 +1,34 @@
+{
+  "catalogId": "gitlab",
+  "title": "GitLab CI and registry commands",
+  "commands": [
+    {
+      "id": "gitlab.ci.verify-provenance",
+      "title": "Verify CI provenance evidence",
+      "description": "Inspect CI evidence exported from GitLab pipelines.",
+      "command": "jq '.evidence[] | select(.type == \"ci\")' labs/supply-chain/examples/ecommerce/evidence-pack.json",
+      "shell": "jq",
+      "riskLevel": "safe",
+      "tags": ["gitlab", "ci", "provenance"],
+      "runbookRefs": ["gitlab-registry-trust", "audit-pack-exploration"],
+      "verification": {
+        "command": "pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
+        "expected": "The evidence pack validates before provenance interpretation."
+      }
+    },
+    {
+      "id": "gitlab.project.audit-variables",
+      "title": "Audit protected CI variables",
+      "description": "Review whether sensitive CI variables are protected and masked.",
+      "command": "glab variable list --repo <group/project>",
+      "shell": "gitlab",
+      "riskLevel": "safe",
+      "tags": ["gitlab", "variables", "secrets"],
+      "runbookRefs": ["gitlab-runner-hardening"],
+      "verification": {
+        "command": "glab auth status",
+        "expected": "GitLab CLI is authenticated before querying project variables."
+      }
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "catalogId": "git",
+  "title": "Git forensic commands",
+  "commands": [
+    {
+      "id": "git.forensic.log",
+      "title": "Inspect signed and recent commits",
+      "description": "List recent commits with signature and author metadata.",
+      "command": "git log --show-signature --decorate --oneline -20",
+      "shell": "git",
+      "riskLevel": "safe",
+      "tags": ["git", "forensic", "audit"],
+      "runbookRefs": ["git-forensic"],
+      "verification": {
+        "command": "git status --short",
+        "expected": "Working tree state is visible before deeper analysis."
+      }
+    },
+    {
+      "id": "git.forensic.show",
+      "title": "Inspect a suspect commit",
+      "description": "Show a commit diff and metadata without changing the tree.",
+      "command": "git show --stat --show-signature <commit-sha>",
+      "shell": "git",
+      "riskLevel": "safe",
+      "tags": ["git", "forensic"],
+      "runbookRefs": ["git-forensic"],
+      "verification": {
+        "command": "git cat-file -t <commit-sha>",
+        "expected": "The target object resolves to a commit."
+      }
+    }
+  ]
+}

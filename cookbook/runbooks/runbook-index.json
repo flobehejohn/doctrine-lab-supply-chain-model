@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "operator.runbook-index.v1",
+  "runbooks": [
+    {
+      "id": "gitlab-runner-hardening",
+      "title": "GitLab Runner Hardening",
+      "path": "cookbook/runbooks/gitlab-runner-hardening.md",
+      "relatedFindingIds": ["finding-critical-pod-no-network-policy"],
+      "commandIds": ["gitlab-runner.audit-config", "gitlab-runner.lock-protected"],
+      "verificationCommandIds": ["gitlab-runner.audit-config"],
+      "rollbackCommandIds": []
+    },
+    {
+      "id": "gitlab-registry-trust",
+      "title": "GitLab Registry Trust",
+      "path": "cookbook/runbooks/gitlab-registry-trust.md",
+      "relatedFindingIds": ["finding-unsigned-image"],
+      "commandIds": ["gitlab.ci.verify-provenance", "registry-certificates.inspect-image-signature"],
+      "verificationCommandIds": ["gitlab.ci.verify-provenance"],
+      "rollbackCommandIds": ["remediation.revert-image-policy"]
+    },
+    {
+      "id": "registry-certificate-trust",
+      "title": "Registry Certificate Trust",
+      "path": "cookbook/runbooks/registry-certificate-trust.md",
+      "relatedFindingIds": ["finding-unsigned-image"],
+      "commandIds": ["registry-certificates.inspect-image-signature", "registry-certificates.verify-signature-policy"],
+      "verificationCommandIds": ["registry-certificates.verify-signature-policy"],
+      "rollbackCommandIds": ["remediation.revert-image-policy"]
+    },
+    {
+      "id": "kubernetes-networkpolicy",
+      "title": "Kubernetes NetworkPolicy",
+      "path": "cookbook/runbooks/kubernetes-networkpolicy.md",
+      "relatedFindingIds": ["finding-critical-pod-no-network-policy"],
+      "commandIds": ["kubernetes.inspect-networkpolicy", "kubernetes.apply-networkpolicy"],
+      "verificationCommandIds": ["kubernetes.verify-networkpolicy"],
+      "rollbackCommandIds": ["kubernetes.rollback-networkpolicy"]
+    },
+    {
+      "id": "unsigned-container-image",
+      "title": "Unsigned Container Image",
+      "path": "cookbook/runbooks/unsigned-container-image.md",
+      "relatedFindingIds": ["finding-unsigned-image"],
+      "commandIds": ["registry-certificates.inspect-image-signature", "registry-certificates.verify-signature-policy"],
+      "verificationCommandIds": ["registry-certificates.verify-signature-policy"],
+      "rollbackCommandIds": ["remediation.revert-image-policy"]
+    },
+    {
+      "id": "git-forensic",
+      "title": "Git Forensic",
+      "path": "cookbook/runbooks/git-forensic.md",
+      "relatedFindingIds": [],
+      "commandIds": ["git.forensic.log", "git.forensic.show"],
+      "verificationCommandIds": ["git.forensic.log"],
+      "rollbackCommandIds": []
+    },
+    {
+      "id": "audit-pack-exploration",
+      "title": "Audit Pack Exploration",
+      "path": "cookbook/runbooks/audit-pack-exploration.md",
+      "relatedFindingIds": [],
+      "commandIds": ["jq.extract-findings", "jq.extract-compliance", "remediation.create-pr"],
+      "verificationCommandIds": ["jq.extract-findings", "jq.extract-compliance"],
+      "rollbackCommandIds": []
+    }
+  ]
+}

@@ -59,11 +59,29 @@ importers:
         specifier: ^8.0.16
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(tsx@4.22.4)
 
+  packages/dreps-command-catalog:
+    dependencies:
+      zod:
+        specifier: ^4.1.13
+        version: 4.4.3
+
   packages/dreps-graph-engine:
     dependencies:
       '@supply-chain-mode-lab/dreps-supplychain-schema':
         specifier: workspace:*
         version: link:../dreps-supplychain-schema
+
+  packages/dreps-runbook-engine:
+    dependencies:
+      '@supply-chain-mode-lab/dreps-command-catalog':
+        specifier: workspace:*
+        version: link:../dreps-command-catalog
+      '@supply-chain-mode-lab/dreps-supplychain-schema':
+        specifier: workspace:*
+        version: link:../dreps-supplychain-schema
+      zod:
+        specifier: ^4.1.13
+        version: 4.4.3
 
   packages/dreps-supplychain-schema:
     dependencies:

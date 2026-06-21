@@ -1,0 +1,66 @@
+{
+  "catalogId": "kubernetes",
+  "title": "Kubernetes remediation commands",
+  "commands": [
+    {
+      "id": "kubernetes.inspect-networkpolicy",
+      "title": "Inspect NetworkPolicy coverage",
+      "description": "List NetworkPolicy resources in the namespace.",
+      "command": "kubectl get networkpolicy -n <namespace> -o wide",
+      "shell": "kubectl",
+      "riskLevel": "safe",
+      "tags": ["kubernetes", "networkpolicy", "audit"],
+      "runbookRefs": ["kubernetes-networkpolicy"],
+      "verification": {
+        "command": "kubectl auth can-i get networkpolicy -n <namespace>",
+        "expected": "The operator can read NetworkPolicy resources."
+      }
+    },
+    {
+      "id": "kubernetes.apply-networkpolicy",
+      "title": "Apply restrictive NetworkPolicy",
+      "description": "Apply the remediation NetworkPolicy for auth-api.",
+      "command": "kubectl apply -f remediations/networkpolicy-auth-api.yaml",
+      "shell": "kubectl",
+      "riskLevel": "medium",
+      "tags": ["kubernetes", "networkpolicy", "remediation"],
+      "runbookRefs": ["kubernetes-networkpolicy"],
+      "verification": {
+        "command": "kubectl get networkpolicy auth-api-restricted -n <namespace>",
+        "expected": "The expected NetworkPolicy exists."
+      },
+      "rollback": {
+        "command": "kubectl delete -f remediations/networkpolicy-auth-api.yaml",
+        "description": "Delete the NetworkPolicy if legitimate traffic is blocked."
+      }
+    },
+    {
+      "id": "kubernetes.verify-networkpolicy",
+      "title": "Verify NetworkPolicy effect",
+      "description": "Verify that only expected traffic reaches the protected pod.",
+      "command": "kubectl describe networkpolicy auth-api-restricted -n <namespace>",
+      "shell": "kubectl",
+      "riskLevel": "safe",
+      "tags": ["kubernetes", "verification"],
+      "runbookRefs": ["kubernetes-networkpolicy"],
+      "verification": {
+        "command": "kubectl get pods -n <namespace> -l app=auth-api",
+        "expected": "The auth-api pod remains healthy after policy application."
+      }
+    },
+    {
+      "id": "kubernetes.rollback-networkpolicy",
+      "title": "Rollback NetworkPolicy",
+      "description": "Rollback the restrictive NetworkPolicy if impact is detected.",
+      "command": "kubectl delete -f remediations/networkpolicy-auth-api.yaml",
+      "shell": "kubectl",
+      "riskLevel": "medium",
+      "tags": ["kubernetes", "rollback"],
+      "runbookRefs": ["kubernetes-networkpolicy"],
+      "verification": {
+        "command": "kubectl get networkpolicy -n <namespace>",
+        "expected": "The restrictive policy is no longer present."
+      }
+    }
+  ]
+}

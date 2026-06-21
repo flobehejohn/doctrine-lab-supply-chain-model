@@ -1,0 +1,34 @@
+{
+  "catalogId": "jq",
+  "title": "jq evidence exploration commands",
+  "commands": [
+    {
+      "id": "jq.extract-findings",
+      "title": "Extract findings from evidence pack",
+      "description": "Print findings from the DREPS evidence pack.",
+      "command": "jq '.findings[] | {id, severity, status, affectedNodes, evidenceRefs}' labs/supply-chain/examples/ecommerce/evidence-pack.json",
+      "shell": "jq",
+      "riskLevel": "safe",
+      "tags": ["jq", "evidence", "findings"],
+      "runbookRefs": ["audit-pack-exploration"],
+      "verification": {
+        "command": "jq '.packId' labs/supply-chain/examples/ecommerce/evidence-pack.json",
+        "expected": "The packId is readable."
+      }
+    },
+    {
+      "id": "jq.extract-compliance",
+      "title": "Extract compliance impacts",
+      "description": "Print compliance impact rows from the evidence pack.",
+      "command": "jq '.complianceImpacts[] | {framework, control, impact}' labs/supply-chain/examples/ecommerce/evidence-pack.json",
+      "shell": "jq",
+      "riskLevel": "safe",
+      "tags": ["jq", "compliance"],
+      "runbookRefs": ["audit-pack-exploration"],
+      "verification": {
+        "command": "pnpm run report:jtable:compliance",
+        "expected": "Compliance impacts render as a human-readable table."
+      }
+    }
+  ]
+}
