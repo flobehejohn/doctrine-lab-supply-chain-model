@@ -257,19 +257,25 @@ function makeRemediation(
   index: number,
   id: string,
   findingId: string,
-  strategy: string
+  strategy: string,
+  affectedNodes: string[],
+  evidenceRefs: string[]
 ): JsonRecord {
   const remediation = templateAt(templates, index);
 
   setFirstPresentOrDefault(remediation, ["id"], id, "id");
   setFirstPresentOrDefault(remediation, ["findingId", "findingRef"], findingId, "findingId");
   setFirstPresentOrDefault(remediation, ["strategy", "title", "description"], strategy, "strategy");
+  setFirstPresentOrDefault(remediation, ["affectedNodes", "affectedNodeIds"], affectedNodes, "affectedNodes");
+  setFirstPresentOrDefault(remediation, ["evidenceRefs", "evidenceIds"], evidenceRefs, "evidenceRefs");
 
   return {
     ...remediation,
     id,
     findingId,
-    strategy
+    strategy,
+    affectedNodes,
+    evidenceRefs
   };
 }
 
@@ -514,21 +520,27 @@ export function importGitLabToDrepsEvidencePack(
       0,
       "remediate-gitlab-runner-docker-sock-mounted",
       "gitlab-runner-docker-sock-mounted",
-      "Replace Docker socket mount with an isolated build strategy or explicitly document the local lab exception."
+      "Replace Docker socket mount with an isolated build strategy or explicitly document the local lab exception.",
+      ["gitlab_runner"],
+      ["evidence_runner_config"]
     ),
     makeRemediation(
       remediationTemplates,
       1,
       "remediate-gitlab-token-too-broad",
       "gitlab-token-too-broad",
-      "Reduce token scopes and prefer masked CI variables."
+      "Reduce token scopes and prefer masked CI variables.",
+      ["gitlab_project", "ci_pipeline"],
+      ["evidence_gitlab_fixture"]
     ),
     makeRemediation(
       remediationTemplates,
       2,
       "remediate-gitlab-ci-builds-unsigned-image",
       "gitlab-ci-builds-unsigned-image",
-      "Add image signing and signature evidence to the publication workflow."
+      "Add image signing and signature evidence to the publication workflow.",
+      ["ci_pipeline", "build_job", "container_image"],
+      ["evidence_gitlab_ci", "evidence_sample_dockerfile"]
     )
   ];
 
@@ -636,3 +648,4 @@ export function assertGitLabEvidencePackShape(evidencePack: JsonRecord): void {
     }
   }
 }
+
