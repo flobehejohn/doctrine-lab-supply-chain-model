@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "job": {
+    "correlator": "local-repo-fixture"
+  },
+  "sha": "0000000000000000000000000000000000000000",
+  "ref": "refs/heads/main",
+  "manifests": {
+    "package-lock.json": {
+      "name": "package-lock.json",
+      "file": {
+        "source_location": "package-lock.json"
+      },
+      "resolved": {
+        "pkg:npm/zod@4.1.13": {
+          "package_url": "pkg:npm/zod@4.1.13",
+          "relationship": "direct"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+  .:
+    dependencies:
+      zod:
+        specifier: 4.1.13
+        version: 4.1.13
+
+packages:
+  /zod@4.1.13:
+    resolution:
+      integrity: sha512-local-fixture

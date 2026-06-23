@@ -61,6 +61,8 @@ importers:
         specifier: ^8.0.16
         version: 8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(tsx@4.22.4)
 
+  packages/dreps-adapters: {}
+
   packages/dreps-artifact-pipeline:
     dependencies:
       '@supply-chain-mode-lab/dreps-safe-logger':

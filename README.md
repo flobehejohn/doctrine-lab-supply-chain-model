@@ -177,3 +177,17 @@ Generated output:
 
 - .doctrine/out/gitlab-adapter/evidence-pack.gitlab-local.json
 - .doctrine/out/gitlab-adapter/gitlab-dreps-graph.mmd
+
+## Repo / CI / Docker / SBOM Adapters
+
+Phase 16 imports a local repository into a valid DREPS evidence-pack without requiring a full GitLab instance.
+
+Commands:
+
+- pnpm adapters:import
+- pnpm adapters:certify
+
+Generated output:
+
+- .doctrine/out/adapters/evidence-pack.local-repo.json
+- .doctrine/out/adapters/local-repo-graph.mmd

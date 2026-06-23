@@ -1,0 +1,18 @@
+{
+  "artifacts": [
+    {
+      "name": "zod",
+      "version": "4.1.13",
+      "type": "npm"
+    },
+    {
+      "name": "node",
+      "version": "24.11.1-alpine3.22",
+      "type": "apk"
+    }
+  ],
+  "source": {
+    "name": "local-repo-fixture",
+    "type": "directory"
+  }
+}
