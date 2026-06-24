@@ -433,6 +433,21 @@ export function attachSecurityScansToEvidencePack(
   scans: SecurityScanImportResult[]
 ): JsonRecord {
   const base = cloneRecord(runtimeEvidencePack);
+  const existingNodes = asRecords(base.nodes);
+  const hasRepositoryNode = existingNodes.some((node) => asText(node.id) === "repository");
+  const nodes = hasRepositoryNode
+    ? existingNodes
+    : [
+        ...existingNodes,
+        {
+          id: "repository",
+          type: "repository",
+          kind: "repository",
+          label: "Repository source context",
+          path: "labs/supply-chain/examples/local-repo-fixture"
+        }
+      ];
+
   const evidenceTemplates = asRecords(base.evidence);
   const findingTemplates = asRecords(base.findings);
   const remediationTemplates = asRecords(base.remediations);
@@ -525,6 +540,7 @@ export function attachSecurityScansToEvidencePack(
   return {
     ...base,
     packId: "security-scans-dreps-evidence-pack",
+    nodes,
     evidence: [
       ...asRecords(base.evidence),
       ...scanEvidence
@@ -577,7 +593,7 @@ export function assertSecurityScanEvidencePackShape(evidencePack: JsonRecord): v
     }
   }
 
-  const checks = [
+  const checks: Array<[string, string]> = [
     ["trivy-image-vulnerability", "container_image"],
     ["kubescape-pod-control-failure", "k8s_pod"],
     ["kubescape-namespace-network-policy", "k8s_namespace"],
@@ -596,3 +612,4 @@ export function assertSecurityScanEvidencePackShape(evidencePack: JsonRecord): v
     }
   }
 }
+
