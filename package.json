@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -53,7 +53,11 @@
     "adapters:import:syft-sbom": "tsx scripts/adapters/import-syft-sbom.ts",
     "adapters:import:github-sbom": "tsx scripts/adapters/import-github-sbom.ts",
     "adapters:import": "pnpm adapters:import:repo && pnpm adapters:import:github-workflow && pnpm adapters:import:gitlab-ci && pnpm adapters:import:dockerfile && pnpm adapters:import:package-lock && pnpm adapters:import:pnpm-lock && pnpm adapters:import:syft-sbom && pnpm adapters:import:github-sbom && tsx scripts/adapters/import-local-repo-evidence-pack.ts",
-    "adapters:certify": "pnpm adapters:import && tsx scripts/adapters/certify-adapters.ts"
+    "adapters:certify": "pnpm adapters:import && tsx scripts/adapters/certify-adapters.ts",
+    "runtime:import:k8s": "tsx scripts/adapters/import-k8s.ts",
+    "runtime:import:terraform": "tsx scripts/adapters/import-terraform.ts",
+    "runtime:import": "pnpm runtime:import:k8s && pnpm runtime:import:terraform && tsx scripts/adapters/import-runtime-evidence-pack.ts",
+    "runtime:certify": "pnpm runtime:import && tsx scripts/adapters/certify-runtime-adapters.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

@@ -1,0 +1,40 @@
+{
+  "version": 4,
+  "terraform_version": "1.8.5",
+  "serial": 1,
+  "lineage": "local-runtime-fixture",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "auth",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "attributes": {
+            "id": "doctrine-demo-db",
+            "identifier": "doctrine-demo-db",
+            "engine": "postgres",
+            "address": "doctrine-demo-db.local",
+            "publicly_accessible": false
+          }
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "auth_db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "attributes": {
+            "id": "sg-doctrine-demo-db",
+            "name": "auth-db-sg"
+          }
+        }
+      ]
+    }
+  ]
+}

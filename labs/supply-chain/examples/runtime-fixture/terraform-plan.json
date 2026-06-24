@@ -1,0 +1,50 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.8.5",
+  "planned_values": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_db_instance.auth",
+          "mode": "managed",
+          "type": "aws_db_instance",
+          "name": "auth",
+          "values": {
+            "identifier": "doctrine-demo-db",
+            "engine": "postgres",
+            "allocated_storage": 20,
+            "publicly_accessible": false
+          }
+        },
+        {
+          "address": "aws_security_group.auth_db",
+          "mode": "managed",
+          "type": "aws_security_group",
+          "name": "auth_db",
+          "values": {
+            "name": "auth-db-sg",
+            "description": "Allow app to reach database"
+          }
+        }
+      ]
+    }
+  },
+  "resource_changes": [
+    {
+      "address": "aws_db_instance.auth",
+      "type": "aws_db_instance",
+      "name": "auth",
+      "change": {
+        "actions": ["create"]
+      }
+    },
+    {
+      "address": "aws_security_group.auth_db",
+      "type": "aws_security_group",
+      "name": "auth_db",
+      "change": {
+        "actions": ["create"]
+      }
+    }
+  ]
+}

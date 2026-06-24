@@ -830,3 +830,5 @@ export function repoPath(root: string, ...parts: string[]): string {
   return normalizePath(relative(process.cwd(), resolve(root, ...parts)));
 }
 
+
+export * from "./k8s-terraform.js";

@@ -191,3 +191,19 @@ Generated output:
 
 - .doctrine/out/adapters/evidence-pack.local-repo.json
 - .doctrine/out/adapters/local-repo-graph.mmd
+
+## Kubernetes and Terraform Adapters
+
+Phase 17 imports Kubernetes and Terraform runtime fixtures into a DREPS evidence-pack.
+
+Commands:
+
+- pnpm runtime:import:k8s
+- pnpm runtime:import:terraform
+- pnpm runtime:import
+- pnpm runtime:certify
+
+Generated output:
+
+- .doctrine/out/runtime/evidence-pack.runtime.json
+- .doctrine/out/runtime/runtime-graph.mmd
