@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "git-provenance.branch-protection.fixture.v1",
+  "branch": "main",
+  "allowForcePushes": true,
+  "requiresLinearHistory": false,
+  "requiresSignedCommits": false,
+  "requiresCodeOwnerReviews": true,
+  "source": "local-forensic-fixture"
+}

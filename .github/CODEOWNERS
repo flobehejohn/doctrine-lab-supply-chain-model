@@ -1,0 +1,8 @@
+# Default ownership for the supply-chain lab
+* @flobehejohn
+
+# Critical supply-chain and certification areas
+.github/workflows/ @flobehejohn
+packages/ @flobehejohn
+scripts/ @flobehejohn
+labs/supply-chain/ @flobehejohn

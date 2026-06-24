@@ -235,3 +235,18 @@ Generated output:
 
 - .doctrine/out/registry-trust/registry-trust.normalized.json
 - .doctrine/out/registry-trust/evidence-pack.registry-trust.json
+
+## Git Provenance / Forensic
+
+Phase 20 audits local Git history, CODEOWNERS and release tag provenance.
+
+Commands:
+
+- pnpm git:provenance:check
+- pnpm git:provenance:import
+- pnpm git:provenance:certify
+
+Generated output:
+
+- .doctrine/out/git-provenance/git-provenance.normalized.json
+- .doctrine/out/git-provenance/evidence-pack.git-provenance.json

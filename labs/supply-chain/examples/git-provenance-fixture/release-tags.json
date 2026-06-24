@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "git-provenance.release-tags.fixture.v1",
+  "source": "deterministic-release-fixture",
+  "tags": [
+    {
+      "name": "v0.1.0",
+      "targetSha": "0000000000000000000000000000000000000000",
+      "annotated": true,
+      "signed": false,
+      "hasProvenance": false,
+      "createdAt": "2026-06-25T00:00:00.000Z",
+      "notes": "Fixture models an unsigned release tag without attached provenance."
+    }
+  ]
+}
