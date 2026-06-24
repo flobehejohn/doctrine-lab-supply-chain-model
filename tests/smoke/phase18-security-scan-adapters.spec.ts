@@ -3,6 +3,11 @@ import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { EvidencePackSchema } from "../../packages/dreps-supplychain-schema/src/index.js";
 import {
+  buildRuntimeEvidencePack,
+  importK8sFullYaml,
+  importTerraformFiles
+} from "../../packages/dreps-adapters/src/k8s-terraform.js";
+import {
   assertSecurityScanEvidencePackShape,
   attachSecurityScansToEvidencePack,
   importAllSecurityScans,
@@ -14,9 +19,20 @@ import {
 } from "../../packages/dreps-adapters/src/security-scans.js";
 
 const scanRoot = resolve("labs/supply-chain/examples/security-scans-fixture");
-const runtimePack = JSON.parse(
-  readFileSync(".doctrine/out/runtime/evidence-pack.runtime.json", "utf8")
+const k8sPath = resolve("labs/supply-chain/examples/runtime-fixture/k8s-full.yaml");
+const terraformPlanPath = resolve("labs/supply-chain/examples/runtime-fixture/terraform-plan.json");
+const terraformStatePath = resolve("labs/supply-chain/examples/runtime-fixture/terraform-state.json");
+
+const baseEvidencePack = JSON.parse(
+  readFileSync("labs/supply-chain/examples/ecommerce/evidence-pack.json", "utf8")
 ) as JsonRecord;
+
+function buildRuntimePackForTest(): JsonRecord {
+  const k8s = importK8sFullYaml(k8sPath);
+  const terraform = importTerraformFiles(terraformPlanPath, terraformStatePath);
+
+  return buildRuntimeEvidencePack(k8s, terraform, baseEvidencePack);
+}
 
 describe("phase 18 security scan adapters", () => {
   it("imports Trivy finding and links it to container image", () => {
@@ -61,6 +77,7 @@ describe("phase 18 security scan adapters", () => {
       dependencyTrack: resolve(scanRoot, "dependency-track.json")
     });
 
+    const runtimePack = buildRuntimePackForTest();
     const evidencePack = attachSecurityScansToEvidencePack(runtimePack, scans);
     const parsed = EvidencePackSchema.parse(evidencePack);
 
