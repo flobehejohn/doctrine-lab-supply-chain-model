@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -65,7 +65,10 @@
     "security:scans:import:sonarqube": "tsx scripts/security-scans/import-sonarqube.ts",
     "security:scans:import:dependency-track": "tsx scripts/security-scans/import-dependency-track.ts",
     "security:scans:import": "pnpm runtime:certify && pnpm security:scans:import:trivy && pnpm security:scans:import:syft && pnpm security:scans:import:checkov && pnpm security:scans:import:kubescape && pnpm security:scans:import:sonarqube && pnpm security:scans:import:dependency-track && tsx scripts/security-scans/import-security-evidence-pack.ts",
-    "security:scans:certify": "pnpm security:scans:import && tsx scripts/security-scans/certify-security-scans.ts"
+    "security:scans:certify": "pnpm security:scans:import && tsx scripts/security-scans/certify-security-scans.ts",
+    "registry:trust:check": "tsx scripts/registry-trust/check-registry-cert.ts",
+    "registry:trust:import": "pnpm registry:trust:check && tsx scripts/registry-trust/import-registry-trust.ts",
+    "registry:trust:certify": "pnpm registry:trust:import && tsx scripts/registry-trust/certify-registry-trust.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

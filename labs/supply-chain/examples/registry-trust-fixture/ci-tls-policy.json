@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "registry-ci-tls-policy.fixture.v1",
+  "registry": "localhost:5050",
+  "ciTlsVerified": false,
+  "verificationMode": "disabled-for-local-fixture",
+  "sourceFiles": [
+    "labs/supply-chain/environments/gitlab-local/sample-project/.gitlab-ci.yml",
+    "labs/supply-chain/environments/gitlab-local/docker-compose.template.yml"
+  ],
+  "notes": [
+    "Local demo registry uses a self-signed certificate.",
+    "The CI fixture intentionally documents TLS verification as not enforced."
+  ]
+}

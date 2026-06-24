@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "registry-cert.fixture.v1",
+  "registry": "localhost:5050",
+  "host": "localhost",
+  "port": 5050,
+  "subject": "CN=localhost",
+  "issuer": "CN=localhost",
+  "notBefore": "2026-06-01T00:00:00.000Z",
+  "notAfter": "2026-07-15T00:00:00.000Z",
+  "fingerprintSha256": "A1:B2:C3:D4:E5:F6:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:10:20:30:40:50:60:70:80:90:AB",
+  "selfSigned": true,
+  "chainTrusted": false,
+  "source": "fixture-self-signed-local-registry",
+  "pem": "-----BEGIN CERTIFICATE-----\\nMIIFAKELOCALREGISTRYCERTIFICATE\\n-----END CERTIFICATE-----"
+}

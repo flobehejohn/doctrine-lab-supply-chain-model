@@ -220,3 +220,18 @@ Commands:
 Generated output:
 
 - .doctrine/out/security-scans/evidence-pack.security-scans.json
+
+## Registry Trust
+
+Phase 19 audits registry certificate trust and imports the registry certificate as DREPS evidence.
+
+Commands:
+
+- pnpm registry:trust:check
+- pnpm registry:trust:import
+- pnpm registry:trust:certify
+
+Generated output:
+
+- .doctrine/out/registry-trust/registry-trust.normalized.json
+- .doctrine/out/registry-trust/evidence-pack.registry-trust.json
