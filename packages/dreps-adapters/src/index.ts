@@ -832,3 +832,5 @@ export function repoPath(root: string, ...parts: string[]): string {
 
 
 export * from "./k8s-terraform.js";
+
+export * from "./security-scans.js";

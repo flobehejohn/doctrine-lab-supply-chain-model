@@ -207,3 +207,16 @@ Generated output:
 
 - .doctrine/out/runtime/evidence-pack.runtime.json
 - .doctrine/out/runtime/runtime-graph.mmd
+
+## Security Scan Adapters
+
+Phase 18 imports Trivy, Syft, Checkov, Kubescape, SonarQube and Dependency-Track scan fixtures into a DREPS evidence-pack.
+
+Commands:
+
+- pnpm security:scans:import
+- pnpm security:scans:certify
+
+Generated output:
+
+- .doctrine/out/security-scans/evidence-pack.security-scans.json

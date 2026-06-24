@@ -1,0 +1,27 @@
+{
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "skipped": 0
+  },
+  "results": {
+    "failed_checks": [
+      {
+        "check_id": "CKV_K8S_43",
+        "check_name": "Image should use digest",
+        "file_path": "labs/supply-chain/examples/runtime-fixture/k8s-full.yaml",
+        "resource": "Deployment.auth-api",
+        "severity": "MEDIUM",
+        "guideline": "Pin images by digest in production runtime manifests."
+      },
+      {
+        "check_id": "CKV_AWS_17",
+        "check_name": "RDS instance should have storage encrypted",
+        "file_path": "labs/supply-chain/examples/runtime-fixture/terraform-plan.json",
+        "resource": "aws_db_instance.auth",
+        "severity": "HIGH",
+        "guideline": "Enable storage encryption for database resources."
+      }
+    ]
+  }
+}

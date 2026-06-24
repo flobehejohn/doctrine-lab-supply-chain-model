@@ -1,0 +1,25 @@
+{
+  "artifacts": [
+    {
+      "id": "pkg-1",
+      "name": "openssl",
+      "version": "3.2.0-r0",
+      "type": "apk",
+      "locations": [
+        {
+          "path": "/lib/apk/db/installed"
+        }
+      ]
+    },
+    {
+      "id": "pkg-2",
+      "name": "node",
+      "version": "24.11.1-alpine3.22",
+      "type": "binary"
+    }
+  ],
+  "source": {
+    "name": "localhost:5050/root/sample-project:local-fixture",
+    "type": "image"
+  }
+}

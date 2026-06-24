@@ -1,0 +1,22 @@
+{
+  "SchemaVersion": 2,
+  "ArtifactName": "localhost:5050/root/sample-project:local-fixture",
+  "ArtifactType": "container_image",
+  "Results": [
+    {
+      "Target": "localhost:5050/root/sample-project:local-fixture",
+      "Class": "os-pkgs",
+      "Type": "alpine",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2026-0001",
+          "PkgName": "openssl",
+          "InstalledVersion": "3.2.0-r0",
+          "FixedVersion": "3.2.1-r0",
+          "Severity": "HIGH",
+          "Title": "OpenSSL local fixture vulnerability"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "issues": [
+    {
+      "key": "SONAR-1",
+      "rule": "typescript:S2068",
+      "severity": "MAJOR",
+      "component": "local-repo-fixture:src/index.js",
+      "line": 1,
+      "message": "Hard-coded credential-like value in source fixture"
+    }
+  ],
+  "hotspots": [
+    {
+      "key": "HOTSPOT-1",
+      "status": "TO_REVIEW",
+      "component": "local-repo-fixture:src/index.js",
+      "message": "Review source logging behavior"
+    }
+  ]
+}

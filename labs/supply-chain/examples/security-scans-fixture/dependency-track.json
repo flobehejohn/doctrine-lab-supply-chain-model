@@ -1,0 +1,17 @@
+{
+  "project": {
+    "name": "local-repo-fixture",
+    "version": "0.1.0"
+  },
+  "vulnerabilities": [
+    {
+      "vulnId": "GHSA-local-fixture",
+      "severity": "MEDIUM",
+      "component": {
+        "name": "zod",
+        "version": "4.1.13"
+      },
+      "source": "GITHUB"
+    }
+  ]
+}

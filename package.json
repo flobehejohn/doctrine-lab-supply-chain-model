@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -57,7 +57,15 @@
     "runtime:import:k8s": "tsx scripts/adapters/import-k8s.ts",
     "runtime:import:terraform": "tsx scripts/adapters/import-terraform.ts",
     "runtime:import": "pnpm runtime:import:k8s && pnpm runtime:import:terraform && tsx scripts/adapters/import-runtime-evidence-pack.ts",
-    "runtime:certify": "pnpm runtime:import && tsx scripts/adapters/certify-runtime-adapters.ts"
+    "runtime:certify": "pnpm runtime:import && tsx scripts/adapters/certify-runtime-adapters.ts",
+    "security:scans:import:trivy": "tsx scripts/security-scans/import-trivy.ts",
+    "security:scans:import:syft": "tsx scripts/security-scans/import-syft.ts",
+    "security:scans:import:checkov": "tsx scripts/security-scans/import-checkov.ts",
+    "security:scans:import:kubescape": "tsx scripts/security-scans/import-kubescape.ts",
+    "security:scans:import:sonarqube": "tsx scripts/security-scans/import-sonarqube.ts",
+    "security:scans:import:dependency-track": "tsx scripts/security-scans/import-dependency-track.ts",
+    "security:scans:import": "pnpm runtime:certify && pnpm security:scans:import:trivy && pnpm security:scans:import:syft && pnpm security:scans:import:checkov && pnpm security:scans:import:kubescape && pnpm security:scans:import:sonarqube && pnpm security:scans:import:dependency-track && tsx scripts/security-scans/import-security-evidence-pack.ts",
+    "security:scans:certify": "pnpm security:scans:import && tsx scripts/security-scans/certify-security-scans.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

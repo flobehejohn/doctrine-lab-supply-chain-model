@@ -1,0 +1,32 @@
+{
+  "summaryDetails": {
+    "failedResources": 2,
+    "passedResources": 5
+  },
+  "controls": [
+    {
+      "controlID": "C-0017",
+      "name": "Privileged container",
+      "status": "failed",
+      "resources": [
+        {
+          "kind": "Pod",
+          "name": "auth-api-pod-template",
+          "namespace": "supplychain-demo"
+        }
+      ]
+    },
+    {
+      "controlID": "C-0034",
+      "name": "Namespace without network policy",
+      "status": "failed",
+      "resources": [
+        {
+          "kind": "Namespace",
+          "name": "supplychain-demo",
+          "namespace": "supplychain-demo"
+        }
+      ]
+    }
+  ]
+}
