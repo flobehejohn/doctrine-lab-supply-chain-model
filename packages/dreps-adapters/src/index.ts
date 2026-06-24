@@ -401,14 +401,13 @@ export function adaptGithubWorkflow(repoRoot: string): WorkflowAdapterResult {
     .map((match) => match[1] ?? "")
     .filter((job) => job.length > 0 && job !== "pull_request" && job !== "push");
 
-  const usesLines = content
-    .split(/\r?\n/g)
-    .map((line) => line.trim())
-    .filter((line) => line.startsWith("uses:"));
+  const usesRefs = [...content.matchAll(/(?:^|\s|-)\s*uses:\s*([^\s#]+)/gm)]
+    .map((match) => match[1] ?? "")
+    .filter((item) => item.length > 0);
 
-  const usesUnpinnedActions = usesLines.some((line) => {
-    const ref = line.split("@")[1] ?? "";
-    return !/^[a-f0-9]{40}$/i.test(ref);
+  const usesUnpinnedActions = usesRefs.some((refValue) => {
+    const ref = refValue.split("@")[1] ?? "";
+    return ref.length === 0 || !/^[a-f0-9]{40}$/i.test(ref);
   });
 
   return {
@@ -572,7 +571,7 @@ export function buildLocalRepoEvidencePack(
       path: scan.gitlabCi.path,
       jobs: scan.gitlabCi.jobs
     }),
-    makeNode(nodeTemplates, 3, "dockerfile", "source_file", "Dockerfile", {
+    makeNode(nodeTemplates, 3, "dockerfile", "artifact", "Dockerfile", {
       path: scan.dockerfile.path,
       baseImages: scan.dockerfile.baseImages
     }),
@@ -582,10 +581,10 @@ export function buildLocalRepoEvidencePack(
       inferred: true,
       signed: false
     }),
-    makeNode(nodeTemplates, 5, "package_lock", "dependency_lockfile", "package-lock.json", {
+    makeNode(nodeTemplates, 5, "package_lock", "artifact", "package-lock.json", {
       dependencyCount: scan.packageLock.dependencyCount
     }),
-    makeNode(nodeTemplates, 6, "pnpm_lock", "dependency_lockfile", "pnpm-lock.yaml", {
+    makeNode(nodeTemplates, 6, "pnpm_lock", "artifact", "pnpm-lock.yaml", {
       dependencyCount: scan.pnpmLock.dependencyCount
     }),
     makeNode(nodeTemplates, 7, "syft_sbom", "sbom", "Syft SBOM", {
@@ -830,3 +829,4 @@ export function assertLocalRepoEvidencePackShape(evidencePack: JsonRecord): void
 export function repoPath(root: string, ...parts: string[]): string {
   return normalizePath(relative(process.cwd(), resolve(root, ...parts)));
 }
+
