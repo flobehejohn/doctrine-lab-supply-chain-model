@@ -443,7 +443,9 @@ export function attachSecurityScansToEvidencePack(
           id: "repository",
           type: "repository",
           kind: "repository",
+          name: "Repository source context",
           label: "Repository source context",
+          title: "Repository source context",
           path: "labs/supply-chain/examples/local-repo-fixture"
         }
       ];
@@ -612,4 +614,5 @@ export function assertSecurityScanEvidencePackShape(evidencePack: JsonRecord): v
     }
   }
 }
+
 
