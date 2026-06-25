@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "dreps-remediation.context.v1",
+  "source": "deterministic-remediation-fixture",
+  "nodes": [
+    {
+      "id": "pod_checkout",
+      "type": "k8s_pod",
+      "name": "checkout pod",
+      "namespace": "prod",
+      "critical": true,
+      "public": true,
+      "vulnerable": true
+    },
+    {
+      "id": "image_checkout_latest",
+      "type": "container_image",
+      "name": "checkout image latest",
+      "image": "localhost:5050/root/sample-project:latest",
+      "critical": true,
+      "signed": false
+    },
+    {
+      "id": "runner_privileged",
+      "type": "gitlab_runner",
+      "name": "privileged GitLab runner",
+      "critical": true,
+      "privileged": true,
+      "dockerSockMounted": true
+    },
+    {
+      "id": "registry_local_untrusted",
+      "type": "registry",
+      "name": "localhost:5050",
+      "critical": true,
+      "trusted": false,
+      "selfSigned": true
+    },
+    {
+      "id": "db-auth-users",
+      "type": "database",
+      "name": "auth users database",
+      "critical": true,
+      "sensitiveData": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "no-public-critical-vulnerable-pod",
+      "severity": "critical",
+      "title": "No public critical vulnerable pod",
+      "affectedNodes": ["pod_checkout"],
+      "evidenceRefs": ["evidence_security_scans", "evidence_blast_radius"]
+    },
+    {
+      "id": "no-docker-sock-runner",
+      "severity": "critical",
+      "title": "No Docker socket mounted in CI runner",
+      "affectedNodes": ["runner_privileged"],
+      "evidenceRefs": ["evidence_gitlab_runner"]
+    },
+    {
+      "id": "blast-radius-sensitive-db-reachable",
+      "severity": "critical",
+      "title": "Blast radius reaches sensitive authentication database",
+      "affectedNodes": ["pod_checkout", "db-auth-users"],
+      "evidenceRefs": ["evidence_blast_radius"]
+    },
+    {
+      "id": "no-unsigned-container-image",
+      "severity": "high",
+      "title": "No unsigned container image",
+      "affectedNodes": ["image_checkout_latest"],
+      "evidenceRefs": ["evidence_security_scans"]
+    },
+    {
+      "id": "no-runner-privileged",
+      "severity": "high",
+      "title": "No privileged CI runner",
+      "affectedNodes": ["runner_privileged"],
+      "evidenceRefs": ["evidence_gitlab_runner"]
+    },
+    {
+      "id": "no-untrusted-registry",
+      "severity": "high",
+      "title": "No untrusted registry",
+      "affectedNodes": ["registry_local_untrusted"],
+      "evidenceRefs": ["evidence_registry_trust"]
+    }
+  ]
+}

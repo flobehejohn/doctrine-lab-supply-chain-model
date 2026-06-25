@@ -321,3 +321,12 @@ Commands:
 
 - pnpm compliance:map
 - pnpm compliance:certify
+
+## Remediation Engine
+
+Phase 27 generates contextual remediation plans with commands, patches, verification, rollback, approvals and maintenance windows.
+
+Commands:
+
+- pnpm remediation:generate
+- pnpm remediation:certify

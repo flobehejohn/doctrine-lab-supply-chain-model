@@ -117,6 +117,8 @@ importers:
 
   packages/dreps-registry-trust: {}
 
+  packages/dreps-remediation-engine: {}
+
   packages/dreps-runbook-engine:
     dependencies:
       '@supply-chain-mode-lab/dreps-command-catalog':
