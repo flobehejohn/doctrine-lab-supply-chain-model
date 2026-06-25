@@ -1,0 +1,16 @@
+id: query-critical-exposed-pods
+title: Critical exposed pods
+source: .doctrine/out/query-engine/query-results.jtable.json
+columns:
+  - key: id
+    label: Node
+  - key: type
+    label: Type
+  - key: namespace
+    label: Namespace
+  - key: status
+    label: Status
+  - key: exposed
+    label: Exposed
+  - key: critical
+    label: Critical

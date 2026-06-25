@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "query-engine.queries.fixture.v1",
+  "queries": [
+    {
+      "id": "dsl-critical-exposed-pods",
+      "engine": "doctrine-dsl",
+      "query": "FIND pods WHERE exposed = true AND critical"
+    },
+    {
+      "id": "jmespath-vulnerable-pods",
+      "engine": "jmespath-lite",
+      "query": "nodes[?type=='k8s_pod' && status=='vulnerable']"
+    }
+  ]
+}

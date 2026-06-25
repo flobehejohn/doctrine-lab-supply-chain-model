@@ -105,6 +105,8 @@ importers:
 
   packages/dreps-mermaid-exporter: {}
 
+  packages/dreps-query-engine: {}
+
   packages/dreps-registry-trust: {}
 
   packages/dreps-runbook-engine:

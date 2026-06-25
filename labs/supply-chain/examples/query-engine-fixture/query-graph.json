@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "query-engine.fixture.v1",
+  "source": "deterministic-query-graph-fixture",
+  "nodes": [
+    {
+      "id": "pod_checkout",
+      "type": "k8s_pod",
+      "name": "checkout pod",
+      "namespace": "prod",
+      "status": "vulnerable",
+      "exposed": true,
+      "critical": true,
+      "image": "localhost:5050/root/sample-project:latest"
+    },
+    {
+      "id": "pod_worker",
+      "type": "k8s_pod",
+      "name": "worker pod",
+      "namespace": "prod",
+      "status": "healthy",
+      "exposed": false,
+      "critical": false,
+      "image": "localhost:5050/root/sample-project:sha-abc123"
+    },
+    {
+      "id": "service_checkout",
+      "type": "k8s_service",
+      "name": "checkout service",
+      "namespace": "prod",
+      "status": "active",
+      "exposed": true,
+      "critical": true
+    },
+    {
+      "id": "ingress_public",
+      "type": "ingress",
+      "name": "public ingress",
+      "namespace": "prod",
+      "status": "active",
+      "exposed": true,
+      "critical": true
+    },
+    {
+      "id": "database_orders",
+      "type": "database",
+      "name": "orders database",
+      "status": "active",
+      "exposed": false,
+      "critical": true
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_ingress_service",
+      "source": "ingress_public",
+      "target": "service_checkout",
+      "type": "routes_to",
+      "label": "ingress routes to service"
+    },
+    {
+      "id": "edge_service_pod",
+      "source": "service_checkout",
+      "target": "pod_checkout",
+      "type": "routes_to",
+      "label": "service routes to pod"
+    },
+    {
+      "id": "edge_pod_database",
+      "source": "pod_checkout",
+      "target": "database_orders",
+      "type": "connects_to",
+      "label": "pod connects to database"
+    }
+  ]
+}

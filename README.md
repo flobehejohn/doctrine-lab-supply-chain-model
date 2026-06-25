@@ -268,3 +268,19 @@ Generated output:
 - .doctrine/out/config-matrix/env-matrix.jtable.json
 - .doctrine/out/config-matrix/env-matrix.md
 - .doctrine/out/config-matrix/evidence-pack.config-matrix.json
+
+## Query Engine
+
+Phase 22 adds graph querying with Doctrine DSL, JMESPath-lite, OPA/Rego policy metadata, jtable views and jq-oriented outputs.
+
+Commands:
+
+- pnpm query:engine:run
+- pnpm query:engine:jmespath
+- pnpm query:engine:policy
+- pnpm query:engine:certify
+
+Example:
+
+- FIND pods WHERE exposed = true AND critical
+- nodes[?type=='k8s_pod' && status=='vulnerable']
