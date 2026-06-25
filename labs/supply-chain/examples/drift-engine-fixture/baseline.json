@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "dreps-drift.artifact.v1",
+  "packId": "baseline-release-2026-06-24",
+  "generatedAt": "2026-06-24T00:00:00.000Z",
+  "nodes": [
+    {
+      "id": "pod_checkout",
+      "type": "k8s_pod",
+      "name": "checkout pod",
+      "namespace": "prod",
+      "status": "healthy",
+      "image": "localhost:5050/root/sample-project:sha-abc123",
+      "exposed": true,
+      "critical": true,
+      "hasRunbook": true
+    },
+    {
+      "id": "service_checkout",
+      "type": "k8s_service",
+      "name": "checkout service",
+      "namespace": "prod",
+      "status": "active",
+      "exposed": true,
+      "critical": true,
+      "hasRunbook": true
+    },
+    {
+      "id": "image_checkout_sha",
+      "type": "container_image",
+      "name": "checkout image sha",
+      "image": "localhost:5050/root/sample-project:sha-abc123",
+      "signed": false,
+      "critical": true,
+      "hasRunbook": true
+    },
+    {
+      "id": "database_orders",
+      "type": "database",
+      "name": "orders database",
+      "status": "active",
+      "critical": true,
+      "hasRunbook": true
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_service_pod",
+      "source": "service_checkout",
+      "target": "pod_checkout",
+      "type": "routes_to",
+      "label": "service routes to pod"
+    },
+    {
+      "id": "edge_pod_database",
+      "source": "pod_checkout",
+      "target": "database_orders",
+      "type": "connects_to",
+      "label": "pod connects to database"
+    },
+    {
+      "id": "edge_pod_image",
+      "source": "pod_checkout",
+      "target": "image_checkout_sha",
+      "type": "depends_on",
+      "label": "pod uses image"
+    }
+  ],
+  "findings": [
+    {
+      "id": "no-unsigned-container-image",
+      "severity": "high",
+      "status": "open",
+      "title": "No unsigned container image",
+      "affectedNodes": ["image_checkout_sha"],
+      "evidenceRefs": ["evidence_baseline_image"]
+    }
+  ],
+  "documentation": [
+    {
+      "nodeId": "pod_checkout",
+      "kind": "runbook",
+      "path": "docs/runbooks/checkout.md"
+    },
+    {
+      "nodeId": "database_orders",
+      "kind": "runbook",
+      "path": "docs/runbooks/database-orders.md"
+    }
+  ],
+  "compliance": [
+    {
+      "id": "iso27001-change-control",
+      "framework": "ISO27001",
+      "control": "CHANGE_CONTROL",
+      "status": "pass",
+      "score": 90
+    }
+  ],
+  "envConfig": {
+    "prod": {
+      "image": "localhost:5050/root/sample-project:sha-abc123",
+      "networkPolicy": true,
+      "logLevel": "info",
+      "replicas": 2
+    }
+  }
+}

@@ -89,6 +89,8 @@ importers:
 
   packages/dreps-config-matrix: {}
 
+  packages/dreps-drift-engine: {}
+
   packages/dreps-git-provenance: {}
 
   packages/dreps-gitlab-adapter: {}

@@ -294,3 +294,12 @@ Commands:
 - pnpm policy:engine:evaluate
 - pnpm policy:engine:import
 - pnpm policy:engine:certify
+
+## Drift Engine
+
+Phase 24 compares baseline and current DREPS-like artifacts and produces drift-report.json, drift-summary.md and drift.mmd.
+
+Commands:
+
+- pnpm drift:engine:compare
+- pnpm drift:engine:certify

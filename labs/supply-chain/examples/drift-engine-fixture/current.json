@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "dreps-drift.artifact.v1",
+  "packId": "current-release-2026-06-25",
+  "generatedAt": "2026-06-25T00:00:00.000Z",
+  "nodes": [
+    {
+      "id": "pod_checkout",
+      "type": "k8s_pod",
+      "name": "checkout pod",
+      "namespace": "prod",
+      "status": "vulnerable",
+      "image": "localhost:5050/root/sample-project:latest",
+      "exposed": true,
+      "critical": true,
+      "hasRunbook": true
+    },
+    {
+      "id": "pod_shadow",
+      "type": "k8s_pod",
+      "name": "shadow pod outside baseline",
+      "namespace": "prod",
+      "status": "vulnerable",
+      "image": "localhost:5050/root/sample-project:latest",
+      "exposed": true,
+      "critical": true,
+      "hasRunbook": false,
+      "baselineManaged": false
+    },
+    {
+      "id": "service_checkout",
+      "type": "k8s_service",
+      "name": "checkout service",
+      "namespace": "prod",
+      "status": "active",
+      "exposed": true,
+      "critical": true,
+      "hasRunbook": true
+    },
+    {
+      "id": "image_checkout_latest",
+      "type": "container_image",
+      "name": "checkout image latest",
+      "image": "localhost:5050/root/sample-project:latest",
+      "signed": true,
+      "critical": true,
+      "hasRunbook": true
+    },
+    {
+      "id": "database_orders",
+      "type": "database",
+      "name": "orders database",
+      "status": "active",
+      "critical": true,
+      "hasRunbook": true
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_service_pod",
+      "source": "service_checkout",
+      "target": "pod_checkout",
+      "type": "routes_to",
+      "label": "service routes to pod"
+    },
+    {
+      "id": "edge_service_shadow_pod",
+      "source": "service_checkout",
+      "target": "pod_shadow",
+      "type": "routes_to",
+      "label": "service routes to shadow pod"
+    },
+    {
+      "id": "edge_pod_image",
+      "source": "pod_checkout",
+      "target": "image_checkout_latest",
+      "type": "depends_on",
+      "label": "pod uses image"
+    }
+  ],
+  "findings": [
+    {
+      "id": "no-unsigned-container-image",
+      "severity": "high",
+      "status": "resolved",
+      "title": "No unsigned container image",
+      "affectedNodes": ["image_checkout_latest"],
+      "evidenceRefs": ["evidence_current_image"]
+    },
+    {
+      "id": "no-public-critical-vulnerable-pod",
+      "severity": "critical",
+      "status": "open",
+      "title": "No public critical vulnerable pod",
+      "affectedNodes": ["pod_checkout", "pod_shadow"],
+      "evidenceRefs": ["evidence_current_runtime"]
+    }
+  ],
+  "documentation": [
+    {
+      "nodeId": "pod_checkout",
+      "kind": "runbook",
+      "path": "docs/runbooks/checkout.md"
+    }
+  ],
+  "compliance": [
+    {
+      "id": "iso27001-change-control",
+      "framework": "ISO27001",
+      "control": "CHANGE_CONTROL",
+      "status": "fail",
+      "score": 65
+    }
+  ],
+  "envConfig": {
+    "prod": {
+      "image": "localhost:5050/root/sample-project:latest",
+      "networkPolicy": false,
+      "logLevel": "debug",
+      "replicas": 3
+    }
+  }
+}
