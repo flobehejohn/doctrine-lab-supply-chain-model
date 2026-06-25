@@ -284,3 +284,13 @@ Example:
 
 - FIND pods WHERE exposed = true AND critical
 - nodes[?type=='k8s_pod' && status=='vulnerable']
+
+## Policy Engine
+
+Phase 23 transforms declarative rules into normalized DREPS findings with affectedNodes and evidenceRefs.
+
+Commands:
+
+- pnpm policy:engine:evaluate
+- pnpm policy:engine:import
+- pnpm policy:engine:certify

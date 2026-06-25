@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "policy-engine.fixture.v1",
+  "source": "deterministic-policy-engine-fixture",
+  "nodes": [
+    {
+      "id": "pod_checkout",
+      "type": "k8s_pod",
+      "name": "checkout pod",
+      "namespace": "prod",
+      "public": true,
+      "critical": true,
+      "vulnerable": true,
+      "hasRunbook": false,
+      "status": "vulnerable"
+    },
+    {
+      "id": "image_checkout_latest",
+      "type": "container_image",
+      "name": "checkout image latest",
+      "image": "localhost:5050/root/sample-project:latest",
+      "signed": false,
+      "critical": true,
+      "hasRunbook": false
+    },
+    {
+      "id": "runner_privileged",
+      "type": "gitlab_runner",
+      "name": "privileged docker runner",
+      "privileged": true,
+      "dockerSockMounted": true,
+      "critical": true,
+      "hasRunbook": false
+    },
+    {
+      "id": "registry_local_untrusted",
+      "type": "registry",
+      "name": "localhost:5050",
+      "trusted": false,
+      "selfSigned": true,
+      "chainTrusted": false,
+      "critical": true,
+      "hasRunbook": false
+    },
+    {
+      "id": "database_orders",
+      "type": "database",
+      "name": "orders database",
+      "critical": true,
+      "hasRunbook": false,
+      "status": "active"
+    },
+    {
+      "id": "runbook_checkout",
+      "type": "documentation",
+      "name": "checkout runbook",
+      "runbookFor": "service_checkout",
+      "path": "docs/runbooks/checkout.md"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_pod_image",
+      "source": "pod_checkout",
+      "target": "image_checkout_latest",
+      "type": "depends_on",
+      "label": "pod uses image"
+    },
+    {
+      "id": "edge_registry_image",
+      "source": "registry_local_untrusted",
+      "target": "image_checkout_latest",
+      "type": "stores",
+      "label": "registry stores image"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence_runtime_policy_context",
+      "type": "configuration",
+      "title": "Runtime policy context",
+      "path": "labs/supply-chain/examples/policy-engine-fixture/policy-context.json"
+    },
+    {
+      "id": "evidence_security_scan_policy_context",
+      "type": "scan_result",
+      "title": "Security scan policy context",
+      "path": ".doctrine/out/security-scans/evidence-pack.security-scans.json"
+    },
+    {
+      "id": "evidence_registry_policy_context",
+      "type": "certificate",
+      "title": "Registry trust policy context",
+      "path": ".doctrine/out/registry-trust/evidence-pack.registry-trust.json"
+    },
+    {
+      "id": "evidence_gitlab_runner_policy_context",
+      "type": "configuration",
+      "title": "GitLab runner policy context",
+      "path": ".doctrine/out/gitlab-adapter/evidence-pack.gitlab-local.json"
+    },
+    {
+      "id": "evidence_operator_runbooks_policy_context",
+      "type": "source_file",
+      "title": "Operator runbook policy context",
+      "path": ".doctrine/operator/runbooks"
+    }
+  ]
+}

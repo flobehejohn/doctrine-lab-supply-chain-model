@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "dreps-policy-engine.policies.v1",
+  "policies": [
+    {
+      "id": "no-public-critical-vulnerable-pod",
+      "title": "No public critical vulnerable pod",
+      "severity": "critical",
+      "targetType": "k8s_pod",
+      "conditions": [
+        { "field": "public", "operator": "equals", "value": true },
+        { "field": "critical", "operator": "equals", "value": true },
+        { "field": "vulnerable", "operator": "equals", "value": true }
+      ],
+      "evidenceRefs": [
+        "evidence_runtime_policy_context",
+        "evidence_security_scan_policy_context"
+      ]
+    },
+    {
+      "id": "no-unsigned-container-image",
+      "title": "No unsigned container image",
+      "severity": "high",
+      "targetType": "container_image",
+      "conditions": [
+        { "field": "signed", "operator": "equals", "value": false }
+      ],
+      "evidenceRefs": [
+        "evidence_runtime_policy_context",
+        "evidence_security_scan_policy_context"
+      ]
+    },
+    {
+      "id": "no-runner-privileged",
+      "title": "No privileged CI runner",
+      "severity": "high",
+      "targetType": "gitlab_runner",
+      "conditions": [
+        { "field": "privileged", "operator": "equals", "value": true }
+      ],
+      "evidenceRefs": [
+        "evidence_gitlab_runner_policy_context"
+      ]
+    },
+    {
+      "id": "no-docker-sock-runner",
+      "title": "No Docker socket mounted in CI runner",
+      "severity": "critical",
+      "targetType": "gitlab_runner",
+      "conditions": [
+        { "field": "dockerSockMounted", "operator": "equals", "value": true }
+      ],
+      "evidenceRefs": [
+        "evidence_gitlab_runner_policy_context"
+      ]
+    },
+    {
+      "id": "no-untrusted-registry",
+      "title": "No untrusted registry",
+      "severity": "high",
+      "targetType": "registry",
+      "conditions": [
+        { "field": "trusted", "operator": "equals", "value": false }
+      ],
+      "evidenceRefs": [
+        "evidence_registry_policy_context"
+      ]
+    },
+    {
+      "id": "no-critical-node-without-runbook",
+      "title": "No critical node without runbook",
+      "severity": "medium",
+      "targetType": "*",
+      "conditions": [
+        { "field": "critical", "operator": "equals", "value": true },
+        { "field": "hasRunbook", "operator": "equals", "value": false }
+      ],
+      "evidenceRefs": [
+        "evidence_runtime_policy_context",
+        "evidence_operator_runbooks_policy_context"
+      ]
+    }
+  ]
+}
