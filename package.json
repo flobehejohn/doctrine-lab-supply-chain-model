@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify && pnpm git:provenance:certify && pnpm config:matrix:certify && pnpm query:engine:certify && pnpm policy:engine:certify && pnpm drift:engine:certify && pnpm blast:radius:certify && pnpm compliance:certify && pnpm remediation:certify && pnpm gitops:patch:certify && pnpm maintenance:certify && pnpm simulation:certify && pnpm auditpack:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify && pnpm git:provenance:certify && pnpm config:matrix:certify && pnpm query:engine:certify && pnpm policy:engine:certify && pnpm drift:engine:certify && pnpm blast:radius:certify && pnpm compliance:certify && pnpm remediation:certify && pnpm gitops:patch:certify && pnpm maintenance:certify && pnpm simulation:certify && pnpm auditpack:certify && pnpm signature:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -97,7 +97,9 @@
     "simulation:run": "tsx scripts/simulation-engine/run-simulation.ts",
     "simulation:certify": "pnpm simulation:run && tsx scripts/simulation-engine/certify-simulation-engine.ts",
     "auditpack:generate": "tsx scripts/audit-pack/generate-audit-pack.ts",
-    "auditpack:certify": "pnpm auditpack:generate && tsx scripts/audit-pack/certify-audit-pack.ts"
+    "auditpack:certify": "pnpm auditpack:generate && tsx scripts/audit-pack/certify-audit-pack.ts",
+    "signature:generate": "pnpm auditpack:certify && tsx scripts/signature/generate-signature-assets.ts",
+    "signature:certify": "pnpm signature:generate && tsx scripts/signature/certify-signature-assets.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

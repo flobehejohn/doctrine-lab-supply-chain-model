@@ -366,3 +366,12 @@ Commands:
 
 - pnpm auditpack:generate
 - pnpm auditpack:certify
+
+## Signature / in-toto / SLSA
+
+Phase 32 makes the audit-pack verifiable with an audit-pack hash, an in-toto SLSA statement, a planned keyless cosign bundle, a GitHub Actions keyless release workflow and a verification guide.
+
+Commands:
+
+- pnpm signature:generate
+- pnpm signature:certify

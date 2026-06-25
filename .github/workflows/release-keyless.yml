@@ -1,0 +1,57 @@
+name: Release Keyless Audit Pack
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "audit-pack-*"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  sign-audit-pack:
+    name: Sign audit pack keylessly
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and certify audit pack
+        run: pnpm supplychain:certify
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Keyless sign audit-pack hash
+        env:
+          COSIGN_YES: "true"
+        run: |
+          cosign sign-blob --yes --bundle .doctrine/out/signature/cosign.bundle .doctrine/out/signature/audit-pack.sha256.json
+          cosign verify-blob \
+            --bundle .doctrine/out/signature/cosign.bundle \
+            --certificate-identity-regexp '^https://github.com/flobehejohn/doctrine-lab-supply-chain-model/.github/workflows/release-keyless.yml@refs/tags/audit-pack-.*$' \
+            --certificate-oidc-issuer 'https://token.actions.githubusercontent.com' \
+            .doctrine/out/signature/audit-pack.sha256.json
+
+      - name: Upload signature assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-pack-signature-assets
+          path: |
+            .doctrine/out/signature/audit-pack.sha256.json
+            .doctrine/out/signature/in-toto.statement.json
+            .doctrine/out/signature/cosign.bundle
+            .doctrine/out/signature/verification-guide.md

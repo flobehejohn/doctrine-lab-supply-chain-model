@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "dreps-signature.config.v1",
+  "artifactName": "audit-pack",
+  "auditPackRoot": ".doctrine/out/audit-pack-engine/audit-pack",
+  "outputRoot": ".doctrine/out/signature",
+  "repository": "flobehejohn/doctrine-lab-supply-chain-model",
+  "workflowPath": ".github/workflows/release-keyless.yml",
+  "oidcIssuer": "https://token.actions.githubusercontent.com",
+  "certificateIdentityRegex": "^https://github.com/flobehejohn/doctrine-lab-supply-chain-model/.github/workflows/release-keyless.yml@refs/tags/audit-pack-.*$",
+  "predicateType": "https://slsa.dev/provenance/v1"
+}

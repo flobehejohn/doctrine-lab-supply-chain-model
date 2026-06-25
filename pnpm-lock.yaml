@@ -139,6 +139,8 @@ importers:
 
   packages/dreps-safe-logger: {}
 
+  packages/dreps-signature-engine: {}
+
   packages/dreps-simulation-engine: {}
 
   packages/dreps-supplychain-schema:
