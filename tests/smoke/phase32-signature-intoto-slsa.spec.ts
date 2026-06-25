@@ -1,5 +1,5 @@
-import { existsSync, readFileSync, rmSync } from "node:fs";
-import { resolve } from "node:path";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   generateAuditPack,
@@ -17,11 +17,25 @@ const auditPackConfigPath = resolve("labs/supply-chain/examples/audit-pack-fixtu
 const signatureConfigPath = resolve("labs/supply-chain/examples/signature-fixture/signature.config.json");
 
 function buildForTest() {
-  const auditConfig = loadAuditPackConfig(auditPackConfigPath);
+  mkdirSync(resolve(".doctrine/out"), { recursive: true });
+
+  const tempRoot = mkdtempSync(resolve(".doctrine/out/test-phase32-signature-"));
+
+  const baseAuditConfig = loadAuditPackConfig(auditPackConfigPath);
+  const auditConfig = {
+    ...baseAuditConfig,
+    outputRoot: join(tempRoot, "audit-pack")
+  };
+
   generateAuditPack(auditConfig);
 
-  const signatureConfig = loadSignatureConfig(signatureConfigPath);
-  rmSync(signatureConfig.outputRoot, { recursive: true, force: true });
+  const baseSignatureConfig = loadSignatureConfig(signatureConfigPath);
+  const signatureConfig = {
+    ...baseSignatureConfig,
+    auditPackRoot: auditConfig.outputRoot,
+    outputRoot: join(tempRoot, "signature"),
+    workflowPath: join(tempRoot, "release-keyless.yml")
+  };
 
   const result = generateSignatureAssets(signatureConfig);
 

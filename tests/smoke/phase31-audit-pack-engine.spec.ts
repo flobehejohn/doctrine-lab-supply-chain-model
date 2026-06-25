@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
@@ -11,9 +11,18 @@ import {
 const configPath = resolve("labs/supply-chain/examples/audit-pack-fixture/audit-pack.config.json");
 
 function buildForTest() {
-  const config = loadAuditPackConfig(configPath);
-  rmSync(config.outputRoot, { recursive: true, force: true });
+  mkdirSync(resolve(".doctrine/out"), { recursive: true });
+
+  const tempRoot = mkdtempSync(resolve(".doctrine/out/test-phase31-audit-pack-"));
+  const baseConfig = loadAuditPackConfig(configPath);
+
+  const config = {
+    ...baseConfig,
+    outputRoot: join(tempRoot, "audit-pack")
+  };
+
   const result = generateAuditPack(config);
+
   return { config, result };
 }
 
