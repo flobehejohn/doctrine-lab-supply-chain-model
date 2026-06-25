@@ -1,0 +1,203 @@
+{
+  "schemaVersion": "dreps-blast-radius.input.v1",
+  "scenario": "repo_compromise",
+  "startNode": "repo-auth-service",
+  "maxDepth": 7,
+  "edgeWeights": {
+    "triggers": 0.9,
+    "builds": 0.85,
+    "publishes": 0.8,
+    "deploys": 0.9,
+    "runs": 0.75,
+    "connects_to": 0.95,
+    "reads_from": 0.8,
+    "writes_to": 0.9,
+    "depends_on": 0.7,
+    "routes_to": 0.65
+  },
+  "controlBlocks": [
+    {
+      "id": "control-codeowners-review",
+      "name": "CODEOWNERS mandatory review",
+      "wouldBlockEdgeTypes": ["triggers"],
+      "wouldBlockNodes": ["pipeline-auth-service"]
+    },
+    {
+      "id": "control-signed-build-provenance",
+      "name": "Signed build provenance gate",
+      "wouldBlockEdgeTypes": ["builds", "publishes"],
+      "wouldBlockNodes": ["image-auth-service"]
+    },
+    {
+      "id": "control-admission-signature-verification",
+      "name": "Kubernetes admission signature verification",
+      "wouldBlockEdgeTypes": ["deploys"],
+      "wouldBlockNodes": ["workload-auth-api", "pod-auth-api"]
+    },
+    {
+      "id": "control-db-network-policy",
+      "name": "Database network policy and egress isolation",
+      "wouldBlockEdgeTypes": ["connects_to", "reads_from", "writes_to"],
+      "wouldBlockNodes": ["db-auth-users"]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "repo-auth-service",
+      "type": "repository",
+      "name": "auth-service repository",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 7,
+      "tags": ["source", "auth", "entrypoint"]
+    },
+    {
+      "id": "pipeline-auth-service",
+      "type": "ci_pipeline",
+      "name": "auth-service CI pipeline",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 8,
+      "tags": ["ci", "build"]
+    },
+    {
+      "id": "image-auth-service",
+      "type": "container_image",
+      "name": "auth-service container image",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 8,
+      "tags": ["image", "runtime"]
+    },
+    {
+      "id": "registry-prod",
+      "type": "registry",
+      "name": "production container registry",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 7,
+      "tags": ["registry"]
+    },
+    {
+      "id": "workload-auth-api",
+      "type": "k8s_workload",
+      "name": "auth API deployment",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 9,
+      "tags": ["runtime", "prod"]
+    },
+    {
+      "id": "pod-auth-api",
+      "type": "k8s_pod",
+      "name": "auth API pod",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 9,
+      "tags": ["runtime", "prod", "pod"]
+    },
+    {
+      "id": "service-auth-api",
+      "type": "k8s_service",
+      "name": "auth API service",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 6,
+      "tags": ["runtime", "network"]
+    },
+    {
+      "id": "db-auth-users",
+      "type": "database",
+      "name": "auth users database",
+      "critical": true,
+      "sensitiveData": true,
+      "dataClassification": "personal_data",
+      "riskWeight": 10,
+      "tags": ["database", "sensitive", "users"]
+    },
+    {
+      "id": "external-idp",
+      "type": "external_api",
+      "name": "external identity provider",
+      "critical": true,
+      "sensitiveData": true,
+      "dataClassification": "identity_tokens",
+      "riskWeight": 8,
+      "tags": ["external", "identity"]
+    },
+    {
+      "id": "runbook-auth-service",
+      "type": "documentation",
+      "name": "auth-service incident runbook",
+      "critical": false,
+      "sensitiveData": false,
+      "riskWeight": 2,
+      "tags": ["runbook"]
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-repo-pipeline",
+      "source": "repo-auth-service",
+      "target": "pipeline-auth-service",
+      "type": "triggers",
+      "label": "commit triggers CI pipeline"
+    },
+    {
+      "id": "edge-pipeline-image",
+      "source": "pipeline-auth-service",
+      "target": "image-auth-service",
+      "type": "builds",
+      "label": "pipeline builds image"
+    },
+    {
+      "id": "edge-image-registry",
+      "source": "image-auth-service",
+      "target": "registry-prod",
+      "type": "publishes",
+      "label": "image is published to registry"
+    },
+    {
+      "id": "edge-registry-workload",
+      "source": "registry-prod",
+      "target": "workload-auth-api",
+      "type": "deploys",
+      "label": "registry image deployed as workload"
+    },
+    {
+      "id": "edge-workload-pod",
+      "source": "workload-auth-api",
+      "target": "pod-auth-api",
+      "type": "runs",
+      "label": "workload creates pod"
+    },
+    {
+      "id": "edge-pod-service",
+      "source": "pod-auth-api",
+      "target": "service-auth-api",
+      "type": "routes_to",
+      "label": "pod receives service traffic"
+    },
+    {
+      "id": "edge-pod-db",
+      "source": "pod-auth-api",
+      "target": "db-auth-users",
+      "type": "connects_to",
+      "label": "pod connects to users database"
+    },
+    {
+      "id": "edge-pod-idp",
+      "source": "pod-auth-api",
+      "target": "external-idp",
+      "type": "connects_to",
+      "label": "pod calls identity provider"
+    },
+    {
+      "id": "edge-repo-runbook",
+      "source": "repo-auth-service",
+      "target": "runbook-auth-service",
+      "type": "documents",
+      "label": "repo has incident runbook"
+    }
+  ]
+}

@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify && pnpm git:provenance:certify && pnpm config:matrix:certify && pnpm query:engine:certify && pnpm policy:engine:certify && pnpm drift:engine:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify && pnpm git:provenance:certify && pnpm config:matrix:certify && pnpm query:engine:certify && pnpm policy:engine:certify && pnpm drift:engine:certify && pnpm blast:radius:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -83,7 +83,9 @@
     "policy:engine:import": "pnpm policy:engine:evaluate && tsx scripts/policy-engine/import-policy-findings.ts",
     "policy:engine:certify": "pnpm policy:engine:import && tsx scripts/policy-engine/certify-policy-engine.ts",
     "drift:engine:compare": "tsx scripts/drift-engine/compare-drift.ts",
-    "drift:engine:certify": "pnpm drift:engine:compare && tsx scripts/drift-engine/certify-drift-engine.ts"
+    "drift:engine:certify": "pnpm drift:engine:compare && tsx scripts/drift-engine/certify-drift-engine.ts",
+    "blast:radius:analyze": "tsx scripts/blast-radius/analyze-blast-radius.ts",
+    "blast:radius:certify": "pnpm blast:radius:analyze && tsx scripts/blast-radius/certify-blast-radius.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

@@ -303,3 +303,12 @@ Commands:
 
 - pnpm drift:engine:compare
 - pnpm drift:engine:certify
+
+## Blast Radius Engine
+
+Phase 25 calculates potential compromise impact from a start node, exports propagation paths, critical/sensitive nodes, a score, Mermaid graph and jtable summary.
+
+Commands:
+
+- pnpm blast:radius:analyze
+- pnpm blast:radius:certify
