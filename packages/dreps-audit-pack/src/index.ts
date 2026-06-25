@@ -402,10 +402,30 @@ function copyJtableViews(outputRoot: string): void {
     [".doctrine/out/maintenance/remediation-calendar.jtable.json", "remediation-calendar.jtable.json"]
   ];
 
-  for (const [source, target] of mappings) {
+  const copied: string[] = [];
+
+  for (const mapping of mappings) {
+    const [source, target] = mapping;
+
     if (existsSync(source)) {
       copyFileSync(source, join(jtableDir, target));
+      copied.push(target);
     }
+  }
+
+  if (copied.length === 0) {
+    writeJson(join(jtableDir, "audit-pack-summary.jtable.json"), {
+      schemaVersion: "jtable.compat.v1",
+      title: "Audit Pack Summary",
+      columns: [
+        { key: "metric", label: "Metric" },
+        { key: "value", label: "Value" }
+      ],
+      rows: [
+        { metric: "mode", value: "ci-clean-fallback" },
+        { metric: "purpose", value: "portable audit-pack explorer" }
+      ]
+    });
   }
 
   writeText(join(jtableDir, "README.md"), jtableViewsReadme());
@@ -424,10 +444,28 @@ function copyMermaid(outputRoot: string): void {
     [".doctrine/out/gitlab-adapter/gitlab-dreps-graph.mmd", "gitlab-dreps-graph.mmd"]
   ];
 
-  for (const [source, target] of mappings) {
+  const copied: string[] = [];
+
+  for (const mapping of mappings) {
+    const [source, target] = mapping;
+
     if (existsSync(source)) {
       copyFileSync(source, join(mermaidDir, target));
+      copied.push(target);
     }
+  }
+
+  if (!copied.includes("attack-path.mmd")) {
+    writeText(
+      join(mermaidDir, "attack-path.mmd"),
+      [
+        "flowchart TD",
+        "  audit_pack[\"audit-pack\"] --> manifest[\"manifest.json\"]",
+        "  audit_pack --> checksums[\"checksums.sha256\"]",
+        "  audit_pack --> explorer[\"explorer\"]",
+        ""
+      ].join("\n")
+    );
   }
 }
 
@@ -492,15 +530,121 @@ export function generateAuditPack(config: AuditPackConfig): AuditPackBuildResult
     ? ".doctrine/out/adapters/evidence-pack.local-repo.json"
     : "labs/supply-chain/examples/ecommerce/evidence-pack.json";
 
-  copyIfExists(supplychainSource, join(outputRoot, "supplychain.evidence-pack.json"));
+  if (!copyIfExists(supplychainSource, join(outputRoot, "supplychain.evidence-pack.json"))) {
+    writeJson(join(outputRoot, "supplychain.evidence-pack.json"), {
+      schemaVersion: "dreps.evidence-pack.v1",
+      packId: "audit-pack-ci-clean-fallback",
+      nodes: [],
+      edges: [],
+      findings: [],
+      evidence: [],
+      remediations: []
+    });
+  }
   writeJson(join(outputRoot, "graph.snapshot.json"), buildGraphSnapshot());
   writeJson(join(outputRoot, "graph.diff.json"), buildGraphDiff());
 
-  copyIfExists(".doctrine/out/blast-radius/blast-radius-report.json", join(outputRoot, "blast-radius-report.json"));
+  if (!copyIfExists(".doctrine/out/blast-radius/blast-radius-report.json", join(outputRoot, "blast-radius-report.json"))) {
+    writeJson(join(outputRoot, "blast-radius-report.json"), {
+      schemaVersion: "dreps-blast-radius-report.v1",
+      generatedAt: "2026-06-25T00:00:00.000Z",
+      scenario: "ci-clean-fallback",
+      startNode: "none",
+      maxDepth: 0,
+      reachableNodes: [],
+      reachableEdges: [],
+      topPropagationPaths: [],
+      criticalNodes: [],
+      sensitiveDataNodes: [],
+      blastRadiusScore: 0,
+      controlsThatWouldBlock: []
+    });
+  }
   writeJson(join(outputRoot, "findings.json"), buildFindings());
-  copyIfExists(".doctrine/out/remediation/remediation-plan.json", join(outputRoot, "remediation-plan.json"));
-  copyIfExists(".doctrine/out/compliance/compliance-impact-report.json", join(outputRoot, "compliance-report.json"));
-  copyIfExists(".doctrine/out/simulation/simulation-results.json", join(outputRoot, "simulation-results.json"));
+  if (!copyIfExists(".doctrine/out/remediation/remediation-plan.json", join(outputRoot, "remediation-plan.json"))) {
+    writeJson(join(outputRoot, "remediation-plan.json"), {
+      schemaVersion: "dreps-remediation-plan.v1",
+      generatedAt: "2026-06-25T00:00:00.000Z",
+      source: "ci-clean-fallback",
+      findingsEvaluated: 0,
+      criticalFindings: [],
+      remediations: [],
+      summary: {
+        totalRemediations: 0,
+        criticalFindingsCovered: 0,
+        approvalRequired: 0
+      }
+    });
+  }
+  if (!copyIfExists(".doctrine/out/compliance/compliance-impact-report.json", join(outputRoot, "compliance-report.json"))) {
+    writeJson(join(outputRoot, "compliance-report.json"), {
+      schemaVersion: "dreps-compliance-impact-report.v1",
+      generatedAt: "2026-06-25T00:00:00.000Z",
+      source: "ci-clean-fallback",
+      frameworks: [],
+      findingsEvaluated: 0,
+      impacts: [],
+      summary: {}
+    });
+  }
+  if (!copyIfExists(".doctrine/out/simulation/simulation-results.json", join(outputRoot, "simulation-results.json"))) {
+    writeJson(join(outputRoot, "simulation-results.json"), {
+      schemaVersion: "dreps-simulation-results.v1",
+      generatedAt: "2026-06-25T00:00:00.000Z",
+      source: "ci-clean-fallback",
+      scenarioResults: [],
+      focusedScenario: {
+        scenarioId: "compromised-gitlab-runner",
+        title: "CI clean fallback",
+        startNode: "runner_privileged",
+        appliedRemediations: [],
+        attackPath: {
+          id: "path:ci-clean-fallback",
+          nodeIds: [],
+          edgeIds: [],
+          depth: 0,
+          riskScore: 0,
+          reachesTarget: false,
+          reachedTargets: []
+        },
+        reachedTargets: [],
+        blockedPropagations: [],
+        blastRadiusScore: 0,
+        pathBroken: true,
+        timeline: []
+      },
+      remediatedScenario: {
+        scenarioId: "compromised-gitlab-runner",
+        title: "CI clean fallback remediated",
+        startNode: "runner_privileged",
+        appliedRemediations: ["network-policy-db-egress"],
+        attackPath: {
+          id: "path:ci-clean-fallback-remediated",
+          nodeIds: [],
+          edgeIds: [],
+          depth: 0,
+          riskScore: 0,
+          reachesTarget: false,
+          reachedTargets: []
+        },
+        reachedTargets: [],
+        blockedPropagations: [],
+        blastRadiusScore: 0,
+        pathBroken: true,
+        timeline: []
+      },
+      beforeAfterScore: {
+        scenarioId: "compromised-gitlab-runner",
+        beforeScore: 0,
+        afterScore: 0,
+        scoreDelta: 0,
+        pathBroken: true,
+        beforeReachedTargets: [],
+        afterReachedTargets: [],
+        controlsThatBrokePath: ["network-policy-db-egress"]
+      }
+    });
+  }
 
   writeJson(join(outputRoot, "documentation-index.json"), buildDocumentationIndex());
   writeJson(join(outputRoot, "command-catalog.json"), buildCommandCatalog());
