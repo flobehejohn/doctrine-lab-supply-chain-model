@@ -357,3 +357,12 @@ Commands:
 
 - pnpm simulation:run
 - pnpm simulation:certify
+
+## Audit Pack Engine
+
+Phase 31 exports a portable audit-pack with manifest, checksums, evidence, graph snapshots, findings, remediation, compliance, simulation, command catalog, runbooks, workflows and explorer material.
+
+Commands:
+
+- pnpm auditpack:generate
+- pnpm auditpack:certify

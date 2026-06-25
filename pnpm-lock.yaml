@@ -72,6 +72,8 @@ importers:
         specifier: ^4.1.13
         version: 4.4.3
 
+  packages/dreps-audit-pack: {}
+
   packages/dreps-blast-radius-engine: {}
 
   packages/dreps-command-catalog:

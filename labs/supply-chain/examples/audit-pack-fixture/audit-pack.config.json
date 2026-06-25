@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "dreps-audit-pack.config.v1",
+  "packId": "portable-audit-pack-supplychain-demo",
+  "title": "Portable Supply Chain Audit Pack",
+  "description": "Portable evidence bundle for Doctrine Lab supply-chain model.",
+  "producer": "doctrine-lab-supply-chain-model",
+  "outputRoot": ".doctrine/out/audit-pack-engine/audit-pack",
+  "requiredTopLevelFiles": [
+    "manifest.json",
+    "supplychain.evidence-pack.json",
+    "graph.snapshot.json",
+    "graph.diff.json",
+    "blast-radius-report.json",
+    "findings.json",
+    "remediation-plan.json",
+    "compliance-report.json",
+    "simulation-results.json",
+    "documentation-index.json",
+    "command-catalog.json",
+    "runbook-index.json",
+    "workflow-index.json",
+    "tool-versions.json",
+    "checksums.sha256"
+  ],
+  "explorer": {
+    "readme": "explorer/README.md",
+    "jtableViewsDir": "explorer/jtable-views",
+    "jqExamples": "explorer/jq-examples.md",
+    "mermaidDir": "explorer/mermaid"
+  }
+}
