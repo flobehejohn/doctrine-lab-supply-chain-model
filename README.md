@@ -330,3 +330,12 @@ Commands:
 
 - pnpm remediation:generate
 - pnpm remediation:certify
+
+## GitOps Patch Generator
+
+Phase 28 turns remediation advice into a PR-ready GitOps patch with patch.diff, remediation plan, PR body, verification script, rollback guide and jtable PR tables.
+
+Commands:
+
+- pnpm gitops:patch:generate
+- pnpm gitops:patch:certify

@@ -99,6 +99,8 @@ importers:
 
   packages/dreps-gitlab-adapter: {}
 
+  packages/dreps-gitops-patch-engine: {}
+
   packages/dreps-graph-engine:
     dependencies:
       '@supply-chain-mode-lab/dreps-supplychain-schema':

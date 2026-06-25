@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify && pnpm git:provenance:certify && pnpm config:matrix:certify && pnpm query:engine:certify && pnpm policy:engine:certify && pnpm drift:engine:certify && pnpm blast:radius:certify && pnpm compliance:certify && pnpm remediation:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify && pnpm git:provenance:certify && pnpm config:matrix:certify && pnpm query:engine:certify && pnpm policy:engine:certify && pnpm drift:engine:certify && pnpm blast:radius:certify && pnpm compliance:certify && pnpm remediation:certify && pnpm gitops:patch:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -89,7 +89,9 @@
     "compliance:map": "tsx scripts/compliance-engine/map-compliance.ts",
     "compliance:certify": "pnpm compliance:map && tsx scripts/compliance-engine/certify-compliance-engine.ts",
     "remediation:generate": "tsx scripts/remediation-engine/generate-remediation-plan.ts",
-    "remediation:certify": "pnpm remediation:generate && tsx scripts/remediation-engine/certify-remediation-engine.ts"
+    "remediation:certify": "pnpm remediation:generate && tsx scripts/remediation-engine/certify-remediation-engine.ts",
+    "gitops:patch:generate": "tsx scripts/gitops-patch-engine/generate-gitops-patch.ts",
+    "gitops:patch:certify": "pnpm gitops:patch:generate && tsx scripts/gitops-patch-engine/certify-gitops-patch.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

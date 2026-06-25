@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "dreps-gitops-patch.context.v1",
+  "source": "deterministic-gitops-patch-fixture",
+  "branch": "remediation/networkpolicy-checkout-deny-by-default",
+  "targetFile": "labs/supply-chain/examples/gitops-patch-fixture/k8s/networkpolicy-checkout-deny-by-default.yaml",
+  "finding": {
+    "id": "no-public-critical-vulnerable-pod",
+    "severity": "critical",
+    "title": "No public critical vulnerable pod",
+    "risk": "Public critical vulnerable pod can be reached from the network and may propagate to sensitive services.",
+    "why": "A deny-by-default NetworkPolicy reduces the immediate exposure while patching and validation are performed.",
+    "affectedNodes": ["pod_checkout"],
+    "evidenceRefs": ["evidence_security_scans", "evidence_blast_radius"]
+  },
+  "affectedNodes": [
+    {
+      "id": "pod_checkout",
+      "type": "k8s_pod",
+      "name": "checkout pod",
+      "namespace": "prod",
+      "labels": {
+        "app": "checkout"
+      },
+      "critical": true,
+      "public": true,
+      "vulnerable": true
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "framework": "DORA",
+      "control": "DORA-ICT-RISK-MANAGEMENT",
+      "impact": "critical",
+      "findingId": "no-public-critical-vulnerable-pod"
+    },
+    {
+      "framework": "NIS2",
+      "control": "NIS2-RISK-MANAGEMENT-AND-VULNERABILITY-HANDLING",
+      "impact": "critical",
+      "findingId": "no-public-critical-vulnerable-pod"
+    },
+    {
+      "framework": "ISO27001",
+      "control": "ISO27001-A.8.8-MANAGEMENT-OF-TECHNICAL-VULNERABILITIES",
+      "impact": "critical",
+      "findingId": "no-public-critical-vulnerable-pod"
+    }
+  ],
+  "verificationCommands": [
+    {
+      "description": "Check that the generated patch is syntactically applicable.",
+      "command": "git apply --check .doctrine/out/gitops-patch/patch.diff"
+    },
+    {
+      "description": "Dry-run the Kubernetes NetworkPolicy.",
+      "command": "kubectl -n prod apply --dry-run=server -f labs/supply-chain/examples/gitops-patch-fixture/k8s/networkpolicy-checkout-deny-by-default.yaml"
+    },
+    {
+      "description": "Run policy engine certification.",
+      "command": "pnpm policy:engine:certify"
+    },
+    {
+      "description": "Run full supply-chain certification.",
+      "command": "pnpm supplychain:certify"
+    }
+  ],
+  "rollbackCommands": [
+    {
+      "description": "Revert the generated GitOps patch.",
+      "command": "git apply -R .doctrine/out/gitops-patch/patch.diff"
+    },
+    {
+      "description": "Remove the NetworkPolicy from the cluster if already applied.",
+      "command": "kubectl -n prod delete networkpolicy checkout-deny-by-default"
+    }
+  ],
+  "approvalRequired": true,
+  "maintenanceWindow": "required: emergency or next approved production window"
+}
