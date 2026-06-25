@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "env-matrix.fixture.v1",
+  "source": "deterministic-dev-staging-prod-fixture",
+  "environments": [
+    {
+      "name": "dev",
+      "image": "localhost:5050/root/sample-project:dev",
+      "replicas": 1,
+      "logLevel": "debug",
+      "networkPolicy": false,
+      "database": "sqlite",
+      "secretsProvider": "local",
+      "allowedExternalEgress": "*",
+      "configVersion": "dev-local"
+    },
+    {
+      "name": "staging",
+      "image": "localhost:5050/root/sample-project:sha-abc123",
+      "replicas": 2,
+      "logLevel": "info",
+      "networkPolicy": true,
+      "database": "postgres",
+      "secretsProvider": "vault",
+      "allowedExternalEgress": "api.stripe.test",
+      "configVersion": "2026.06.25-rc1"
+    },
+    {
+      "name": "prod",
+      "image": "localhost:5050/root/sample-project:latest",
+      "replicas": 2,
+      "logLevel": "debug",
+      "networkPolicy": false,
+      "database": "postgres",
+      "secretsProvider": "vault",
+      "allowedExternalEgress": "*",
+      "configVersion": "2026.06.25"
+    }
+  ],
+  "documentedDifferences": [
+    {
+      "key": "replicas",
+      "environments": ["dev", "staging"],
+      "reason": "Development runs with one replica to reduce local resource usage."
+    },
+    {
+      "key": "database",
+      "environments": ["dev", "staging"],
+      "reason": "Development uses sqlite while staging and prod use postgres."
+    },
+    {
+      "key": "secretsProvider",
+      "environments": ["dev", "staging"],
+      "reason": "Development uses local secrets while staging and prod use vault."
+    }
+  ]
+}

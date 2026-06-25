@@ -87,6 +87,8 @@ importers:
         specifier: ^4.1.13
         version: 4.4.3
 
+  packages/dreps-config-matrix: {}
+
   packages/dreps-git-provenance: {}
 
   packages/dreps-gitlab-adapter: {}

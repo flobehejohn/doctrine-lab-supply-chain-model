@@ -250,3 +250,21 @@ Generated output:
 
 - .doctrine/out/git-provenance/git-provenance.normalized.json
 - .doctrine/out/git-provenance/evidence-pack.git-provenance.json
+
+## Env Matrix / Config Drift
+
+Phase 21 compares dev, staging and prod configuration, detects drift and exports a jtable-compatible environment matrix.
+
+Commands:
+
+- pnpm config:matrix:import
+- pnpm config:matrix:compare
+- pnpm config:matrix:certify
+
+Generated output:
+
+- .doctrine/out/config-matrix/env-matrix.normalized.json
+- .doctrine/out/config-matrix/config-drift-report.json
+- .doctrine/out/config-matrix/env-matrix.jtable.json
+- .doctrine/out/config-matrix/env-matrix.md
+- .doctrine/out/config-matrix/evidence-pack.config-matrix.json
