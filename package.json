@@ -14,7 +14,7 @@
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.base.json --noEmit",
     "dev": "pnpm --filter @supply-chain-mode-lab/web dev",
-    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify && pnpm git:provenance:certify && pnpm config:matrix:certify",
+    "supplychain:certify": "pnpm typecheck && pnpm test && pnpm supplychain:validate -- --input labs/supply-chain/examples/ecommerce/evidence-pack.json && pnpm supplychain:graph:certify && pnpm web:build && pnpm operator:certify && pnpm security:certify && pnpm template:certify && pnpm report:readable:certify && pnpm workflow:certify && pnpm artifact:certify && pnpm vault:certify && pnpm gitlab:lab:certify && pnpm gitlab:adapter:certify && pnpm adapters:certify && pnpm runtime:certify && pnpm security:scans:certify && pnpm registry:trust:certify && pnpm git:provenance:certify && pnpm config:matrix:certify && pnpm query:engine:certify",
     "supplychain:validate": "tsx scripts/supplychain/validate-evidence-pack.ts",
     "supplychain:graph:certify": "tsx scripts/supplychain/certify-lab.ts --input labs/supply-chain/examples/ecommerce/evidence-pack.json",
     "web:build": "pnpm --filter @supply-chain-mode-lab/web build",
@@ -74,7 +74,11 @@
     "git:provenance:certify": "pnpm git:provenance:import && tsx scripts/git-provenance/certify-git-provenance.ts",
     "config:matrix:import": "tsx scripts/config-matrix/import-env-matrix.ts",
     "config:matrix:compare": "pnpm config:matrix:import && tsx scripts/config-matrix/compare-env-matrix.ts",
-    "config:matrix:certify": "pnpm config:matrix:compare && tsx scripts/config-matrix/certify-config-matrix.ts"
+    "config:matrix:certify": "pnpm config:matrix:compare && tsx scripts/config-matrix/certify-config-matrix.ts",
+    "query:engine:run": "tsx scripts/query-engine/run-query.ts",
+    "query:engine:jmespath": "tsx scripts/query-engine/run-query.ts --engine jmespath-lite --query \"nodes[?type=='k8s_pod' && status=='vulnerable']\"",
+    "query:engine:policy": "tsx scripts/query-engine/run-policy-query.ts",
+    "query:engine:certify": "pnpm query:engine:run && pnpm query:engine:jmespath && pnpm query:engine:policy && tsx scripts/query-engine/certify-query-engine.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",
