@@ -393,7 +393,7 @@ function copyJtableViews(outputRoot: string): void {
   const jtableDir = join(outputRoot, "explorer", "jtable-views");
   mkdirSync(jtableDir, { recursive: true });
 
-  const mappings = [
+  const mappings: Array<readonly [string, string]> = [
     [".doctrine/out/query-engine/query-results.jtable.json", "query-results.jtable.json"],
     [".doctrine/out/blast-radius/blast-radius-summary.jtable.json", "blast-radius-summary.jtable.json"],
     [".doctrine/out/compliance/compliance-impact.jtable.json", "compliance-impact.jtable.json"],
@@ -415,7 +415,7 @@ function copyMermaid(outputRoot: string): void {
   const mermaidDir = join(outputRoot, "explorer", "mermaid");
   mkdirSync(mermaidDir, { recursive: true });
 
-  const mappings = [
+  const mappings: Array<readonly [string, string]> = [
     [".doctrine/out/diagrams/supplychain.mmd", "supplychain.mmd"],
     [".doctrine/out/blast-radius/blast-radius.mmd", "blast-radius.mmd"],
     [".doctrine/out/simulation/attack-path.mmd", "attack-path.mmd"],
@@ -624,3 +624,4 @@ export function assertAuditPackShape(config: AuditPackConfig, outputRoot: string
     throw new Error("Explorer contains no jtable JSON views");
   }
 }
+
