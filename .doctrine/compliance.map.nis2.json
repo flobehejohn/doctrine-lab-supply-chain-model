@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "dreps-compliance.map.v1",
+  "framework": "NIS2",
+  "mappings": [
+    {
+      "findingId": "no-public-critical-vulnerable-pod",
+      "control": "NIS2-RISK-MANAGEMENT-AND-VULNERABILITY-HANDLING",
+      "title": "Public critical vulnerable pod impacts NIS2 vulnerability handling",
+      "impact": "critical",
+      "supplyChainImpact": false,
+      "rationale": "Exposure of a critical vulnerable service weakens cyber-risk management and vulnerability handling.",
+      "evidenceRefs": ["evidence_security_scans", "evidence_blast_radius"]
+    },
+    {
+      "findingId": "no-docker-sock-runner",
+      "control": "NIS2-SUPPLY-CHAIN-SECURITY",
+      "title": "Docker socket runner impacts software supply-chain security",
+      "impact": "high",
+      "supplyChainImpact": true,
+      "rationale": "A compromised runner can affect software production and delivery.",
+      "evidenceRefs": ["evidence_gitlab_runner"]
+    }
+  ]
+}

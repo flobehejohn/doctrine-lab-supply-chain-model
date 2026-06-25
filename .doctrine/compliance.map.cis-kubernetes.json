@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "dreps-compliance.map.v1",
+  "framework": "CIS_KUBERNETES",
+  "mappings": [
+    {
+      "findingId": "no-public-critical-vulnerable-pod",
+      "control": "CIS-K8S-WORKLOAD-EXPOSURE-HARDENING",
+      "title": "Exposed vulnerable pod weakens Kubernetes workload hardening",
+      "impact": "high",
+      "supplyChainImpact": false,
+      "rationale": "Kubernetes workloads should minimize public exposure and reduce vulnerable attack surface.",
+      "evidenceRefs": ["evidence_security_scans"]
+    }
+  ]
+}

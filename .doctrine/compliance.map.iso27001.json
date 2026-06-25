@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "dreps-compliance.map.v1",
+  "framework": "ISO27001",
+  "mappings": [
+    {
+      "findingId": "no-runner-privileged",
+      "control": "ISO27001-A.8.9-CONFIGURATION-MANAGEMENT",
+      "title": "Privileged runner indicates weak configuration hardening",
+      "impact": "high",
+      "supplyChainImpact": true,
+      "rationale": "Privileged CI configuration should be justified, hardened and controlled.",
+      "evidenceRefs": ["evidence_gitlab_runner"]
+    },
+    {
+      "findingId": "no-public-critical-vulnerable-pod",
+      "control": "ISO27001-A.8.8-MANAGEMENT-OF-TECHNICAL-VULNERABILITIES",
+      "title": "Public critical vulnerable pod impacts vulnerability management",
+      "impact": "critical",
+      "supplyChainImpact": false,
+      "rationale": "Known vulnerable critical assets must be treated and tracked.",
+      "evidenceRefs": ["evidence_security_scans"]
+    }
+  ]
+}

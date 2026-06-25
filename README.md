@@ -312,3 +312,12 @@ Commands:
 
 - pnpm blast:radius:analyze
 - pnpm blast:radius:certify
+
+## Compliance Mapper
+
+Phase 26 translates technical findings into framework-specific compliance impacts for SLSA, DORA, NIS2, ISO27001, CIS Kubernetes, OWASP ASVS and OWASP SAMM.
+
+Commands:
+
+- pnpm compliance:map
+- pnpm compliance:certify

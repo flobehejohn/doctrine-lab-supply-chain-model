@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "dreps-compliance.map.v1",
+  "framework": "SLSA",
+  "mappings": [
+    {
+      "findingId": "no-unsigned-container-image",
+      "control": "SLSA-BUILD-L3-PROVENANCE-AND-INTEGRITY",
+      "title": "Unsigned image weakens build provenance and artifact integrity",
+      "impact": "high",
+      "supplyChainImpact": true,
+      "rationale": "Container images must be attributable, verifiable and protected against tampering.",
+      "evidenceRefs": ["evidence_security_scans"]
+    },
+    {
+      "findingId": "no-runner-privileged",
+      "control": "SLSA-BUILD-ISOLATED-BUILDER",
+      "title": "Privileged runner weakens isolated build guarantees",
+      "impact": "high",
+      "supplyChainImpact": true,
+      "rationale": "Privileged CI runners increase the probability of build environment compromise.",
+      "evidenceRefs": ["evidence_gitlab_runner"]
+    },
+    {
+      "findingId": "no-docker-sock-runner",
+      "control": "SLSA-BUILD-ISOLATED-BUILDER",
+      "title": "Docker socket mounted in runner breaks builder isolation",
+      "impact": "critical",
+      "supplyChainImpact": true,
+      "rationale": "Docker socket exposure can allow host or sibling container compromise.",
+      "evidenceRefs": ["evidence_gitlab_runner"]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "dreps-compliance.map.v1",
+  "framework": "OWASP_ASVS",
+  "mappings": [
+    {
+      "findingId": "no-public-critical-vulnerable-pod",
+      "control": "OWASP-ASVS-V14-CONFIGURATION",
+      "title": "Public vulnerable service impacts secure configuration requirements",
+      "impact": "high",
+      "supplyChainImpact": false,
+      "rationale": "Public application components should be securely configured and patched.",
+      "evidenceRefs": ["evidence_security_scans"]
+    }
+  ]
+}

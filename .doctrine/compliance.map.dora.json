@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "dreps-compliance.map.v1",
+  "framework": "DORA",
+  "mappings": [
+    {
+      "findingId": "no-public-critical-vulnerable-pod",
+      "control": "DORA-ICT-RISK-MANAGEMENT",
+      "title": "Public critical vulnerable pod impacts ICT risk management",
+      "impact": "critical",
+      "supplyChainImpact": false,
+      "rationale": "A public critical vulnerable workload increases operational resilience and incident exposure risk.",
+      "evidenceRefs": ["evidence_security_scans", "evidence_blast_radius"]
+    },
+    {
+      "findingId": "no-untrusted-registry",
+      "control": "DORA-THIRD-PARTY-AND-ICT-ASSET-TRUST",
+      "title": "Untrusted registry weakens ICT asset trust",
+      "impact": "high",
+      "supplyChainImpact": true,
+      "rationale": "Untrusted registry chains reduce confidence in deployed ICT assets.",
+      "evidenceRefs": ["evidence_registry_trust"]
+    }
+  ]
+}

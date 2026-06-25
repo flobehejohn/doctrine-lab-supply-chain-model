@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "dreps-compliance.map.v1",
+  "framework": "OWASP_SAMM",
+  "mappings": [
+    {
+      "findingId": "no-unsigned-container-image",
+      "control": "OWASP-SAMM-IMPLEMENTATION-SECURE-BUILD",
+      "title": "Unsigned image impacts secure build maturity",
+      "impact": "medium",
+      "supplyChainImpact": true,
+      "rationale": "Secure build practice should include artifact integrity and traceability.",
+      "evidenceRefs": ["evidence_security_scans"]
+    }
+  ]
+}
