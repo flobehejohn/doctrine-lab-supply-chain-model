@@ -592,7 +592,7 @@ export function buildConfigMatrixEvidencePack(
     makeEvidence(evidenceTemplates, 2, "evidence_env_matrix_jtable", "configuration", "jtable-compatible environment matrix", paths.jtablePath, {
       renderer: "jtable.compat.v1"
     }),
-    makeEvidence(evidenceTemplates, 3, "evidence_env_matrix_markdown", "documentation", "Markdown environment matrix", paths.markdownTablePath)
+    makeEvidence(evidenceTemplates, 3, "evidence_env_matrix_markdown", "source_file", "Markdown environment matrix", paths.markdownTablePath)
   ];
 
   const findings = report.findings.map((finding, index) =>
