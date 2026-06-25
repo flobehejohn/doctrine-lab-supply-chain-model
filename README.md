@@ -348,3 +348,12 @@ Commands:
 
 - pnpm maintenance:plan
 - pnpm maintenance:certify
+
+## Simulation Engine
+
+Phase 30 simulates attacks, failures, drift and remediation outcomes. It exports simulation results, an attack-path Mermaid graph, a timeline, and before/after scoring.
+
+Commands:
+
+- pnpm simulation:run
+- pnpm simulation:certify

@@ -1,0 +1,310 @@
+{
+  "schemaVersion": "dreps-simulation.context.v1",
+  "source": "deterministic-simulation-fixture",
+  "activeScenario": "compromised-gitlab-runner",
+  "nodes": [
+    {
+      "id": "github-token",
+      "type": "secret",
+      "name": "GitHub token",
+      "critical": true,
+      "sensitiveData": true,
+      "riskWeight": 8
+    },
+    {
+      "id": "repo-auth-service",
+      "type": "repository",
+      "name": "auth-service repository",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 7
+    },
+    {
+      "id": "dependency-leftpad",
+      "type": "artifact",
+      "name": "malicious dependency",
+      "critical": false,
+      "sensitiveData": false,
+      "riskWeight": 6
+    },
+    {
+      "id": "ci-job-build",
+      "type": "build_job",
+      "name": "auth-service build job",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 7
+    },
+    {
+      "id": "runner_privileged",
+      "type": "gitlab_runner",
+      "name": "privileged GitLab runner",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 9
+    },
+    {
+      "id": "registry-prod",
+      "type": "registry",
+      "name": "production registry",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 8
+    },
+    {
+      "id": "image-auth-service",
+      "type": "container_image",
+      "name": "auth-service image",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 8
+    },
+    {
+      "id": "pod-auth-api",
+      "type": "k8s_pod",
+      "name": "auth API pod",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 9
+    },
+    {
+      "id": "secret-auth",
+      "type": "secret",
+      "name": "auth API Kubernetes secret",
+      "critical": true,
+      "sensitiveData": true,
+      "riskWeight": 8
+    },
+    {
+      "id": "db-auth-users",
+      "type": "database",
+      "name": "auth users database",
+      "critical": true,
+      "sensitiveData": true,
+      "dataClassification": "personal_data",
+      "riskWeight": 10
+    },
+    {
+      "id": "public-ingress",
+      "type": "ingress",
+      "name": "public ingress",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 7
+    },
+    {
+      "id": "pod-payments",
+      "type": "k8s_pod",
+      "name": "payments pod",
+      "critical": true,
+      "sensitiveData": false,
+      "riskWeight": 8
+    },
+    {
+      "id": "db-payments",
+      "type": "database",
+      "name": "payments database",
+      "critical": true,
+      "sensitiveData": true,
+      "dataClassification": "payment_data",
+      "riskWeight": 10
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-token-repo",
+      "source": "github-token",
+      "target": "repo-auth-service",
+      "type": "writes_to",
+      "label": "token can write to repository",
+      "likelihood": 0.85
+    },
+    {
+      "id": "edge-dependency-repo",
+      "source": "dependency-leftpad",
+      "target": "repo-auth-service",
+      "type": "depends_on",
+      "label": "malicious dependency influences repository",
+      "likelihood": 0.65
+    },
+    {
+      "id": "edge-repo-ci",
+      "source": "repo-auth-service",
+      "target": "ci-job-build",
+      "type": "triggers",
+      "label": "repository triggers build job",
+      "likelihood": 0.9
+    },
+    {
+      "id": "edge-ci-runner",
+      "source": "ci-job-build",
+      "target": "runner_privileged",
+      "type": "runs_on",
+      "label": "build job runs on privileged runner",
+      "likelihood": 0.85
+    },
+    {
+      "id": "edge-runner-registry",
+      "source": "runner_privileged",
+      "target": "registry-prod",
+      "type": "publishes",
+      "label": "runner can publish to registry",
+      "likelihood": 0.95
+    },
+    {
+      "id": "edge-registry-image",
+      "source": "registry-prod",
+      "target": "image-auth-service",
+      "type": "stores",
+      "label": "registry serves auth image",
+      "likelihood": 0.9
+    },
+    {
+      "id": "edge-image-pod",
+      "source": "image-auth-service",
+      "target": "pod-auth-api",
+      "type": "deploys",
+      "label": "image is deployed into pod",
+      "likelihood": 0.9
+    },
+    {
+      "id": "edge-pod-secret",
+      "source": "pod-auth-api",
+      "target": "secret-auth",
+      "type": "reads_from",
+      "label": "pod reads auth secret",
+      "likelihood": 0.8
+    },
+    {
+      "id": "edge-secret-db",
+      "source": "secret-auth",
+      "target": "db-auth-users",
+      "type": "connects_to",
+      "label": "secret enables DB connection",
+      "likelihood": 0.75
+    },
+    {
+      "id": "edge-pod-db",
+      "source": "pod-auth-api",
+      "target": "db-auth-users",
+      "type": "connects_to",
+      "label": "pod connects to users database",
+      "likelihood": 0.95
+    },
+    {
+      "id": "edge-public-db",
+      "source": "public-ingress",
+      "target": "db-auth-users",
+      "type": "exposes",
+      "label": "public ingress exposes database path",
+      "likelihood": 0.7
+    },
+    {
+      "id": "edge-pod-payments",
+      "source": "pod-auth-api",
+      "target": "pod-payments",
+      "type": "connects_to",
+      "label": "pod can laterally reach payments pod",
+      "likelihood": 0.75
+    },
+    {
+      "id": "edge-payments-db",
+      "source": "pod-payments",
+      "target": "db-payments",
+      "type": "connects_to",
+      "label": "payments pod connects to payments database",
+      "likelihood": 0.9
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "compromised-github-token",
+      "title": "Compromised GitHub token",
+      "startNode": "github-token",
+      "targetNodes": ["repo-auth-service", "pod-auth-api", "db-auth-users"],
+      "maxDepth": 8
+    },
+    {
+      "id": "compromised-gitlab-runner",
+      "title": "Compromised GitLab runner",
+      "startNode": "runner_privileged",
+      "targetNodes": ["registry-prod", "image-auth-service", "pod-auth-api", "db-auth-users"],
+      "maxDepth": 6
+    },
+    {
+      "id": "malicious-dependency",
+      "title": "Malicious dependency",
+      "startNode": "dependency-leftpad",
+      "targetNodes": ["repo-auth-service", "pod-auth-api", "db-auth-users"],
+      "maxDepth": 8
+    },
+    {
+      "id": "unsigned-image-deployed",
+      "title": "Unsigned image deployed",
+      "startNode": "image-auth-service",
+      "targetNodes": ["pod-auth-api", "db-auth-users"],
+      "maxDepth": 5
+    },
+    {
+      "id": "public-database-exposure",
+      "title": "Public database exposure",
+      "startNode": "public-ingress",
+      "targetNodes": ["db-auth-users"],
+      "maxDepth": 3
+    },
+    {
+      "id": "k8s-secret-exfiltration",
+      "title": "Kubernetes secret exfiltration",
+      "startNode": "pod-auth-api",
+      "targetNodes": ["secret-auth", "db-auth-users"],
+      "maxDepth": 4
+    },
+    {
+      "id": "ci-permission-escalation",
+      "title": "CI permission escalation",
+      "startNode": "ci-job-build",
+      "targetNodes": ["runner_privileged", "registry-prod", "pod-auth-api", "db-auth-users"],
+      "maxDepth": 7
+    },
+    {
+      "id": "compromised-registry",
+      "title": "Compromised registry",
+      "startNode": "registry-prod",
+      "targetNodes": ["image-auth-service", "pod-auth-api", "db-auth-users"],
+      "maxDepth": 5
+    },
+    {
+      "id": "no-network-policy-lateral-movement",
+      "title": "No NetworkPolicy lateral movement",
+      "startNode": "pod-auth-api",
+      "targetNodes": ["pod-payments", "db-payments"],
+      "maxDepth": 4
+    }
+  ],
+  "remediations": [
+    {
+      "id": "network-policy-db-egress",
+      "title": "Database egress NetworkPolicy",
+      "description": "Blocks direct pod-to-database propagation.",
+      "blocksEdges": ["edge-pod-db", "edge-secret-db", "edge-payments-db"],
+      "blocksNodeTypes": [],
+      "scoreReduction": 35
+    },
+    {
+      "id": "signed-image-admission",
+      "title": "Signed image admission controller",
+      "description": "Blocks unsigned image deployment to runtime pods.",
+      "blocksEdges": ["edge-image-pod"],
+      "blocksNodeTypes": [],
+      "scoreReduction": 25
+    },
+    {
+      "id": "registry-trust-gate",
+      "title": "Registry trust gate",
+      "description": "Blocks runner-to-registry publication when registry trust is not established.",
+      "blocksEdges": ["edge-runner-registry"],
+      "blocksNodeTypes": [],
+      "scoreReduction": 20
+    }
+  ]
+}

@@ -137,6 +137,8 @@ importers:
 
   packages/dreps-safe-logger: {}
 
+  packages/dreps-simulation-engine: {}
+
   packages/dreps-supplychain-schema:
     dependencies:
       zod:
