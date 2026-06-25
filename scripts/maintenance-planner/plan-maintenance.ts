@@ -1,5 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
-import { dirname, existsSync, resolve } from "node:path";
+import { existsSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 import {
   assertMaintenanceCalendarShape,
   buildRemediationCalendar,
@@ -46,3 +47,4 @@ console.log("destructive: " + calendar.summary.destructive);
 console.log("calendar: " + calendarPath);
 console.log("markdown: " + markdownPath);
 console.log("jtable: " + jtablePath);
+
