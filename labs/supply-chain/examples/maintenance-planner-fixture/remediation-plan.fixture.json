@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "dreps-remediation-plan.v1",
+  "generatedAt": "2026-06-25T00:00:00.000Z",
+  "source": "maintenance-planner-fixture",
+  "findingsEvaluated": 4,
+  "criticalFindings": [
+    "no-public-critical-vulnerable-pod",
+    "blast-radius-sensitive-db-reachable"
+  ],
+  "remediations": [
+    {
+      "id": "remediate-no-public-critical-vulnerable-pod",
+      "findingId": "no-public-critical-vulnerable-pod",
+      "affectedNodes": ["pod_checkout"],
+      "strategy": "Apply deny-by-default NetworkPolicy to reduce exposure.",
+      "risk": "critical",
+      "commands": [
+        {
+          "description": "Dry-run network policy",
+          "command": "kubectl -n prod apply -f patches/networkpolicy.yaml --dry-run=server",
+          "safeMode": true
+        }
+      ],
+      "patches": [
+        {
+          "path": "patches/networkpolicy.yaml",
+          "description": "NetworkPolicy patch",
+          "patch": "kind: NetworkPolicy"
+        }
+      ],
+      "verification": [
+        {
+          "description": "Verify policy",
+          "command": "pnpm policy:engine:certify",
+          "expected": "policy passes"
+        }
+      ],
+      "rollback": [
+        {
+          "description": "Delete NetworkPolicy",
+          "command": "kubectl -n prod delete networkpolicy checkout-deny-by-default"
+        }
+      ],
+      "approvalRequired": true,
+      "maintenanceWindow": "required: emergency or next approved production window",
+      "evidenceRefs": ["evidence_security_scans"]
+    },
+    {
+      "id": "remediate-blast-radius-sensitive-db-reachable",
+      "findingId": "blast-radius-sensitive-db-reachable",
+      "affectedNodes": ["pod_checkout", "db-auth-users"],
+      "strategy": "Restrict pod-to-database egress.",
+      "risk": "critical",
+      "commands": [
+        {
+          "description": "Dry-run DB egress policy",
+          "command": "kubectl -n prod apply -f patches/db-egress.yaml --dry-run=server",
+          "safeMode": true
+        }
+      ],
+      "patches": [
+        {
+          "path": "patches/db-egress.yaml",
+          "description": "DB egress NetworkPolicy",
+          "patch": "kind: NetworkPolicy"
+        }
+      ],
+      "verification": [
+        {
+          "description": "Verify blast radius",
+          "command": "pnpm blast:radius:certify",
+          "expected": "DB path is blocked"
+        }
+      ],
+      "rollback": [
+        {
+          "description": "Delete DB egress policy",
+          "command": "kubectl -n prod delete networkpolicy auth-db-egress-policy"
+        }
+      ],
+      "approvalRequired": true,
+      "maintenanceWindow": "required: emergency or next approved production window",
+      "evidenceRefs": ["evidence_blast_radius"]
+    },
+    {
+      "id": "remediate-no-unsigned-container-image",
+      "findingId": "no-unsigned-container-image",
+      "affectedNodes": ["image_checkout_latest"],
+      "strategy": "Sign container image and add verification gate.",
+      "risk": "high",
+      "commands": [
+        {
+          "description": "Verify registry trust",
+          "command": "pnpm registry:trust:certify",
+          "safeMode": true
+        }
+      ],
+      "patches": [
+        {
+          "path": "patches/signature-gate.patch",
+          "description": "Signature gate",
+          "patch": "cosign verify"
+        }
+      ],
+      "verification": [
+        {
+          "description": "Verify signature gate",
+          "command": "pnpm registry:trust:certify",
+          "expected": "signature evidence exists"
+        }
+      ],
+      "rollback": [
+        {
+          "description": "Revert CI gate",
+          "command": "git checkout -- .github/workflows/ci.yml"
+        }
+      ],
+      "approvalRequired": true,
+      "maintenanceWindow": "required: next standard maintenance window",
+      "evidenceRefs": ["evidence_security_scans"]
+    },
+    {
+      "id": "remediate-no-untrusted-registry",
+      "findingId": "no-untrusted-registry",
+      "affectedNodes": ["registry_local_untrusted"],
+      "strategy": "Enforce trusted registry TLS chain.",
+      "risk": "high",
+      "commands": [
+        {
+          "description": "Verify registry trust",
+          "command": "pnpm registry:trust:certify",
+          "safeMode": true
+        }
+      ],
+      "patches": [
+        {
+          "path": "patches/registry-trust-policy.patch",
+          "description": "Registry trust patch",
+          "patch": "chainTrusted=true"
+        }
+      ],
+      "verification": [
+        {
+          "description": "Verify registry trust",
+          "command": "pnpm registry:trust:certify",
+          "expected": "registry trust passes"
+        }
+      ],
+      "rollback": [
+        {
+          "description": "Restore fixture",
+          "command": "git checkout -- labs/supply-chain/examples/registry-trust-fixture"
+        }
+      ],
+      "approvalRequired": true,
+      "maintenanceWindow": "required: next standard maintenance window",
+      "evidenceRefs": ["evidence_registry_trust"]
+    }
+  ],
+  "summary": {
+    "totalRemediations": 4,
+    "criticalFindingsCovered": 2,
+    "approvalRequired": 4
+  }
+}

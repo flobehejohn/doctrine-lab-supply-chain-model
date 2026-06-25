@@ -107,6 +107,8 @@ importers:
         specifier: workspace:*
         version: link:../dreps-supplychain-schema
 
+  packages/dreps-maintenance-planner: {}
+
   packages/dreps-markdown-renderer: {}
 
   packages/dreps-marp-exporter: {}

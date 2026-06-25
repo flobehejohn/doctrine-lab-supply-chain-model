@@ -339,3 +339,12 @@ Commands:
 
 - pnpm gitops:patch:generate
 - pnpm gitops:patch:certify
+
+## Maintenance Planner
+
+Phase 29 plans remediation work from remediation-plan.json and maintenance.rules.json, prioritizing critical risk and enforcing maintenance windows for destructive changes.
+
+Commands:
+
+- pnpm maintenance:plan
+- pnpm maintenance:certify

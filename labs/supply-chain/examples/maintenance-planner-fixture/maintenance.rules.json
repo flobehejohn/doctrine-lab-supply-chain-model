@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "dreps-maintenance.rules.v1",
+  "timezone": "Europe/Paris",
+  "planningStartDate": "2026-06-25",
+  "defaultDurationMinutes": 90,
+  "riskLevelWeights": {
+    "critical": 100,
+    "high": 70,
+    "medium": 40,
+    "low": 10
+  },
+  "businessCriticalityWeights": {
+    "tier0": 100,
+    "tier1": 80,
+    "tier2": 50,
+    "tier3": 20
+  },
+  "earliestStartByRisk": {
+    "critical": 1,
+    "high": 3,
+    "medium": 7,
+    "low": 14
+  },
+  "maintenanceWindows": [
+    {
+      "id": "emergency-night",
+      "label": "Emergency night window",
+      "daysFromStart": 1,
+      "startTime": "02:00",
+      "durationMinutes": 120,
+      "allowedRiskLevels": ["critical"],
+      "destructiveAllowed": true,
+      "approvalRequired": true
+    },
+    {
+      "id": "standard-evening",
+      "label": "Standard evening window",
+      "daysFromStart": 3,
+      "startTime": "22:00",
+      "durationMinutes": 180,
+      "allowedRiskLevels": ["critical", "high"],
+      "destructiveAllowed": true,
+      "approvalRequired": true
+    },
+    {
+      "id": "business-hours-safe",
+      "label": "Business-hours safe-change window",
+      "daysFromStart": 5,
+      "startTime": "10:00",
+      "durationMinutes": 120,
+      "allowedRiskLevels": ["high", "medium", "low"],
+      "destructiveAllowed": false,
+      "approvalRequired": false
+    }
+  ],
+  "businessCriticality": {
+    "no-public-critical-vulnerable-pod": "tier0",
+    "no-docker-sock-runner": "tier1",
+    "blast-radius-sensitive-db-reachable": "tier0",
+    "no-unsigned-container-image": "tier1",
+    "no-runner-privileged": "tier1",
+    "no-untrusted-registry": "tier2"
+  },
+  "riskLevel": {
+    "no-public-critical-vulnerable-pod": "critical",
+    "no-docker-sock-runner": "critical",
+    "blast-radius-sensitive-db-reachable": "critical",
+    "no-unsigned-container-image": "high",
+    "no-runner-privileged": "high",
+    "no-untrusted-registry": "high"
+  }
+}
