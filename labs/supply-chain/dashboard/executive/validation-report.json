@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "doctrine.executive-dashboard.validation.v1",
+  "phase": 36,
+  "status": "passed",
+  "generatedAt": "2026-06-26T20:49:40.9383145Z",
+  "dashboard": "labs/supply-chain/dashboard/executive/index.html",
+  "cLevelTwoMinuteView": true,
+  "auditorDrilldown": true,
+  "engineerPatchPath": true,
+  "errors": []
+}
