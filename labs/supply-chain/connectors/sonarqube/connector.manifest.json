@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "doctrine.advanced-connector.manifest.v1",
+  "id": "sonarqube",
+  "title": "SonarQube",
+  "category": "code-quality-security",
+  "supportedModes": [
+    "fixture"
+  ],
+  "optionalLiveMode": null,
+  "fixturePath": "labs/supply-chain/connectors/sonarqube/fixtures/quality-gate.json",
+  "drepsOutputPath": "labs/supply-chain/connectors/out/sonarqube/evidence-pack.json",
+  "mapping": {
+    "entities": "nodes",
+    "relationships": "edges",
+    "findings": "findings",
+    "remediations": "remediations",
+    "complianceImpacts": "complianceImpacts"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "doctrine.external.connector.fixture.v1",
+  "connector": "sonarqube",
+  "externalTool": "SonarQube",
+  "collectedAt": "2026-06-26T00:00:00Z",
+  "source": {
+    "mode": "fixture",
+    "path": "labs/supply-chain/connectors/sonarqube/fixtures/quality-gate.json"
+  },
+  "entities": [
+    {
+      "id": "sonarqube-tool",
+      "type": "external_tool",
+      "label": "SonarQube",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "sonarqube-fixture"
+      ]
+    },
+    {
+      "id": "sonarqube-asset",
+      "type": "code_quality_project",
+      "label": "payments-api SonarQube project",
+      "status": "observed",
+      "criticality": "high",
+      "evidenceRefs": [
+        "sonarqube-fixture"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "sonarqube-imports-asset",
+      "source": "sonarqube-tool",
+      "target": "sonarqube-asset",
+      "type": "imports",
+      "evidenceRefs": [
+        "sonarqube-fixture"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "sonarqube-quality-gate-failed",
+      "title": "SonarQube quality gate failed",
+      "severity": "high",
+      "status": "open",
+      "affectedNodes": [
+        "sonarqube-asset"
+      ],
+      "evidenceRefs": [
+        "sonarqube-fixture"
+      ],
+      "remediationRefs": [
+        "sonarqube-remediation"
+      ],
+      "rationale": "Finding normalized from SonarQube advanced connector fixture."
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "id": "sonarqube-compliance-impact",
+      "framework": "NIS2",
+      "control": "Secure-Development",
+      "status": "failed",
+      "findingId": "sonarqube-quality-gate-failed",
+      "affectedNodes": [
+        "sonarqube-asset"
+      ],
+      "evidenceRefs": [
+        "sonarqube-fixture"
+      ],
+      "rationale": "Compliance impact derived from advanced connector finding."
+    }
+  ],
+  "remediations": [
+    {
+      "id": "sonarqube-remediation",
+      "findingId": "sonarqube-quality-gate-failed",
+      "affectedNodes": [
+        "sonarqube-asset"
+      ],
+      "strategy": "Block release until quality gate passes and attach issue remediation evidence.",
+      "risk": "connector-fixture-controlled",
+      "approvalRequired": true,
+      "verification": [
+        "Re-import connector data.",
+        "Validate generated DREPS evidence-pack.",
+        "Confirm finding status or remediation evidence."
+      ],
+      "rollback": [
+        "Restore previous connector fixture.",
+        "Re-run import-advanced-connector.ps1."
+      ]
+    }
+  ],
+  "raw": {
+    "note": "Fixture-first payload used to validate DREPS conversion without requiring external credentials.",
+    "sample": {
+      "externalId": "sonarqube-sample-001",
+      "name": "payments-api SonarQube project",
+      "tool": "SonarQube"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "doctrine.advanced-connector.manifest.v1",
+  "id": "opentelemetry",
+  "title": "OpenTelemetry",
+  "category": "telemetry",
+  "supportedModes": [
+    "fixture"
+  ],
+  "optionalLiveMode": null,
+  "fixturePath": "labs/supply-chain/connectors/opentelemetry/fixtures/service-traces.json",
+  "drepsOutputPath": "labs/supply-chain/connectors/out/opentelemetry/evidence-pack.json",
+  "mapping": {
+    "entities": "nodes",
+    "relationships": "edges",
+    "findings": "findings",
+    "remediations": "remediations",
+    "complianceImpacts": "complianceImpacts"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "doctrine.advanced-connectors.index.v1",
+  "phase": 35,
+  "title": "Advanced Connectors",
+  "objective": "Integrate Doctrine Supply Chain Lab with professional ecosystem tools.",
+  "definitionOfDone": "The lab can read at least one advanced external tool and convert data to DREPS.",
+  "connectors": [
+    {
+      "id": "github-api",
+      "title": "GitHub API",
+      "category": "source-control",
+      "manifest": "labs/supply-chain/connectors/github-api/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/github-api/fixtures/repository.json",
+      "output": "labs/supply-chain/connectors/out/github-api/evidence-pack.json"
+    },
+    {
+      "id": "gitlab-api",
+      "title": "GitLab API",
+      "category": "source-control",
+      "manifest": "labs/supply-chain/connectors/gitlab-api/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/gitlab-api/fixtures/project.json",
+      "output": "labs/supply-chain/connectors/out/gitlab-api/evidence-pack.json"
+    },
+    {
+      "id": "dependency-track",
+      "title": "Dependency-Track",
+      "category": "sbom-vulnerability-management",
+      "manifest": "labs/supply-chain/connectors/dependency-track/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/dependency-track/fixtures/project-metrics.json",
+      "output": "labs/supply-chain/connectors/out/dependency-track/evidence-pack.json"
+    },
+    {
+      "id": "backstage",
+      "title": "Backstage",
+      "category": "software-catalog",
+      "manifest": "labs/supply-chain/connectors/backstage/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/backstage/fixtures/catalog-component.json",
+      "output": "labs/supply-chain/connectors/out/backstage/evidence-pack.json"
+    },
+    {
+      "id": "grafana",
+      "title": "Grafana",
+      "category": "observability",
+      "manifest": "labs/supply-chain/connectors/grafana/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/grafana/fixtures/dashboard.json",
+      "output": "labs/supply-chain/connectors/out/grafana/evidence-pack.json"
+    },
+    {
+      "id": "opentelemetry",
+      "title": "OpenTelemetry",
+      "category": "telemetry",
+      "manifest": "labs/supply-chain/connectors/opentelemetry/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/opentelemetry/fixtures/service-traces.json",
+      "output": "labs/supply-chain/connectors/out/opentelemetry/evidence-pack.json"
+    },
+    {
+      "id": "sonarqube",
+      "title": "SonarQube",
+      "category": "code-quality-security",
+      "manifest": "labs/supply-chain/connectors/sonarqube/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/sonarqube/fixtures/quality-gate.json",
+      "output": "labs/supply-chain/connectors/out/sonarqube/evidence-pack.json"
+    },
+    {
+      "id": "guac",
+      "title": "GUAC",
+      "category": "supply-chain-graph",
+      "manifest": "labs/supply-chain/connectors/guac/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/guac/fixtures/guac-graph.json",
+      "output": "labs/supply-chain/connectors/out/guac/evidence-pack.json"
+    }
+  ]
+}
