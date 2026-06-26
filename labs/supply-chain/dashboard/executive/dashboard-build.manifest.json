@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "doctrine.executive-dashboard.build.v1",
+  "phase": 36,
+  "dashboard": "labs/supply-chain/dashboard/executive",
+  "data": "labs\\supply-chain\\dashboard\\executive\\data\\executive-dashboard.json",
+  "index": "labs\\supply-chain\\dashboard\\executive\\index.html",
+  "generatedAt": "2026-06-26T20:49:40.5720521Z",
+  "riskScore": 72,
+  "blastRadiusScore": 68,
+  "complianceScore": 61,
+  "remediationReadiness": 74,
+  "auditPackReadiness": 79
+}

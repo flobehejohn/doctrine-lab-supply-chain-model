@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Doctrine Executive Dashboard</title>
+  <link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Doctrine Supply Chain Lab</p>
+        <h1 id="dashboard-title">Executive Dashboard</h1>
+        <p id="headline" class="headline">Loading...</p>
+      </div>
+      <div class="hero-card">
+        <span class="label">Overall status</span>
+        <strong id="overall-status">loading</strong>
+      </div>
+    </section>
+
+    <section class="summary-grid">
+      <article class="summary-card">
+        <span>Risk Score</span>
+        <strong id="risk-score">-</strong>
+        <p>Executive risk exposure.</p>
+      </article>
+      <article class="summary-card">
+        <span>Blast Radius Score</span>
+        <strong id="blast-radius-score">-</strong>
+        <p>Potential propagation impact.</p>
+      </article>
+      <article class="summary-card">
+        <span>Compliance Status</span>
+        <strong id="compliance-score">-</strong>
+        <p>DORA / NIS2 / SLSA readiness.</p>
+      </article>
+      <article class="summary-card">
+        <span>Remediation Readiness</span>
+        <strong id="remediation-readiness">-</strong>
+        <p>Ability to move toward patches.</p>
+      </article>
+      <article class="summary-card">
+        <span>Audit Pack Status</span>
+        <strong id="audit-pack-readiness">-</strong>
+        <p>Evidence pack availability.</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">C-Level view</p>
+          <h2>Executive Summary</h2>
+        </div>
+      </div>
+      <div id="executive-summary" class="narrative"></div>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <p class="eyebrow">Auditor view</p>
+        <h2>Compliance Status</h2>
+        <div id="compliance-list" class="stack"></div>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">Engineer view</p>
+        <h2>Remediation Readiness</h2>
+        <div id="remediation-list" class="stack"></div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">Top Findings</p>
+      <h2>Highest-priority risks</h2>
+      <div id="findings-table" class="table"></div>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">Audit pack</p>
+      <h2>Evidence drilldowns</h2>
+      <div id="audit-pack" class="stack"></div>
+    </section>
+  </main>
+  <script src="./assets/app.js"></script>
+</body>
+</html>

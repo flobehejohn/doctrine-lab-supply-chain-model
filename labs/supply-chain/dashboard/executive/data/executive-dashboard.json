@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "doctrine.executive-dashboard.v1",
+  "phase": 36,
+  "title": "Doctrine Supply Chain Executive Dashboard",
+  "generatedAt": "2026-06-26T00:00:00Z",
+  "audience": [
+    "C-Level",
+    "Auditor",
+    "Engineer"
+  ],
+  "executiveSummary": {
+    "headline": "Supply chain observable, auditable and partially remediable.",
+    "situation": "The lab converts technical evidence into risk, compliance and remediation views.",
+    "businessRisk": "Medium-high until image signing, runner hardening and audit-pack verification are enforced.",
+    "decisionNeeded": "Prioritize signing/provenance, runner isolation, compliance evidence and remediation readiness.",
+    "twoMinuteMessage": "The current platform can show top risks, explain evidence, map compliance impact and route engineers to patch actions."
+  },
+  "scores": {
+    "riskScore": 72,
+    "blastRadiusScore": 68,
+    "complianceScore": 61,
+    "remediationReadiness": 74,
+    "auditPackReadiness": 79
+  },
+  "status": {
+    "overall": "attention-required",
+    "compliance": "partial",
+    "remediation": "ready-for-controlled-action",
+    "auditPack": "generated-and-explorable",
+    "evidence": "available"
+  },
+  "topFindings": [
+    {
+      "id": "github-actions-unpinned-workflow",
+      "severity": "high",
+      "title": "GitHub Actions workflow uses unpinned actions",
+      "businessImpact": "Build provenance can be weakened by mutable third-party actions.",
+      "evidenceRef": "labs/supply-chain/connectors/out/github-api/evidence-pack.json",
+      "patchRef": "Pin actions to SHA and regenerate evidence-pack.",
+      "ownerView": "engineering"
+    },
+    {
+      "id": "gitlab-runner-privileged",
+      "severity": "high",
+      "title": "GitLab runner allows privileged Docker execution",
+      "businessImpact": "Compromised CI job could pivot into build infrastructure.",
+      "evidenceRef": "labs/supply-chain/connectors/gitlab-api/fixtures/project.json",
+      "patchRef": "Disable privileged mode and isolate runner.",
+      "ownerView": "platform"
+    },
+    {
+      "id": "dependency-track-critical-vulnerability",
+      "severity": "critical",
+      "title": "Dependency-Track reports critical vulnerable component",
+      "businessImpact": "Known vulnerable dependency may affect exposed runtime service.",
+      "evidenceRef": "labs/supply-chain/connectors/dependency-track/fixtures/project-metrics.json",
+      "patchRef": "Upgrade component and attach SBOM delta.",
+      "ownerView": "security"
+    },
+    {
+      "id": "sonarqube-quality-gate-failed",
+      "severity": "high",
+      "title": "SonarQube quality gate failed",
+      "businessImpact": "Release quality gate failure increases operational and compliance risk.",
+      "evidenceRef": "labs/supply-chain/connectors/sonarqube/fixtures/quality-gate.json",
+      "patchRef": "Block release until quality gate passes.",
+      "ownerView": "engineering"
+    }
+  ],
+  "complianceStatus": [
+    {
+      "framework": "SLSA",
+      "status": "partial",
+      "score": 58,
+      "gap": "Provenance and attestation controls need enforcement.",
+      "evidenceRef": "docs/23_ADVANCED_CONNECTORS.md"
+    },
+    {
+      "framework": "DORA",
+      "status": "partial",
+      "score": 64,
+      "gap": "Remediation workflow exists but must be tied to change approval.",
+      "evidenceRef": "docs/18_TRAINING_MODE.md"
+    },
+    {
+      "framework": "NIS2",
+      "status": "partial",
+      "score": 62,
+      "gap": "Supply-chain evidence exists but continuous monitoring is not complete.",
+      "evidenceRef": "labs/supply-chain/connectors/connectors.index.json"
+    }
+  ],
+  "remediationReadiness": [
+    {
+      "findingId": "github-actions-unpinned-workflow",
+      "readiness": "ready",
+      "nextAction": "Generate patch guidance to pin actions by SHA.",
+      "verification": "Re-run connector import and validation."
+    },
+    {
+      "findingId": "gitlab-runner-privileged",
+      "readiness": "planned",
+      "nextAction": "Prepare runner hardening runbook.",
+      "verification": "Validate runner fixture after remediation."
+    },
+    {
+      "findingId": "dependency-track-critical-vulnerability",
+      "readiness": "ready",
+      "nextAction": "Upgrade vulnerable component and attach SBOM delta.",
+      "verification": "Re-import Dependency-Track fixture."
+    }
+  ],
+  "auditPackStatus": {
+    "status": "explorable",
+    "manifest": "labs/supply-chain/connectors/validation-report.json",
+    "evidencePacks": [
+      "labs/supply-chain/connectors/out/github-api/evidence-pack.json",
+      "labs/supply-chain/training/out/01-gitlab-supply-chain/evidence-pack.json"
+    ],
+    "auditorPath": "Open evidence, findings, compliance impacts and remediation refs without launching the technical lab."
+  },
+  "drilldowns": {
+    "auditor": [
+      "labs/supply-chain/connectors/validation-report.json",
+      "labs/supply-chain/connectors/out/github-api/evidence-pack.json",
+      "labs/supply-chain/connectors/connectors.index.json"
+    ],
+    "engineer": [
+      "scripts/connectors/import-advanced-connector.ps1",
+      "scripts/connectors/validate-advanced-connectors.ps1",
+      "labs/supply-chain/connectors/github-api/README.md"
+    ],
+    "cLevel": [
+      "labs/supply-chain/dashboard/executive/index.html",
+      "docs/24_EXECUTIVE_DASHBOARD.md"
+    ]
+  }
+}
