@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "dreps.supplychain.training.v1",
+  "packId": "07-audit-pack-exploration-00-start",
+  "createdAt": "2026-06-26T00:00:00Z",
+  "mode": "training",
+  "training": {
+    "phase": 34,
+    "scenarioId": "07-audit-pack-exploration",
+    "scenarioTitle": "Audit-pack exploration",
+    "step": "00-start",
+    "stepIndex": 0,
+    "objective": "Apprendre a inspecter findings, compliance, blast radius et checksums sans lancer l'UI.",
+    "definitionOfDone": "Chaque etape produit ou modifie un evidence-pack."
+  },
+  "nodes": [
+    {
+      "id": "07-audit-pack-exploration-scenario",
+      "type": "training_scenario",
+      "label": "Audit-pack exploration",
+      "status": "learning",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "07-audit-pack-exploration-brief"
+      ]
+    },
+    {
+      "id": "07-audit-pack-exploration-target",
+      "type": "audit_pack",
+      "label": "Audit-pack externe",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "07-audit-pack-exploration-brief"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "07-audit-pack-exploration-edge-scenario-target",
+      "source": "07-audit-pack-exploration-scenario",
+      "target": "07-audit-pack-exploration-target",
+      "type": "contains",
+      "evidenceRefs": [
+        "07-audit-pack-exploration-brief"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "07-audit-pack-exploration-brief",
+      "type": "training_brief",
+      "path": "labs/supply-chain/training/07-audit-pack-exploration/README.md",
+      "producedBy": "phase34.training-mode",
+      "description": "Brief pedagogique du scenario Audit-pack exploration."
+    }
+  ],
+  "findings": [],
+  "remediations": [],
+  "complianceImpacts": [],
+  "documentation": [
+    {
+      "id": "07-audit-pack-exploration-doc",
+      "title": "Audit-pack exploration training guide",
+      "path": "labs/supply-chain/training/07-audit-pack-exploration/README.md"
+    }
+  ],
+  "simulations": [],
+  "commandRefs": [
+    {
+      "id": "07-audit-pack-exploration-run-step",
+      "shell": "pwsh",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1 -Scenario 07-audit-pack-exploration -Step 00-start",
+      "riskLevel": "read_only",
+      "approvalRequired": false
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "07-audit-pack-exploration-runbook",
+      "title": "Audit-pack exploration learner runbook",
+      "path": "labs/supply-chain/training/07-audit-pack-exploration/README.md"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "07-audit-pack-exploration-training-workflow",
+      "title": "Audit-pack exploration workflow",
+      "steps": [
+        "00-start",
+        "01-observe",
+        "02-assess",
+        "03-remediate"
+      ]
+    }
+  ],
+  "graphMetrics": {
+    "nodeCount": 2,
+    "edgeCount": 1,
+    "findingCount": 0,
+    "remediationCount": 0,
+    "complianceImpactCount": 0
+  },
+  "toolchain": {
+    "powershell": "7.6.1",
+    "generator": "phase34-training-mode"
+  },
+  "provenance": {
+    "source": "Doctrine Platform Phase 34",
+    "generatedBy": "phase34-bootstrap-training.ps1",
+    "cleanRoom": true
+  }
+}

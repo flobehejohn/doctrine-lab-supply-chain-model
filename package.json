@@ -101,7 +101,11 @@
     "signature:generate": "pnpm auditpack:explorer:certify && tsx scripts/signature/generate-signature-assets.ts",
     "signature:certify": "pnpm signature:generate && tsx scripts/signature/certify-signature-assets.ts",
     "auditpack:explorer:generate": "pnpm auditpack:certify && tsx scripts/audit-pack-explorer/generate-audit-pack-explorer.ts",
-    "auditpack:explorer:certify": "pnpm auditpack:explorer:generate && tsx scripts/audit-pack-explorer/certify-audit-pack-explorer.ts"
+    "auditpack:explorer:certify": "pnpm auditpack:explorer:generate && tsx scripts/audit-pack-explorer/certify-audit-pack-explorer.ts",
+    "training:list": "powershell -ExecutionPolicy Bypass -File scripts/training/list-training-scenarios.ps1",
+    "training:run": "powershell -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1",
+    "training:validate": "powershell -ExecutionPolicy Bypass -File scripts/training/validate-training-mode.ps1",
+    "training:certify": "powershell -ExecutionPolicy Bypass -File scripts/training/validate-training-mode.ps1"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

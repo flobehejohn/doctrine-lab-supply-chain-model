@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "dreps.supplychain.training.v1",
+  "packId": "01-gitlab-supply-chain-02-assess",
+  "createdAt": "2026-06-26T00:00:00Z",
+  "mode": "training",
+  "training": {
+    "phase": 34,
+    "scenarioId": "01-gitlab-supply-chain",
+    "scenarioTitle": "GitLab supply chain",
+    "step": "02-assess",
+    "stepIndex": 2,
+    "objective": "Comprendre la chaine repo -> pipeline -> runner -> image -> registry -> preuve DREPS.",
+    "definitionOfDone": "Chaque etape produit ou modifie un evidence-pack."
+  },
+  "nodes": [
+    {
+      "id": "01-gitlab-supply-chain-scenario",
+      "type": "training_scenario",
+      "label": "GitLab supply chain",
+      "status": "learning",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "01-gitlab-supply-chain-brief"
+      ]
+    },
+    {
+      "id": "01-gitlab-supply-chain-target",
+      "type": "gitlab_runner",
+      "label": "GitLab runner Docker",
+      "status": "observed",
+      "criticality": "high",
+      "evidenceRefs": [
+        "01-gitlab-supply-chain-brief",
+        "01-gitlab-supply-chain-observation"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "01-gitlab-supply-chain-edge-scenario-target",
+      "source": "01-gitlab-supply-chain-scenario",
+      "target": "01-gitlab-supply-chain-target",
+      "type": "contains",
+      "evidenceRefs": [
+        "01-gitlab-supply-chain-brief"
+      ]
+    },
+    {
+      "id": "01-gitlab-supply-chain-edge-observes",
+      "source": "01-gitlab-supply-chain-target",
+      "target": "01-gitlab-supply-chain-scenario",
+      "type": "documents",
+      "evidenceRefs": [
+        "01-gitlab-supply-chain-observation"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "01-gitlab-supply-chain-brief",
+      "type": "training_brief",
+      "path": "labs/supply-chain/training/01-gitlab-supply-chain/README.md",
+      "producedBy": "phase34.training-mode",
+      "description": "Brief pedagogique du scenario GitLab supply chain."
+    },
+    {
+      "id": "01-gitlab-supply-chain-observation",
+      "type": "gitlab_ci_config",
+      "path": "labs/supply-chain/training/01-gitlab-supply-chain/steps/01-observe.md",
+      "producedBy": "training.step.observe",
+      "description": "Observation technique controlee pour GitLab runner Docker."
+    }
+  ],
+  "findings": [
+    {
+      "id": "gitlab-runner-privileged",
+      "title": "Runner GitLab en mode privilegie",
+      "severity": "high",
+      "status": "open",
+      "affectedNodes": [
+        "01-gitlab-supply-chain-target"
+      ],
+      "evidenceRefs": [
+        "01-gitlab-supply-chain-observation"
+      ],
+      "remediationRefs": [],
+      "rationale": "Finding pedagogique introduit pour apprendre a relier preuve, risque, conformite et remediation."
+    }
+  ],
+  "remediations": [],
+  "complianceImpacts": [
+    {
+      "id": "01-gitlab-supply-chain-compliance-impact",
+      "framework": "SLSA",
+      "control": "SLSA-Build-Isolation",
+      "status": "failed",
+      "findingId": "gitlab-runner-privileged",
+      "affectedNodes": [
+        "01-gitlab-supply-chain-target"
+      ],
+      "evidenceRefs": [
+        "01-gitlab-supply-chain-observation"
+      ],
+      "rationale": "Impact conformite derive du finding gitlab-runner-privileged."
+    }
+  ],
+  "documentation": [
+    {
+      "id": "01-gitlab-supply-chain-doc",
+      "title": "GitLab supply chain training guide",
+      "path": "labs/supply-chain/training/01-gitlab-supply-chain/README.md"
+    }
+  ],
+  "simulations": [],
+  "commandRefs": [
+    {
+      "id": "01-gitlab-supply-chain-run-step",
+      "shell": "pwsh",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1 -Scenario 01-gitlab-supply-chain -Step 02-assess",
+      "riskLevel": "read_only",
+      "approvalRequired": false
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "01-gitlab-supply-chain-runbook",
+      "title": "GitLab supply chain learner runbook",
+      "path": "labs/supply-chain/training/01-gitlab-supply-chain/README.md"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "01-gitlab-supply-chain-training-workflow",
+      "title": "GitLab supply chain workflow",
+      "steps": [
+        "00-start",
+        "01-observe",
+        "02-assess",
+        "03-remediate"
+      ]
+    }
+  ],
+  "graphMetrics": {
+    "nodeCount": 2,
+    "edgeCount": 2,
+    "findingCount": 1,
+    "remediationCount": 0,
+    "complianceImpactCount": 1
+  },
+  "toolchain": {
+    "powershell": "7.6.1",
+    "generator": "phase34-training-mode"
+  },
+  "provenance": {
+    "source": "Doctrine Platform Phase 34",
+    "generatedBy": "phase34-bootstrap-training.ps1",
+    "cleanRoom": true
+  }
+}

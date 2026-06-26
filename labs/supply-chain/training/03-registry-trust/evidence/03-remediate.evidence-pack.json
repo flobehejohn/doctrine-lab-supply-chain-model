@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "dreps.supplychain.training.v1",
+  "packId": "03-registry-trust-03-remediate",
+  "createdAt": "2026-06-26T00:00:00Z",
+  "mode": "training",
+  "training": {
+    "phase": 34,
+    "scenarioId": "03-registry-trust",
+    "scenarioTitle": "Registry trust",
+    "step": "03-remediate",
+    "stepIndex": 3,
+    "objective": "Comprendre certificat registry, chaine de confiance, signature d'image et preuve verifiable.",
+    "definitionOfDone": "Chaque etape produit ou modifie un evidence-pack."
+  },
+  "nodes": [
+    {
+      "id": "03-registry-trust-scenario",
+      "type": "training_scenario",
+      "label": "Registry trust",
+      "status": "learning",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "03-registry-trust-brief"
+      ]
+    },
+    {
+      "id": "03-registry-trust-target",
+      "type": "registry",
+      "label": "Registry interne non verifiee",
+      "status": "remediated",
+      "criticality": "critical",
+      "evidenceRefs": [
+        "03-registry-trust-brief",
+        "03-registry-trust-observation"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "03-registry-trust-edge-scenario-target",
+      "source": "03-registry-trust-scenario",
+      "target": "03-registry-trust-target",
+      "type": "contains",
+      "evidenceRefs": [
+        "03-registry-trust-brief"
+      ]
+    },
+    {
+      "id": "03-registry-trust-edge-observes",
+      "source": "03-registry-trust-target",
+      "target": "03-registry-trust-scenario",
+      "type": "documents",
+      "evidenceRefs": [
+        "03-registry-trust-observation"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "03-registry-trust-brief",
+      "type": "training_brief",
+      "path": "labs/supply-chain/training/03-registry-trust/README.md",
+      "producedBy": "phase34.training-mode",
+      "description": "Brief pedagogique du scenario Registry trust."
+    },
+    {
+      "id": "03-registry-trust-observation",
+      "type": "registry_certificate",
+      "path": "labs/supply-chain/training/03-registry-trust/steps/01-observe.md",
+      "producedBy": "training.step.observe",
+      "description": "Observation technique controlee pour Registry interne non verifiee."
+    }
+  ],
+  "findings": [
+    {
+      "id": "registry-untrusted-chain",
+      "title": "Chaine TLS registry non verifiee",
+      "severity": "critical",
+      "status": "mitigated",
+      "affectedNodes": [
+        "03-registry-trust-target"
+      ],
+      "evidenceRefs": [
+        "03-registry-trust-observation"
+      ],
+      "remediationRefs": [
+        "03-registry-trust-remediation"
+      ],
+      "rationale": "Finding pedagogique introduit pour apprendre a relier preuve, risque, conformite et remediation."
+    }
+  ],
+  "remediations": [
+    {
+      "id": "03-registry-trust-remediation",
+      "findingId": "registry-untrusted-chain",
+      "affectedNodes": [
+        "03-registry-trust-target"
+      ],
+      "strategy": "Importer la chaine CA, refuser TLS non verifie, signer les images et documenter la verification.",
+      "risk": "training-controlled",
+      "approvalRequired": true,
+      "commands": [
+        {
+          "id": "03-registry-trust-verify",
+          "shell": "pwsh",
+          "riskLevel": "read_only",
+          "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/validate-training-mode.ps1",
+          "approvalRequired": false
+        }
+      ],
+      "patches": [
+        {
+          "id": "03-registry-trust-training-patch",
+          "path": "labs/supply-chain/training/03-registry-trust",
+          "description": "Patch pedagogique simule : le scenario documente la correction sans appliquer de changement destructif."
+        }
+      ],
+      "verification": [
+        "Relancer validate-training-mode.ps1.",
+        "Verifier que le finding est relie a une remediation.",
+        "Verifier que le rollback est documente."
+      ],
+      "rollback": [
+        "Restaurer le precedent evidence-pack du scenario.",
+        "Rejouer l'etape 02-assess pour revenir a l'etat avant remediation."
+      ],
+      "maintenanceWindow": "training-lab-only"
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "id": "03-registry-trust-compliance-impact",
+      "framework": "SLSA",
+      "control": "SLSA-Provenance-Integrity",
+      "status": "improved",
+      "findingId": "registry-untrusted-chain",
+      "affectedNodes": [
+        "03-registry-trust-target"
+      ],
+      "evidenceRefs": [
+        "03-registry-trust-observation"
+      ],
+      "rationale": "Impact conformite derive du finding registry-untrusted-chain."
+    }
+  ],
+  "documentation": [
+    {
+      "id": "03-registry-trust-doc",
+      "title": "Registry trust training guide",
+      "path": "labs/supply-chain/training/03-registry-trust/README.md"
+    }
+  ],
+  "simulations": [],
+  "commandRefs": [
+    {
+      "id": "03-registry-trust-run-step",
+      "shell": "pwsh",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1 -Scenario 03-registry-trust -Step 03-remediate",
+      "riskLevel": "read_only",
+      "approvalRequired": false
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "03-registry-trust-runbook",
+      "title": "Registry trust learner runbook",
+      "path": "labs/supply-chain/training/03-registry-trust/README.md"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "03-registry-trust-training-workflow",
+      "title": "Registry trust workflow",
+      "steps": [
+        "00-start",
+        "01-observe",
+        "02-assess",
+        "03-remediate"
+      ]
+    }
+  ],
+  "graphMetrics": {
+    "nodeCount": 2,
+    "edgeCount": 2,
+    "findingCount": 1,
+    "remediationCount": 1,
+    "complianceImpactCount": 1
+  },
+  "toolchain": {
+    "powershell": "7.6.1",
+    "generator": "phase34-training-mode"
+  },
+  "provenance": {
+    "source": "Doctrine Platform Phase 34",
+    "generatedBy": "phase34-bootstrap-training.ps1",
+    "cleanRoom": true
+  }
+}

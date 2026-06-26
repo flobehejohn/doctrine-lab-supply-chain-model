@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "doctrine.training.scenario.v1",
+  "id": "02-kubernetes-foundations",
+  "title": "Kubernetes foundations",
+  "track": "Kubernetes",
+  "objective": "Relier namespace, workload, pod, service et NetworkPolicy dans un evidence-pack pedagogique.",
+  "target": "Namespace Kubernetes expose",
+  "findingId": "missing-network-policy",
+  "framework": "DORA",
+  "control": "DORA-ICT-Risk-Protection",
+  "steps": [
+    {
+      "Order": 0,
+      "Id": "00-start",
+      "Title": "Initialiser le scenario",
+      "Kind": "produce",
+      "EvidencePack": "evidence/00-start.evidence-pack.json",
+      "Outcome": "Produit un evidence-pack initial minimal."
+    },
+    {
+      "Order": 1,
+      "Id": "01-observe",
+      "Title": "Observer la chaine",
+      "Kind": "modify",
+      "EvidencePack": "evidence/01-observe.evidence-pack.json",
+      "Outcome": "Ajoute les preuves techniques observees."
+    },
+    {
+      "Order": 2,
+      "Id": "02-assess",
+      "Title": "Qualifier le risque",
+      "Kind": "modify",
+      "EvidencePack": "evidence/02-assess.evidence-pack.json",
+      "Outcome": "Ajoute finding, impact conformite et liens de preuve."
+    },
+    {
+      "Order": 3,
+      "Id": "03-remediate",
+      "Title": "Preparer la remediation",
+      "Kind": "modify",
+      "EvidencePack": "evidence/03-remediate.evidence-pack.json",
+      "Outcome": "Ajoute remediation, verification, rollback et sortie auditable."
+    }
+  ]
+}

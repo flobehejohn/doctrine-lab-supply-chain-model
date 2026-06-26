@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "dreps.supplychain.training.v1",
+  "packId": "04-git-forensic-02-assess",
+  "createdAt": "2026-06-26T00:00:00Z",
+  "mode": "training",
+  "training": {
+    "phase": 34,
+    "scenarioId": "04-git-forensic",
+    "scenarioTitle": "Git forensic",
+    "step": "02-assess",
+    "stepIndex": 2,
+    "objective": "Auditer historique Git, tags, CODEOWNERS, signatures et risques de provenance.",
+    "definitionOfDone": "Chaque etape produit ou modifie un evidence-pack."
+  },
+  "nodes": [
+    {
+      "id": "04-git-forensic-scenario",
+      "type": "training_scenario",
+      "label": "Git forensic",
+      "status": "learning",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "04-git-forensic-brief"
+      ]
+    },
+    {
+      "id": "04-git-forensic-target",
+      "type": "repository",
+      "label": "Release tag non signe",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "04-git-forensic-brief",
+        "04-git-forensic-observation"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "04-git-forensic-edge-scenario-target",
+      "source": "04-git-forensic-scenario",
+      "target": "04-git-forensic-target",
+      "type": "contains",
+      "evidenceRefs": [
+        "04-git-forensic-brief"
+      ]
+    },
+    {
+      "id": "04-git-forensic-edge-observes",
+      "source": "04-git-forensic-target",
+      "target": "04-git-forensic-scenario",
+      "type": "documents",
+      "evidenceRefs": [
+        "04-git-forensic-observation"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "04-git-forensic-brief",
+      "type": "training_brief",
+      "path": "labs/supply-chain/training/04-git-forensic/README.md",
+      "producedBy": "phase34.training-mode",
+      "description": "Brief pedagogique du scenario Git forensic."
+    },
+    {
+      "id": "04-git-forensic-observation",
+      "type": "git_history",
+      "path": "labs/supply-chain/training/04-git-forensic/steps/01-observe.md",
+      "producedBy": "training.step.observe",
+      "description": "Observation technique controlee pour Release tag non signe."
+    }
+  ],
+  "findings": [
+    {
+      "id": "unsigned-release-tag",
+      "title": "Tag de release non signe",
+      "severity": "medium",
+      "status": "open",
+      "affectedNodes": [
+        "04-git-forensic-target"
+      ],
+      "evidenceRefs": [
+        "04-git-forensic-observation"
+      ],
+      "remediationRefs": [],
+      "rationale": "Finding pedagogique introduit pour apprendre a relier preuve, risque, conformite et remediation."
+    }
+  ],
+  "remediations": [],
+  "complianceImpacts": [
+    {
+      "id": "04-git-forensic-compliance-impact",
+      "framework": "NIS2",
+      "control": "NIS2-Supply-Chain-Security",
+      "status": "failed",
+      "findingId": "unsigned-release-tag",
+      "affectedNodes": [
+        "04-git-forensic-target"
+      ],
+      "evidenceRefs": [
+        "04-git-forensic-observation"
+      ],
+      "rationale": "Impact conformite derive du finding unsigned-release-tag."
+    }
+  ],
+  "documentation": [
+    {
+      "id": "04-git-forensic-doc",
+      "title": "Git forensic training guide",
+      "path": "labs/supply-chain/training/04-git-forensic/README.md"
+    }
+  ],
+  "simulations": [],
+  "commandRefs": [
+    {
+      "id": "04-git-forensic-run-step",
+      "shell": "pwsh",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1 -Scenario 04-git-forensic -Step 02-assess",
+      "riskLevel": "read_only",
+      "approvalRequired": false
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "04-git-forensic-runbook",
+      "title": "Git forensic learner runbook",
+      "path": "labs/supply-chain/training/04-git-forensic/README.md"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "04-git-forensic-training-workflow",
+      "title": "Git forensic workflow",
+      "steps": [
+        "00-start",
+        "01-observe",
+        "02-assess",
+        "03-remediate"
+      ]
+    }
+  ],
+  "graphMetrics": {
+    "nodeCount": 2,
+    "edgeCount": 2,
+    "findingCount": 1,
+    "remediationCount": 0,
+    "complianceImpactCount": 1
+  },
+  "toolchain": {
+    "powershell": "7.6.1",
+    "generator": "phase34-training-mode"
+  },
+  "provenance": {
+    "source": "Doctrine Platform Phase 34",
+    "generatedBy": "phase34-bootstrap-training.ps1",
+    "cleanRoom": true
+  }
+}

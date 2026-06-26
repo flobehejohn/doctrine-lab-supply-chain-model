@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "dreps.supplychain.training.v1",
+  "packId": "06-gitops-remediation-03-remediate",
+  "createdAt": "2026-06-26T00:00:00Z",
+  "mode": "training",
+  "training": {
+    "phase": 34,
+    "scenarioId": "06-gitops-remediation",
+    "scenarioTitle": "GitOps remediation",
+    "step": "03-remediate",
+    "stepIndex": 3,
+    "objective": "Passer d'un finding a une remediation versionnee, verifiable et rollbackable.",
+    "definitionOfDone": "Chaque etape produit ou modifie un evidence-pack."
+  },
+  "nodes": [
+    {
+      "id": "06-gitops-remediation-scenario",
+      "type": "training_scenario",
+      "label": "GitOps remediation",
+      "status": "learning",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "06-gitops-remediation-brief"
+      ]
+    },
+    {
+      "id": "06-gitops-remediation-target",
+      "type": "gitops_patch",
+      "label": "Patch GitOps NetworkPolicy",
+      "status": "remediated",
+      "criticality": "high",
+      "evidenceRefs": [
+        "06-gitops-remediation-brief",
+        "06-gitops-remediation-observation"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "06-gitops-remediation-edge-scenario-target",
+      "source": "06-gitops-remediation-scenario",
+      "target": "06-gitops-remediation-target",
+      "type": "contains",
+      "evidenceRefs": [
+        "06-gitops-remediation-brief"
+      ]
+    },
+    {
+      "id": "06-gitops-remediation-edge-observes",
+      "source": "06-gitops-remediation-target",
+      "target": "06-gitops-remediation-scenario",
+      "type": "documents",
+      "evidenceRefs": [
+        "06-gitops-remediation-observation"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "06-gitops-remediation-brief",
+      "type": "training_brief",
+      "path": "labs/supply-chain/training/06-gitops-remediation/README.md",
+      "producedBy": "phase34.training-mode",
+      "description": "Brief pedagogique du scenario GitOps remediation."
+    },
+    {
+      "id": "06-gitops-remediation-observation",
+      "type": "gitops_patch",
+      "path": "labs/supply-chain/training/06-gitops-remediation/steps/01-observe.md",
+      "producedBy": "training.step.observe",
+      "description": "Observation technique controlee pour Patch GitOps NetworkPolicy."
+    }
+  ],
+  "findings": [
+    {
+      "id": "remediation-without-rollback",
+      "title": "Remediation sans rollback documente",
+      "severity": "high",
+      "status": "mitigated",
+      "affectedNodes": [
+        "06-gitops-remediation-target"
+      ],
+      "evidenceRefs": [
+        "06-gitops-remediation-observation"
+      ],
+      "remediationRefs": [
+        "06-gitops-remediation-remediation"
+      ],
+      "rationale": "Finding pedagogique introduit pour apprendre a relier preuve, risque, conformite et remediation."
+    }
+  ],
+  "remediations": [
+    {
+      "id": "06-gitops-remediation-remediation",
+      "findingId": "remediation-without-rollback",
+      "affectedNodes": [
+        "06-gitops-remediation-target"
+      ],
+      "strategy": "Generer patch.diff, verification.ps1, rollback.md et PR body structure.",
+      "risk": "training-controlled",
+      "approvalRequired": true,
+      "commands": [
+        {
+          "id": "06-gitops-remediation-verify",
+          "shell": "pwsh",
+          "riskLevel": "read_only",
+          "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/validate-training-mode.ps1",
+          "approvalRequired": false
+        }
+      ],
+      "patches": [
+        {
+          "id": "06-gitops-remediation-training-patch",
+          "path": "labs/supply-chain/training/06-gitops-remediation",
+          "description": "Patch pedagogique simule : le scenario documente la correction sans appliquer de changement destructif."
+        }
+      ],
+      "verification": [
+        "Relancer validate-training-mode.ps1.",
+        "Verifier que le finding est relie a une remediation.",
+        "Verifier que le rollback est documente."
+      ],
+      "rollback": [
+        "Restaurer le precedent evidence-pack du scenario.",
+        "Rejouer l'etape 02-assess pour revenir a l'etat avant remediation."
+      ],
+      "maintenanceWindow": "training-lab-only"
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "id": "06-gitops-remediation-compliance-impact",
+      "framework": "DORA",
+      "control": "DORA-Change-Management",
+      "status": "improved",
+      "findingId": "remediation-without-rollback",
+      "affectedNodes": [
+        "06-gitops-remediation-target"
+      ],
+      "evidenceRefs": [
+        "06-gitops-remediation-observation"
+      ],
+      "rationale": "Impact conformite derive du finding remediation-without-rollback."
+    }
+  ],
+  "documentation": [
+    {
+      "id": "06-gitops-remediation-doc",
+      "title": "GitOps remediation training guide",
+      "path": "labs/supply-chain/training/06-gitops-remediation/README.md"
+    }
+  ],
+  "simulations": [],
+  "commandRefs": [
+    {
+      "id": "06-gitops-remediation-run-step",
+      "shell": "pwsh",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1 -Scenario 06-gitops-remediation -Step 03-remediate",
+      "riskLevel": "read_only",
+      "approvalRequired": false
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "06-gitops-remediation-runbook",
+      "title": "GitOps remediation learner runbook",
+      "path": "labs/supply-chain/training/06-gitops-remediation/README.md"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "06-gitops-remediation-training-workflow",
+      "title": "GitOps remediation workflow",
+      "steps": [
+        "00-start",
+        "01-observe",
+        "02-assess",
+        "03-remediate"
+      ]
+    }
+  ],
+  "graphMetrics": {
+    "nodeCount": 2,
+    "edgeCount": 2,
+    "findingCount": 1,
+    "remediationCount": 1,
+    "complianceImpactCount": 1
+  },
+  "toolchain": {
+    "powershell": "7.6.1",
+    "generator": "phase34-training-mode"
+  },
+  "provenance": {
+    "source": "Doctrine Platform Phase 34",
+    "generatedBy": "phase34-bootstrap-training.ps1",
+    "cleanRoom": true
+  }
+}

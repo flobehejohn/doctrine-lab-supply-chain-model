@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "doctrine.training.run.v1",
+  "scenario": "01-gitlab-supply-chain",
+  "step": "03-remediate",
+  "producedEvidencePack": "labs/supply-chain/training/out/01-gitlab-supply-chain/evidence-pack.json",
+  "sha256": "70c844836a5d8ecc0724145ad064c9478c22c23303341fa468a3e6ac0be58a12",
+  "generatedAt": "2026-06-26T20:00:12.5593555Z"
+}

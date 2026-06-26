@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "dreps.supplychain.training.v1",
+  "packId": "02-kubernetes-foundations-01-observe",
+  "createdAt": "2026-06-26T00:00:00Z",
+  "mode": "training",
+  "training": {
+    "phase": 34,
+    "scenarioId": "02-kubernetes-foundations",
+    "scenarioTitle": "Kubernetes foundations",
+    "step": "01-observe",
+    "stepIndex": 1,
+    "objective": "Relier namespace, workload, pod, service et NetworkPolicy dans un evidence-pack pedagogique.",
+    "definitionOfDone": "Chaque etape produit ou modifie un evidence-pack."
+  },
+  "nodes": [
+    {
+      "id": "02-kubernetes-foundations-scenario",
+      "type": "training_scenario",
+      "label": "Kubernetes foundations",
+      "status": "learning",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "02-kubernetes-foundations-brief"
+      ]
+    },
+    {
+      "id": "02-kubernetes-foundations-target",
+      "type": "k8s_namespace",
+      "label": "Namespace Kubernetes expose",
+      "status": "observed",
+      "criticality": "high",
+      "evidenceRefs": [
+        "02-kubernetes-foundations-brief",
+        "02-kubernetes-foundations-observation"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "02-kubernetes-foundations-edge-scenario-target",
+      "source": "02-kubernetes-foundations-scenario",
+      "target": "02-kubernetes-foundations-target",
+      "type": "contains",
+      "evidenceRefs": [
+        "02-kubernetes-foundations-brief"
+      ]
+    },
+    {
+      "id": "02-kubernetes-foundations-edge-observes",
+      "source": "02-kubernetes-foundations-target",
+      "target": "02-kubernetes-foundations-scenario",
+      "type": "documents",
+      "evidenceRefs": [
+        "02-kubernetes-foundations-observation"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "02-kubernetes-foundations-brief",
+      "type": "training_brief",
+      "path": "labs/supply-chain/training/02-kubernetes-foundations/README.md",
+      "producedBy": "phase34.training-mode",
+      "description": "Brief pedagogique du scenario Kubernetes foundations."
+    },
+    {
+      "id": "02-kubernetes-foundations-observation",
+      "type": "k8s_manifest",
+      "path": "labs/supply-chain/training/02-kubernetes-foundations/steps/01-observe.md",
+      "producedBy": "training.step.observe",
+      "description": "Observation technique controlee pour Namespace Kubernetes expose."
+    }
+  ],
+  "findings": [],
+  "remediations": [],
+  "complianceImpacts": [],
+  "documentation": [
+    {
+      "id": "02-kubernetes-foundations-doc",
+      "title": "Kubernetes foundations training guide",
+      "path": "labs/supply-chain/training/02-kubernetes-foundations/README.md"
+    }
+  ],
+  "simulations": [],
+  "commandRefs": [
+    {
+      "id": "02-kubernetes-foundations-run-step",
+      "shell": "pwsh",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1 -Scenario 02-kubernetes-foundations -Step 01-observe",
+      "riskLevel": "read_only",
+      "approvalRequired": false
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "02-kubernetes-foundations-runbook",
+      "title": "Kubernetes foundations learner runbook",
+      "path": "labs/supply-chain/training/02-kubernetes-foundations/README.md"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "02-kubernetes-foundations-training-workflow",
+      "title": "Kubernetes foundations workflow",
+      "steps": [
+        "00-start",
+        "01-observe",
+        "02-assess",
+        "03-remediate"
+      ]
+    }
+  ],
+  "graphMetrics": {
+    "nodeCount": 2,
+    "edgeCount": 2,
+    "findingCount": 0,
+    "remediationCount": 0,
+    "complianceImpactCount": 0
+  },
+  "toolchain": {
+    "powershell": "7.6.1",
+    "generator": "phase34-training-mode"
+  },
+  "provenance": {
+    "source": "Doctrine Platform Phase 34",
+    "generatedBy": "phase34-bootstrap-training.ps1",
+    "cleanRoom": true
+  }
+}
