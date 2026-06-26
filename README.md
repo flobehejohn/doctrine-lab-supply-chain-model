@@ -375,3 +375,12 @@ Commands:
 
 - pnpm signature:generate
 - pnpm signature:certify
+
+## Audit Pack Explorer
+
+Phase 33 adds a no-UI explorer for external auditors with YAML jtable views, jq examples and Mermaid graph material inside the portable audit pack.
+
+Commands:
+
+- pnpm auditpack:explorer:generate
+- pnpm auditpack:explorer:certify
