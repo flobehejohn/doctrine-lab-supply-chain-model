@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "doctrine.training.index.v1",
+  "phase": 34,
+  "title": "Doctrine Supply Chain Training Mode",
+  "objective": "Transformer le lab supply chain en outil pedagogique vendable.",
+  "entrypoint": "docs/18_TRAINING_MODE.md",
+  "deck": "decks/training-supply-chain.marp.md",
+  "outputRoot": "labs/supply-chain/training/out",
+  "scenarios": [
+    {
+      "id": "01-gitlab-supply-chain",
+      "title": "GitLab supply chain",
+      "track": "GitLab",
+      "objective": "Comprendre la chaine repo -> pipeline -> runner -> image -> registry -> preuve DREPS.",
+      "scenarioFile": "labs/supply-chain/training/01-gitlab-supply-chain/scenario.json",
+      "readme": "labs/supply-chain/training/01-gitlab-supply-chain/README.md"
+    },
+    {
+      "id": "02-kubernetes-foundations",
+      "title": "Kubernetes foundations",
+      "track": "Kubernetes",
+      "objective": "Relier namespace, workload, pod, service et NetworkPolicy dans un evidence-pack pedagogique.",
+      "scenarioFile": "labs/supply-chain/training/02-kubernetes-foundations/scenario.json",
+      "readme": "labs/supply-chain/training/02-kubernetes-foundations/README.md"
+    },
+    {
+      "id": "03-registry-trust",
+      "title": "Registry trust",
+      "track": "Registry",
+      "objective": "Comprendre certificat registry, chaine de confiance, signature d'image et preuve verifiable.",
+      "scenarioFile": "labs/supply-chain/training/03-registry-trust/scenario.json",
+      "readme": "labs/supply-chain/training/03-registry-trust/README.md"
+    },
+    {
+      "id": "04-git-forensic",
+      "title": "Git forensic",
+      "track": "Git",
+      "objective": "Auditer historique Git, tags, CODEOWNERS, signatures et risques de provenance.",
+      "scenarioFile": "labs/supply-chain/training/04-git-forensic/scenario.json",
+      "readme": "labs/supply-chain/training/04-git-forensic/README.md"
+    },
+    {
+      "id": "05-dora-nis2-slsa-mapping",
+      "title": "DORA NIS2 SLSA mapping",
+      "track": "Compliance",
+      "objective": "Transformer un finding technique en impact conformite explicite et actionnable.",
+      "scenarioFile": "labs/supply-chain/training/05-dora-nis2-slsa-mapping/scenario.json",
+      "readme": "labs/supply-chain/training/05-dora-nis2-slsa-mapping/README.md"
+    },
+    {
+      "id": "06-gitops-remediation",
+      "title": "GitOps remediation",
+      "track": "GitOps",
+      "objective": "Passer d'un finding a une remediation versionnee, verifiable et rollbackable.",
+      "scenarioFile": "labs/supply-chain/training/06-gitops-remediation/scenario.json",
+      "readme": "labs/supply-chain/training/06-gitops-remediation/README.md"
+    },
+    {
+      "id": "07-audit-pack-exploration",
+      "title": "Audit-pack exploration",
+      "track": "Audit",
+      "objective": "Apprendre a inspecter findings, compliance, blast radius et checksums sans lancer l'UI.",
+      "scenarioFile": "labs/supply-chain/training/07-audit-pack-exploration/scenario.json",
+      "readme": "labs/supply-chain/training/07-audit-pack-exploration/README.md"
+    }
+  ]
+}

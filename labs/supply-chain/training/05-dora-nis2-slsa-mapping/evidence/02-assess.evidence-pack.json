@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "dreps.supplychain.training.v1",
+  "packId": "05-dora-nis2-slsa-mapping-02-assess",
+  "createdAt": "2026-06-26T00:00:00Z",
+  "mode": "training",
+  "training": {
+    "phase": 34,
+    "scenarioId": "05-dora-nis2-slsa-mapping",
+    "scenarioTitle": "DORA NIS2 SLSA mapping",
+    "step": "02-assess",
+    "stepIndex": 2,
+    "objective": "Transformer un finding technique en impact conformite explicite et actionnable.",
+    "definitionOfDone": "Chaque etape produit ou modifie un evidence-pack."
+  },
+  "nodes": [
+    {
+      "id": "05-dora-nis2-slsa-mapping-scenario",
+      "type": "training_scenario",
+      "label": "DORA NIS2 SLSA mapping",
+      "status": "learning",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "05-dora-nis2-slsa-mapping-brief"
+      ]
+    },
+    {
+      "id": "05-dora-nis2-slsa-mapping-target",
+      "type": "container_image",
+      "label": "Image critique non signee",
+      "status": "observed",
+      "criticality": "critical",
+      "evidenceRefs": [
+        "05-dora-nis2-slsa-mapping-brief",
+        "05-dora-nis2-slsa-mapping-observation"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "05-dora-nis2-slsa-mapping-edge-scenario-target",
+      "source": "05-dora-nis2-slsa-mapping-scenario",
+      "target": "05-dora-nis2-slsa-mapping-target",
+      "type": "contains",
+      "evidenceRefs": [
+        "05-dora-nis2-slsa-mapping-brief"
+      ]
+    },
+    {
+      "id": "05-dora-nis2-slsa-mapping-edge-observes",
+      "source": "05-dora-nis2-slsa-mapping-target",
+      "target": "05-dora-nis2-slsa-mapping-scenario",
+      "type": "documents",
+      "evidenceRefs": [
+        "05-dora-nis2-slsa-mapping-observation"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "05-dora-nis2-slsa-mapping-brief",
+      "type": "training_brief",
+      "path": "labs/supply-chain/training/05-dora-nis2-slsa-mapping/README.md",
+      "producedBy": "phase34.training-mode",
+      "description": "Brief pedagogique du scenario DORA NIS2 SLSA mapping."
+    },
+    {
+      "id": "05-dora-nis2-slsa-mapping-observation",
+      "type": "compliance_mapping",
+      "path": "labs/supply-chain/training/05-dora-nis2-slsa-mapping/steps/01-observe.md",
+      "producedBy": "training.step.observe",
+      "description": "Observation technique controlee pour Image critique non signee."
+    }
+  ],
+  "findings": [
+    {
+      "id": "unsigned-critical-image",
+      "title": "Image critique non signee",
+      "severity": "critical",
+      "status": "open",
+      "affectedNodes": [
+        "05-dora-nis2-slsa-mapping-target"
+      ],
+      "evidenceRefs": [
+        "05-dora-nis2-slsa-mapping-observation"
+      ],
+      "remediationRefs": [],
+      "rationale": "Finding pedagogique introduit pour apprendre a relier preuve, risque, conformite et remediation."
+    }
+  ],
+  "remediations": [],
+  "complianceImpacts": [
+    {
+      "id": "05-dora-nis2-slsa-mapping-compliance-impact",
+      "framework": "DORA/NIS2/SLSA",
+      "control": "DORA-ICT-Third-Party-Risk / NIS2-Supply-Chain / SLSA-Provenance",
+      "status": "failed",
+      "findingId": "unsigned-critical-image",
+      "affectedNodes": [
+        "05-dora-nis2-slsa-mapping-target"
+      ],
+      "evidenceRefs": [
+        "05-dora-nis2-slsa-mapping-observation"
+      ],
+      "rationale": "Impact conformite derive du finding unsigned-critical-image."
+    }
+  ],
+  "documentation": [
+    {
+      "id": "05-dora-nis2-slsa-mapping-doc",
+      "title": "DORA NIS2 SLSA mapping training guide",
+      "path": "labs/supply-chain/training/05-dora-nis2-slsa-mapping/README.md"
+    }
+  ],
+  "simulations": [],
+  "commandRefs": [
+    {
+      "id": "05-dora-nis2-slsa-mapping-run-step",
+      "shell": "pwsh",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1 -Scenario 05-dora-nis2-slsa-mapping -Step 02-assess",
+      "riskLevel": "read_only",
+      "approvalRequired": false
+    }
+  ],
+  "runbooks": [
+    {
+      "id": "05-dora-nis2-slsa-mapping-runbook",
+      "title": "DORA NIS2 SLSA mapping learner runbook",
+      "path": "labs/supply-chain/training/05-dora-nis2-slsa-mapping/README.md"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "05-dora-nis2-slsa-mapping-training-workflow",
+      "title": "DORA NIS2 SLSA mapping workflow",
+      "steps": [
+        "00-start",
+        "01-observe",
+        "02-assess",
+        "03-remediate"
+      ]
+    }
+  ],
+  "graphMetrics": {
+    "nodeCount": 2,
+    "edgeCount": 2,
+    "findingCount": 1,
+    "remediationCount": 0,
+    "complianceImpactCount": 1
+  },
+  "toolchain": {
+    "powershell": "7.6.1",
+    "generator": "phase34-training-mode"
+  },
+  "provenance": {
+    "source": "Doctrine Platform Phase 34",
+    "generatedBy": "phase34-bootstrap-training.ps1",
+    "cleanRoom": true
+  }
+}
