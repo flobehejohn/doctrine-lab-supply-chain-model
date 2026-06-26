@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "doctrine.advanced-connector.manifest.v1",
+  "id": "grafana",
+  "title": "Grafana",
+  "category": "observability",
+  "supportedModes": [
+    "fixture"
+  ],
+  "optionalLiveMode": null,
+  "fixturePath": "labs/supply-chain/connectors/grafana/fixtures/dashboard.json",
+  "drepsOutputPath": "labs/supply-chain/connectors/out/grafana/evidence-pack.json",
+  "mapping": {
+    "entities": "nodes",
+    "relationships": "edges",
+    "findings": "findings",
+    "remediations": "remediations",
+    "complianceImpacts": "complianceImpacts"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "doctrine.advanced-connector.manifest.v1",
+  "id": "github-api",
+  "title": "GitHub API",
+  "category": "source-control",
+  "supportedModes": [
+    "fixture"
+  ],
+  "optionalLiveMode": "github-cli-gh-api",
+  "fixturePath": "labs/supply-chain/connectors/github-api/fixtures/repository.json",
+  "drepsOutputPath": "labs/supply-chain/connectors/out/github-api/evidence-pack.json",
+  "mapping": {
+    "entities": "nodes",
+    "relationships": "edges",
+    "findings": "findings",
+    "remediations": "remediations",
+    "complianceImpacts": "complianceImpacts"
+  }
+}

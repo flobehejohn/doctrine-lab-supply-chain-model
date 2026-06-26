@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "doctrine.external.connector.fixture.v1",
+  "connector": "grafana",
+  "externalTool": "Grafana",
+  "collectedAt": "2026-06-26T00:00:00Z",
+  "source": {
+    "mode": "fixture",
+    "path": "labs/supply-chain/connectors/grafana/fixtures/dashboard.json"
+  },
+  "entities": [
+    {
+      "id": "grafana-tool",
+      "type": "external_tool",
+      "label": "Grafana",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "grafana-fixture"
+      ]
+    },
+    {
+      "id": "grafana-asset",
+      "type": "observability_dashboard",
+      "label": "payments-api production dashboard",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "grafana-fixture"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "grafana-imports-asset",
+      "source": "grafana-tool",
+      "target": "grafana-asset",
+      "type": "imports",
+      "evidenceRefs": [
+        "grafana-fixture"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "grafana-missing-slo-panel",
+      "title": "Grafana dashboard lacks explicit SLO / error budget panel",
+      "severity": "medium",
+      "status": "open",
+      "affectedNodes": [
+        "grafana-asset"
+      ],
+      "evidenceRefs": [
+        "grafana-fixture"
+      ],
+      "remediationRefs": [
+        "grafana-remediation"
+      ],
+      "rationale": "Finding normalized from Grafana advanced connector fixture."
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "id": "grafana-compliance-impact",
+      "framework": "DORA",
+      "control": "Monitoring-Detection",
+      "status": "failed",
+      "findingId": "grafana-missing-slo-panel",
+      "affectedNodes": [
+        "grafana-asset"
+      ],
+      "evidenceRefs": [
+        "grafana-fixture"
+      ],
+      "rationale": "Compliance impact derived from advanced connector finding."
+    }
+  ],
+  "remediations": [
+    {
+      "id": "grafana-remediation",
+      "findingId": "grafana-missing-slo-panel",
+      "affectedNodes": [
+        "grafana-asset"
+      ],
+      "strategy": "Add SLO, latency, error budget and saturation panels to the dashboard.",
+      "risk": "connector-fixture-controlled",
+      "approvalRequired": true,
+      "verification": [
+        "Re-import connector data.",
+        "Validate generated DREPS evidence-pack.",
+        "Confirm finding status or remediation evidence."
+      ],
+      "rollback": [
+        "Restore previous connector fixture.",
+        "Re-run import-advanced-connector.ps1."
+      ]
+    }
+  ],
+  "raw": {
+    "note": "Fixture-first payload used to validate DREPS conversion without requiring external credentials.",
+    "sample": {
+      "externalId": "grafana-sample-001",
+      "name": "payments-api production dashboard",
+      "tool": "Grafana"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "doctrine.advanced-connector.manifest.v1",
+  "id": "backstage",
+  "title": "Backstage",
+  "category": "software-catalog",
+  "supportedModes": [
+    "fixture"
+  ],
+  "optionalLiveMode": null,
+  "fixturePath": "labs/supply-chain/connectors/backstage/fixtures/catalog-component.json",
+  "drepsOutputPath": "labs/supply-chain/connectors/out/backstage/evidence-pack.json",
+  "mapping": {
+    "entities": "nodes",
+    "relationships": "edges",
+    "findings": "findings",
+    "remediations": "remediations",
+    "complianceImpacts": "complianceImpacts"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "doctrine.advanced-connector.manifest.v1",
+  "id": "gitlab-api",
+  "title": "GitLab API",
+  "category": "source-control",
+  "supportedModes": [
+    "fixture"
+  ],
+  "optionalLiveMode": null,
+  "fixturePath": "labs/supply-chain/connectors/gitlab-api/fixtures/project.json",
+  "drepsOutputPath": "labs/supply-chain/connectors/out/gitlab-api/evidence-pack.json",
+  "mapping": {
+    "entities": "nodes",
+    "relationships": "edges",
+    "findings": "findings",
+    "remediations": "remediations",
+    "complianceImpacts": "complianceImpacts"
+  }
+}

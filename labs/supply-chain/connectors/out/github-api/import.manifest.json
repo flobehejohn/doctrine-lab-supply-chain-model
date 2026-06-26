@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "doctrine.advanced-connectors.import-manifest.v1",
+  "connector": "github-api",
+  "mode": "fixture",
+  "evidencePack": "labs/supply-chain/connectors/out/github-api/evidence-pack.json",
+  "sha256": "11c250a97246be4b36c677ad823854e8512d4111a52f7a62a66797ddd988c125",
+  "generatedAt": "2026-06-26T20:30:15.7393230Z"
+}

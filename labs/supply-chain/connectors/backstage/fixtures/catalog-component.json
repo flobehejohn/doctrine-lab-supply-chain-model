@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "doctrine.external.connector.fixture.v1",
+  "connector": "backstage",
+  "externalTool": "Backstage",
+  "collectedAt": "2026-06-26T00:00:00Z",
+  "source": {
+    "mode": "fixture",
+    "path": "labs/supply-chain/connectors/backstage/fixtures/catalog-component.json"
+  },
+  "entities": [
+    {
+      "id": "backstage-tool",
+      "type": "external_tool",
+      "label": "Backstage",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "backstage-fixture"
+      ]
+    },
+    {
+      "id": "backstage-asset",
+      "type": "catalog_component",
+      "label": "component:payments-api",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "backstage-fixture"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "backstage-imports-asset",
+      "source": "backstage-tool",
+      "target": "backstage-asset",
+      "type": "imports",
+      "evidenceRefs": [
+        "backstage-fixture"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "backstage-missing-owner",
+      "title": "Backstage component has incomplete ownership metadata",
+      "severity": "medium",
+      "status": "open",
+      "affectedNodes": [
+        "backstage-asset"
+      ],
+      "evidenceRefs": [
+        "backstage-fixture"
+      ],
+      "remediationRefs": [
+        "backstage-remediation"
+      ],
+      "rationale": "Finding normalized from Backstage advanced connector fixture."
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "id": "backstage-compliance-impact",
+      "framework": "DORA",
+      "control": "ICT-Asset-Management",
+      "status": "failed",
+      "findingId": "backstage-missing-owner",
+      "affectedNodes": [
+        "backstage-asset"
+      ],
+      "evidenceRefs": [
+        "backstage-fixture"
+      ],
+      "rationale": "Compliance impact derived from advanced connector finding."
+    }
+  ],
+  "remediations": [
+    {
+      "id": "backstage-remediation",
+      "findingId": "backstage-missing-owner",
+      "affectedNodes": [
+        "backstage-asset"
+      ],
+      "strategy": "Add owner, lifecycle, system and repository annotations to catalog-info.yaml.",
+      "risk": "connector-fixture-controlled",
+      "approvalRequired": true,
+      "verification": [
+        "Re-import connector data.",
+        "Validate generated DREPS evidence-pack.",
+        "Confirm finding status or remediation evidence."
+      ],
+      "rollback": [
+        "Restore previous connector fixture.",
+        "Re-run import-advanced-connector.ps1."
+      ]
+    }
+  ],
+  "raw": {
+    "note": "Fixture-first payload used to validate DREPS conversion without requiring external credentials.",
+    "sample": {
+      "externalId": "backstage-sample-001",
+      "name": "component:payments-api",
+      "tool": "Backstage"
+    }
+  }
+}

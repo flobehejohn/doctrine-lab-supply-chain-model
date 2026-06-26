@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "dreps.supplychain.connectors.v1",
+  "packId": "github-api-advanced-connector-import",
+  "createdAt": "2026-06-26T20:30:15.5821378Z",
+  "mode": "advanced-connector-import",
+  "connector": {
+    "id": "github-api",
+    "externalTool": "GitHub API",
+    "source": {
+      "mode": "fixture",
+      "path": "labs/supply-chain/connectors/github-api/fixtures/repository.json"
+    },
+    "mode": "fixture"
+  },
+  "nodes": [
+    {
+      "id": "github-api-tool",
+      "type": "external_tool",
+      "label": "GitHub API",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "github-api-fixture"
+      ]
+    },
+    {
+      "id": "github-api-asset",
+      "type": "repository",
+      "label": "github.com/acme/payments-api",
+      "status": "observed",
+      "criticality": "high",
+      "evidenceRefs": [
+        "github-api-fixture"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "github-api-imports-asset",
+      "source": "github-api-tool",
+      "target": "github-api-asset",
+      "type": "imports",
+      "evidenceRefs": [
+        "github-api-fixture"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "github-api-imported-payload",
+      "type": "advanced_connector_payload",
+      "path": "labs/supply-chain/connectors/github-api/fixtures/repository.json",
+      "producedBy": "scripts/connectors/import-advanced-connector.ps1",
+      "description": "Raw advanced connector payload converted to DREPS."
+    }
+  ],
+  "findings": [
+    {
+      "id": "github-actions-unpinned-workflow",
+      "title": "GitHub Actions workflow uses unpinned actions",
+      "severity": "high",
+      "status": "open",
+      "affectedNodes": [
+        "github-api-asset"
+      ],
+      "evidenceRefs": [
+        "github-api-fixture"
+      ],
+      "remediationRefs": [
+        "github-api-remediation"
+      ],
+      "rationale": "Finding normalized from GitHub API advanced connector fixture."
+    }
+  ],
+  "remediations": [
+    {
+      "id": "github-api-remediation",
+      "findingId": "github-actions-unpinned-workflow",
+      "affectedNodes": [
+        "github-api-asset"
+      ],
+      "strategy": "Pin GitHub Actions to immutable SHA references and regenerate provenance evidence.",
+      "risk": "connector-fixture-controlled",
+      "approvalRequired": true,
+      "verification": [
+        "Re-import connector data.",
+        "Validate generated DREPS evidence-pack.",
+        "Confirm finding status or remediation evidence."
+      ],
+      "rollback": [
+        "Restore previous connector fixture.",
+        "Re-run import-advanced-connector.ps1."
+      ]
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "id": "github-api-compliance-impact",
+      "framework": "SLSA",
+      "control": "SLSA-Build-Provenance",
+      "status": "failed",
+      "findingId": "github-actions-unpinned-workflow",
+      "affectedNodes": [
+        "github-api-asset"
+      ],
+      "evidenceRefs": [
+        "github-api-fixture"
+      ],
+      "rationale": "Compliance impact derived from advanced connector finding."
+    }
+  ],
+  "documentation": [
+    {
+      "id": "github-api-doc",
+      "title": "github-api connector documentation",
+      "path": "labs/supply-chain/connectors/github-api/README.md"
+    }
+  ],
+  "simulations": [],
+  "commandRefs": [
+    {
+      "id": "github-api-import-command",
+      "shell": "pwsh",
+      "command": "pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/connectors/import-advanced-connector.ps1 -Connector github-api",
+      "riskLevel": "read_only",
+      "approvalRequired": false
+    }
+  ],
+  "runbooks": [],
+  "workflows": [
+    {
+      "id": "github-api-import-workflow",
+      "title": "github-api import workflow",
+      "steps": [
+        "read-external-payload",
+        "normalize-to-dreps",
+        "write-evidence-pack",
+        "validate"
+      ]
+    }
+  ],
+  "graphMetrics": {
+    "nodeCount": 2,
+    "edgeCount": 1,
+    "findingCount": 1,
+    "remediationCount": 1,
+    "complianceImpactCount": 1
+  },
+  "toolchain": {
+    "powershell": "7.6.1",
+    "importer": "advanced-connectors-phase35"
+  },
+  "provenance": {
+    "source": "labs/supply-chain/connectors/github-api/fixtures/repository.json",
+    "generatedBy": "import-advanced-connector.ps1",
+    "cleanRoom": true
+  }
+}

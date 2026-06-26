@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "doctrine.external.connector.fixture.v1",
+  "connector": "guac",
+  "externalTool": "GUAC",
+  "collectedAt": "2026-06-26T00:00:00Z",
+  "source": {
+    "mode": "fixture",
+    "path": "labs/supply-chain/connectors/guac/fixtures/guac-graph.json"
+  },
+  "entities": [
+    {
+      "id": "guac-tool",
+      "type": "external_tool",
+      "label": "GUAC",
+      "status": "observed",
+      "criticality": "medium",
+      "evidenceRefs": [
+        "guac-fixture"
+      ]
+    },
+    {
+      "id": "guac-asset",
+      "type": "supply_chain_graph",
+      "label": "GUAC supply-chain graph snapshot",
+      "status": "observed",
+      "criticality": "high",
+      "evidenceRefs": [
+        "guac-fixture"
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "id": "guac-imports-asset",
+      "source": "guac-tool",
+      "target": "guac-asset",
+      "type": "imports",
+      "evidenceRefs": [
+        "guac-fixture"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "guac-missing-attestation",
+      "title": "GUAC graph has package without attestation",
+      "severity": "high",
+      "status": "open",
+      "affectedNodes": [
+        "guac-asset"
+      ],
+      "evidenceRefs": [
+        "guac-fixture"
+      ],
+      "remediationRefs": [
+        "guac-remediation"
+      ],
+      "rationale": "Finding normalized from GUAC advanced connector fixture."
+    }
+  ],
+  "complianceImpacts": [
+    {
+      "id": "guac-compliance-impact",
+      "framework": "SLSA",
+      "control": "SLSA-Provenance-Attestation",
+      "status": "failed",
+      "findingId": "guac-missing-attestation",
+      "affectedNodes": [
+        "guac-asset"
+      ],
+      "evidenceRefs": [
+        "guac-fixture"
+      ],
+      "rationale": "Compliance impact derived from advanced connector finding."
+    }
+  ],
+  "remediations": [
+    {
+      "id": "guac-remediation",
+      "findingId": "guac-missing-attestation",
+      "affectedNodes": [
+        "guac-asset"
+      ],
+      "strategy": "Generate provenance attestation and attach it to the package graph.",
+      "risk": "connector-fixture-controlled",
+      "approvalRequired": true,
+      "verification": [
+        "Re-import connector data.",
+        "Validate generated DREPS evidence-pack.",
+        "Confirm finding status or remediation evidence."
+      ],
+      "rollback": [
+        "Restore previous connector fixture.",
+        "Re-run import-advanced-connector.ps1."
+      ]
+    }
+  ],
+  "raw": {
+    "note": "Fixture-first payload used to validate DREPS conversion without requiring external credentials.",
+    "sample": {
+      "externalId": "guac-sample-001",
+      "name": "GUAC supply-chain graph snapshot",
+      "tool": "GUAC"
+    }
+  }
+}

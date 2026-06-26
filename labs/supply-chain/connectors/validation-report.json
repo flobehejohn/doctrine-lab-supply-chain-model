@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "doctrine.advanced-connectors.validation.v1",
+  "phase": 35,
+  "status": "passed",
+  "generatedAt": "2026-06-26T20:30:16.0476836Z",
+  "connectorCount": 8,
+  "requiredDoD": "At least one advanced connector can be read and converted to DREPS.",
+  "importedConnector": "github-api",
+  "importedEvidencePack": "labs/supply-chain/connectors/out/github-api/evidence-pack.json",
+  "errors": [],
+  "connectors": [
+    {
+      "id": "github-api",
+      "title": "GitHub API",
+      "category": "source-control",
+      "manifest": "labs/supply-chain/connectors/github-api/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/github-api/fixtures/repository.json",
+      "entities": 2,
+      "findings": 1
+    },
+    {
+      "id": "gitlab-api",
+      "title": "GitLab API",
+      "category": "source-control",
+      "manifest": "labs/supply-chain/connectors/gitlab-api/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/gitlab-api/fixtures/project.json",
+      "entities": 2,
+      "findings": 1
+    },
+    {
+      "id": "dependency-track",
+      "title": "Dependency-Track",
+      "category": "sbom-vulnerability-management",
+      "manifest": "labs/supply-chain/connectors/dependency-track/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/dependency-track/fixtures/project-metrics.json",
+      "entities": 2,
+      "findings": 1
+    },
+    {
+      "id": "backstage",
+      "title": "Backstage",
+      "category": "software-catalog",
+      "manifest": "labs/supply-chain/connectors/backstage/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/backstage/fixtures/catalog-component.json",
+      "entities": 2,
+      "findings": 1
+    },
+    {
+      "id": "grafana",
+      "title": "Grafana",
+      "category": "observability",
+      "manifest": "labs/supply-chain/connectors/grafana/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/grafana/fixtures/dashboard.json",
+      "entities": 2,
+      "findings": 1
+    },
+    {
+      "id": "opentelemetry",
+      "title": "OpenTelemetry",
+      "category": "telemetry",
+      "manifest": "labs/supply-chain/connectors/opentelemetry/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/opentelemetry/fixtures/service-traces.json",
+      "entities": 2,
+      "findings": 1
+    },
+    {
+      "id": "sonarqube",
+      "title": "SonarQube",
+      "category": "code-quality-security",
+      "manifest": "labs/supply-chain/connectors/sonarqube/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/sonarqube/fixtures/quality-gate.json",
+      "entities": 2,
+      "findings": 1
+    },
+    {
+      "id": "guac",
+      "title": "GUAC",
+      "category": "supply-chain-graph",
+      "manifest": "labs/supply-chain/connectors/guac/connector.manifest.json",
+      "fixture": "labs/supply-chain/connectors/guac/fixtures/guac-graph.json",
+      "entities": 2,
+      "findings": 1
+    }
+  ]
+}
