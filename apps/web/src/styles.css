@@ -345,4 +345,142 @@ code {
     height: 640px;
   }
 }
+/* PHASE-37A-MODELER-BEGIN */
 
+.modeler-shell {
+  margin-bottom: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 28px;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.74);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+.modeler-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 18px;
+}
+
+.modeler-header p,
+.modeler-help,
+.modeler-status {
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.modeler-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modeler-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.75fr 0.75fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.modeler-panel {
+  display: grid;
+  gap: 10px;
+  min-height: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 22px;
+  padding: 16px;
+  background: rgba(2, 6, 23, 0.42);
+}
+
+.modeler-panel-wide {
+  grid-column: span 2;
+}
+
+.modeler-panel h3 {
+  margin-top: 0;
+}
+
+.modeler-panel label {
+  display: grid;
+  gap: 6px;
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+
+.modeler-panel input,
+.modeler-panel select,
+.modeler-panel textarea {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #e5e7eb;
+  background: rgba(2, 6, 23, 0.72);
+}
+
+.modeler-panel textarea {
+  min-height: 240px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+.modeler-panel button,
+.modeler-actions button,
+.template-list button {
+  cursor: pointer;
+  border: 1px solid rgba(96, 165, 250, 0.32);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #dbeafe;
+  background: rgba(30, 64, 175, 0.28);
+}
+
+.modeler-panel button:hover,
+.modeler-actions button:hover,
+.template-list button:hover {
+  border-color: rgba(147, 197, 253, 0.72);
+  background: rgba(37, 99, 235, 0.36);
+}
+
+.template-list {
+  display: grid;
+  max-height: 420px;
+  overflow: auto;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.template-list button {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+}
+
+.template-list span {
+  color: #93c5fd;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.template-list small {
+  color: #94a3b8;
+  line-height: 1.45;
+}
+
+@media (max-width: 1400px) {
+  .modeler-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .modeler-panel-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+/* PHASE-37A-MODELER-END */
