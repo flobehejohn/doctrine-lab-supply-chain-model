@@ -23,6 +23,7 @@ import { FindingPanel } from "./components/FindingPanel.js";
 import { NodeInspector } from "./components/NodeInspector.js";
 import { RemediationPanel } from "./components/RemediationPanel.js";
 import { SupplyChainCanvas } from "./components/SupplyChainCanvas.js";
+import { SupplyChainModeler } from "./modeler/SupplyChainModeler.js";
 
 interface SelectedNodeContext {
   node: SupplyChainNode | undefined;
@@ -37,22 +38,12 @@ function unique(values: string[]): string[] {
   return Array.from(new Set(values));
 }
 
-function buildSelectedNodeContext(
-  pack: EvidencePack,
-  selectedNodeId: string
-): SelectedNodeContext {
+function buildSelectedNodeContext(pack: EvidencePack, selectedNodeId: string): SelectedNodeContext {
   const graph = buildGraph(pack);
   const node = findNodeById(graph, selectedNodeId);
 
   if (!node) {
-    return {
-      node: undefined,
-      evidenceRefs: [],
-      evidence: [],
-      findings: [],
-      remediations: [],
-      complianceImpacts: []
-    };
+    return { node: undefined, evidenceRefs: [], evidence: [], findings: [], remediations: [], complianceImpacts: [] };
   }
 
   const findings = findFindingsForNode(graph, node.id);
@@ -63,9 +54,7 @@ function buildSelectedNodeContext(
     .map((evidenceRef) => graph.evidenceById.get(evidenceRef))
     .filter((item): item is Evidence => item !== undefined);
 
-  const remediations = findings.flatMap((finding) =>
-    findRemediationsForFinding(graph, finding.id)
-  );
+  const remediations = findings.flatMap((finding) => findRemediationsForFinding(graph, finding.id));
 
   const complianceImpacts = graph.complianceImpacts.filter((impact) => {
     const touchesNode = impact.affectedNodes.includes(node.id);
@@ -73,14 +62,7 @@ function buildSelectedNodeContext(
     return touchesNode || touchesFinding;
   });
 
-  return {
-    node,
-    evidenceRefs,
-    evidence,
-    findings,
-    remediations,
-    complianceImpacts
-  };
+  return { node, evidenceRefs, evidence, findings, remediations, complianceImpacts };
 }
 
 export function App(): ReactElement {
@@ -104,6 +86,7 @@ export function App(): ReactElement {
 
         if (!cancelled) {
           setPack(parsed);
+          setSelectedNodeId(parsed.nodes.find((node) => node.id === "pod-auth-api")?.id ?? parsed.nodes[0]?.id ?? "");
         }
       } catch (loadError) {
         const message = loadError instanceof Error ? loadError.message : String(loadError);
@@ -127,18 +110,17 @@ export function App(): ReactElement {
 
   const selectedContext = useMemo(() => {
     if (!pack) {
-      return {
-        node: undefined,
-        evidenceRefs: [],
-        evidence: [],
-        findings: [],
-        remediations: [],
-        complianceImpacts: []
-      };
+      return { node: undefined, evidenceRefs: [], evidence: [], findings: [], remediations: [], complianceImpacts: [] };
     }
 
     return buildSelectedNodeContext(pack, selectedNodeId);
   }, [pack, selectedNodeId]);
+
+  function handleChangePack(nextPack: EvidencePack, preferredNodeId?: string): void {
+    const parsed = EvidencePackSchema.parse(nextPack);
+    setPack(parsed);
+    setSelectedNodeId(preferredNodeId ?? parsed.nodes[0]?.id ?? "");
+  }
 
   if (error) {
     return (
@@ -166,31 +148,19 @@ export function App(): ReactElement {
     <main className="app-shell">
       <header className="hero">
         <div>
-          <p className="eyebrow">Phase 5 — React Flow MVP</p>
+          <p className="eyebrow">Phase 37A — Supply Chain Modeler & Kubernetes Log Import</p>
           <h1>Doctrine Supply Chain Mode Lab</h1>
           <p className="hero-text">
-            Graphe exploitable de supply chain logicielle : preuves, findings,
-            remédiations et impacts conformité reliés aux nœuds DREPS.
+            Modélise une supply chain applicative, importe des templates ou des logs Kubernetes,
+            puis inspecte preuves, findings, remédiations et impacts conformité dans React Flow.
           </p>
         </div>
 
         <div className="metrics-grid" aria-label="Graph metrics">
-          <div>
-            <strong>{metrics.nodeCount}</strong>
-            <span>nodes</span>
-          </div>
-          <div>
-            <strong>{metrics.edgeCount}</strong>
-            <span>edges</span>
-          </div>
-          <div>
-            <strong>{metrics.findingCount}</strong>
-            <span>findings</span>
-          </div>
-          <div>
-            <strong>{metrics.remediationCount}</strong>
-            <span>remediations</span>
-          </div>
+          <div><strong>{metrics.nodeCount}</strong><span>nodes</span></div>
+          <div><strong>{metrics.edgeCount}</strong><span>edges</span></div>
+          <div><strong>{metrics.findingCount}</strong><span>findings</span></div>
+          <div><strong>{metrics.remediationCount}</strong><span>remediations</span></div>
         </div>
       </header>
 
@@ -202,20 +172,14 @@ export function App(): ReactElement {
         <span>Nœud sélectionné : {selectedContext.node?.id ?? "aucun"}</span>
       </section>
 
+      <SupplyChainModeler pack={pack} onChangePack={handleChangePack} />
+
       <section className="workspace">
-        <SupplyChainCanvas
-          nodes={pack.nodes}
-          edges={pack.edges}
-          selectedNodeId={selectedNodeId}
-          onSelectNode={setSelectedNodeId}
-        />
+        <SupplyChainCanvas nodes={pack.nodes} edges={pack.edges} selectedNodeId={selectedNodeId} onSelectNode={setSelectedNodeId} />
 
         <aside className="inspector-grid">
           <NodeInspector node={selectedContext.node} />
-          <EvidencePanel
-            evidenceRefs={selectedContext.evidenceRefs}
-            evidence={selectedContext.evidence}
-          />
+          <EvidencePanel evidenceRefs={selectedContext.evidenceRefs} evidence={selectedContext.evidence} />
           <FindingPanel findings={selectedContext.findings} />
           <CompliancePanel impacts={selectedContext.complianceImpacts} />
           <RemediationPanel remediations={selectedContext.remediations} />
@@ -224,6 +188,3 @@ export function App(): ReactElement {
     </main>
   );
 }
-
-
-

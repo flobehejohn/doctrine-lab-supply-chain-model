@@ -105,7 +105,9 @@
     "training:list": "powershell -ExecutionPolicy Bypass -File scripts/training/list-training-scenarios.ps1",
     "training:run": "powershell -ExecutionPolicy Bypass -File scripts/training/run-training-step.ps1",
     "training:validate": "powershell -ExecutionPolicy Bypass -File scripts/training/validate-training-mode.ps1",
-    "training:certify": "powershell -ExecutionPolicy Bypass -File scripts/training/validate-training-mode.ps1"
+    "training:certify": "powershell -ExecutionPolicy Bypass -File scripts/training/validate-training-mode.ps1",
+    "modeler:validate": "powershell -ExecutionPolicy Bypass -File scripts/modeler/validate-modeler.ps1",
+    "modeler:scan:repo": "powershell -ExecutionPolicy Bypass -File scripts/modeler/scan-local-repo.ps1"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",
